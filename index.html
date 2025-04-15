@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="#skin-types">Skin Type</a></li>
+            <li><a href="#routine-section" id="routine-link">Routine</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>    
+      </div>
+    </header>
+
+    <section class="section-hero">
+      <div class="hero">
+        <div class="hero-text-box">
+          <h1 class="heading-primary">
+            Glow begins with a ritual designed just for you.
+          </h1>
+          <p class="hero-description">
+            Sorelle is a thoughtfully designed platform that presents ideal
+            skincare routines for common skin types, including oily, dry, and
+            combination skin. Our goal is to provide clear, accessible guidance
+            through visually appealing routines—helping you better understand
+            what your skin needs without the clutter of products or promotions.
+          </p>
+          <a href="#skin-types" class="btn btn-hero">Get Started</a>
+          <a href="#" class="btn btn-hero">Products</a>
+        </div>
+        <div class="hero-image-box">
+          <img src="img/img1.jpeg" alt="skincare" class="hero-image" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section-customers">
+      <div class="customers">
+        <div class="customer-images">
+          <img
+            src="img/customers/customer-1.jpg"
+            alt="Customer photo"
+            class="customer-img"
+          />
+          <img
+            src="img/customers/customer-2.jpg"
+            alt="Customer photo"
+            class="customer-img"
+          />
+          <img
+            src="img/customers/customer-3.jpg"
+            alt="Customer photo"
+            class="customer-img"
+          />
+          <img
+            src="img/customers/customer-4.jpg"
+            alt="Customer photo"
+            class="customer-img"
+          />
+          <img
+            src="img/customers/customer-5.jpg"
+            alt="Customer photo"
+            class="customer-img"
+          />
+          <img
+            src="img/customers/customer-6.jpg"
+            alt="Customer photo"
+            class="customer-img"
+          />
+        </div>
+        <p class="customer-text">
+          <strong>10,000+</strong> glowing customers last year!<br />
+          Trusted by skincare lovers around the globe, making self-care simple,
+          personal, and beautiful.
+        </p>
+      </div>
+    </section>
+
+    <section id="skin-types" class="skin-types-section">
+      <h2 class="heading-secondary center-text">Skin Types</h2>
+      <div class="container">
+        <div class="skin-types-grid">
+          <!-- Dry Skin Card -->
+          <div class="skin-type" data-type="Dry Skin">
+            <img src="img/skin-types/dry skin.jpeg" alt="Dry Skin" class="skin-type-img" />
+            <h3 class="skin-type-title">Dry Skin</h3>
+            <p class="skin-type-description">Dry skin lacks moisture and can feel tight, rough, or flaky. It may also be prone to irritation and redness.</p>
+          </div>
+          <!-- Oily Skin Card -->
+          <div class="skin-type" data-type="Oily Skin">
+            <img src="img/skin-types/oily skin.jpeg" alt="Oily Skin" class="skin-type-img" />
+            <h3 class="skin-type-title">Oily Skin</h3>
+            <p class="skin-type-description">Oily skin is characterized by excess sebum production, leading to a shiny appearance and enlarged pores.</p>
+          </div>
+          <!-- Combination Skin Card -->
+          <div class="skin-type" data-type="Combination Skin">
+            <img src="img/skin-types/combined skin.jpg" alt="Combination Skin" class="skin-type-img" />
+            <h3 class="skin-type-title">Combination Skin</h3>
+            <p class="skin-type-description">Combination skin has both oily and dry areas, typically with an oily T-zone (forehead, nose, chin) and dry cheeks.</p>
+          </div>
+        </div>
+      </div>
+    </section>    
+    
+    <section id="routine-section" class="routine-section hidden">
+      <div class="routine-container">
+        <h2 id="routine-title" class="routine-heading">Oily Skin</h2>
+        <div class="routine-box-wrapper">
+          <div class="routine-box">
+            <h3>🌸 Morning Routine</h3>
+            <ul id="morning-routine"></ul>
+            <button class="see-products-btn" data-skin-type="Oily Skin">See Products</button>
+          </div>
+          <div class="routine-box">
+            <h3>🌸 Night Routine</h3>
+            <ul id="night-routine"></ul>
+            <button class="see-products-btn" data-skin-type="Oily Skin">See Products</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="routine-section-dry" class="routine-section hidden">
+      <div class="routine-container">
+        <h2 id="routine-title-dry" class="routine-heading">Dry Skin</h2>
+        <div class="routine-box-wrapper">
+          <div class="routine-box">
+            <h3>🌸 Morning Routine</h3>
+            <ul id="morning-routine-dry"></ul>
+            <button class="see-products-btn" data-skin-type="Dry Skin">See Products</button>
+          </div>
+          <div class="routine-box">
+            <h3>🌸 Night Routine</h3>
+            <ul id="night-routine-dry"></ul>
+            <button class="see-products-btn" data-skin-type="Dry Skin">See Products</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section id="routine-section-combined" class="routine-section hidden">
+      <div class="routine-container">
+        <h2 id="routine-title-combined" class="routine-heading">Combination Skin</h2>
+        <div class="routine-box-wrapper">
+          <div class="routine-box">
+            <h3>🌸 Morning Routine</h3>
+            <ul id="morning-routine-combined"></ul>
+            <button class="see-products-btn" data-skin-type="Combination Skin">See Products</button>
+          </div>
+          <div class="routine-box">
+            <h3>🌸 Night Routine</h3>
+            <ul id="night-routine-combined"></ul>
+            <button class="see-products-btn" data-skin-type="Combination Skin">See Products</button>
+          </div>
+        </div>
+      </div>
+    </section>    
+    
+    
+    <section id="products-section" class="routine-section">
+      <h2>Dry Skin Routine – Recommended Products</h2>
+      <div class="routine-block">
+        <h3>🌸 Morning Routine</h3>
+
+        <div class="step">
+          <img src="img/cleanser.webp" alt="Gentle Cleanser" />
+          <div class="step-info">
+            <strong>Gentle Cleanser</strong> – 2 drops
+            <p class="usage">
+              Removes impurities without stripping natural moisture.
+            </p>
+            <a
+              href="https://earthrhythm.com/products/exfoliating-face-cleanser-with-ahas-bhas?variant=40113418895404&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&srsltid=AfmBOorWAzxhyo5lHcAaGuPBBTvmGM4ZaUYRJuZfkPXqm0jkBdVQA3PPsV0"
+              >View Product</a
+            >
+          </div>
+        </div>
+        <div class="step">
+          <img src="img/lip balm.jpg" alt="Lipbalm" />
+          <div class="step-info">
+            <strong>Lipbalm</strong> – Once
+            <p class="usage">Softens lips.</p>
+            <a href="https://www.nykaa.com/laneige-lip-glowy-balm/p/15227381?skuId=15227375">View Product</a>
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/toner.webp" alt="Hydrating Toner" />
+          <div class="step-info">
+            <strong>Hydrating Toner</strong> – 3 drops
+            <p class="usage">
+              Restores pH balance and preps skin for next steps.
+            </p>
+            <a
+              href="https://plumgoodness.com/products/plum-niacinamide-toner-with-rice-water?variant=39649332691004&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gad_source=1&gbraid=0AAAAADoQ5k3B5pzchWi9tFd0IA_pKIwTX&gclid=Cj0KCQjwnui_BhDlARIsAEo9GutwO8NXYDEfgNEIwU_9a8f-d1-ZyPMCkLvPOewAed5xtfdl8tGoNSMaAh5sEALw_wcB"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/serum.webp" alt="Serum" />
+          <div class="step-info">
+            <strong>Serum</strong> – 2 drops
+            <p class="usage">
+              Delivers deep hydration and boosts skin radiance.
+            </p>
+            <a
+              href="https://www.amazon.in/Dot-Key-Hyaluronic-Concentrate-hyaluronic/dp/B07RZ4W5M9/ref=asc_df_B07RZ4W5M9?mcid=9153dac333f83fd6b7112ff361f8a91d&tag=googleshopdes-21&linkCode=df0&hvadid=710025356537&hvpos=&hvnetw=g&hvrand=11421506119745436617&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9208545&hvtargid=pla-836442441774&psc=1&gad_source=1"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/moisturizer.webp" alt="Rich Moisturizer" />
+          <div class="step-info">
+            <strong>Rich Moisturizer</strong> – 5 drops
+            <p class="usage">Locks in moisture and soothes dry patches.</p>
+            <a
+              href="https://letshyphen.com/products/golden-hour-glow%E2%84%A2-moisturizer?variant=50248192098620&country=IN&currency=INR&utm_source=google&utm_medium=cpc&utm_campaign=VM_PMax_Feed_Catch_All_22Sep%2723&gad_source=1&gbraid=0AAAAAp_dPLkbQGQ4aZeORX4hcQBggxaiw&gclid=Cj0KCQjwnui_BhDlARIsAEo9GusgX1pwFx0KO8Bejrs8UtkhCqJkbsH47WNK6zlFe4zngoT3eE9YlwQaAhJ6EALw_wcB"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/sunscreen.webp" alt="Sunscreen" />
+          <div class="step-info">
+            <strong>Sunscreen</strong> – 1 tsp
+            <p class="usage">Shields skin from harmful UVA/UVB rays.</p>
+            <a
+              href="https://www.dotandkey.com/products/barrier-repair-sunscreen?utm_source=google&utm_medium=paid&utm_campaign=20530654023&utm_content=&utm_term=&gadid=&gad_source=1&gbraid=0AAAAAC-nk23DU4zFjKZpHCCgftYmifKa3&gclid=Cj0KCQjwnui_BhDlARIsAEo9GuuU9Mfyq1T6Zge9dBQCq_KFjF5H9uS8E20Is2kgN84ptTH-uMfoMKcaAgPMEALw_wcB"
+              >View Product</a
+            >
+          </div>
+      </div>
+
+      <!-- Night Routine -->
+      <div class="routine-block">
+        <h3>🌸 Night Routine</h3>
+
+        <div class="step">
+          <img src="img/cleanser.webp" alt="Cleanser" />
+          <div class="step-info">
+            <strong>Cleanser</strong> – 2 drops
+            <p class="usage">Removes makeup, dirt, and oil after a long day.</p>
+            <a
+              href="https://earthrhythm.com/products/exfoliating-face-cleanser-with-ahas-bhas?variant=40113418895404&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&srsltid=AfmBOorWAzxhyo5lHcAaGuPBBTvmGM4ZaUYRJuZfkPXqm0jkBdVQA3PPsV0"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/lip mask.webp" alt="Lip Mask" />
+          <div class="step-info">
+            <strong>Lipbalm</strong> – Once
+            <p class="usage">Softens lips.</p>
+            <a
+              href="https://us.laneige.com/products/lip-sleeping-mask?srsltid=AfmBOopIWGJnSSfqFNqlwJ8MPTTJiBLG5dzfTb3hu2o47uQFuxmLeX9y"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/toner.webp" alt="Toner" />
+          <div class="step-info">
+            <strong>Toner</strong> – 3 drops
+            <p class="usage">Refreshes and hydrates tired skin.</p>
+            <a
+              href="https://plumgoodness.com/products/plum-niacinamide-toner-with-rice-water?variant=39649332691004&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gad_source=1&gbraid=0AAAAADoQ5k3B5pzchWi9tFd0IA_pKIwTX&gclid=Cj0KCQjwnui_BhDlARIsAEo9GutwO8NXYDEfgNEIwU_9a8f-d1-ZyPMCkLvPOewAed5xtfdl8tGoNSMaAh5sEALw_wcB"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/facial-oil.webp" alt="Facial Oil" />
+          <div class="step-info">
+            <strong>Facial Oil</strong> – 2 drops
+            <p class="usage">
+              Nourishes and strengthens the skin barrier overnight.
+            </p>
+            <a
+              href="https://earthrhythm.com/products/pomegranate-facial-oil?variant=40342207168556&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&srsltid=AfmBOorvhBWhkEAMSfczE1Cq5GQwP7FiKS2eE_oGx_y6U-Rx7CDe8juS2-A"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/night cream.webp" alt="Night Cream" />
+          <div class="step-info">
+            <strong>Night Cream</strong> – 5 drops
+            <p class="usage">Deeply hydrates and repairs while you sleep.</p>
+            <a
+              href="https://www.dotandkey.com/products/retinol-ceramide-age-defense-night-cream"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/eye cream.webp" alt="Eye Cream" />
+          <div class="step-info">
+            <strong>Eye Cream</strong> – pea-sized
+            <p class="usage">
+              Targets fine lines and reduces puffiness around eyes.
+            </p>
+            <a href="https://www.dotandkey.com/products/retinol-eye-cream"
+              >View Product</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="routine-section">
+      <h2>
+        Oily Skin Routine – Recommended Products
+        <style>
+          .routine-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+            color: #e15c9c;
+            font-family: "Cormorant Garamond", serif;
+          }
+        </style>
+      </h2>
+
+      <!-- Morning Routine – Oily Skin -->
+<style>
+  .routine-block h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #d16096;
+    font-family: "Cormorant Garamond", serif;
+    text-align: center;
+  }
+</style>
+
+<div class="routine-block">
+  <h3>🌸 Morning Routine</h3>
+
+  <div class="step">
+    <img src="img/cleanseroily.webp" alt="Gentle Cleanser" />
+    <div class="step-info">
+      <strong>Gentle Cleanser</strong> – 2 drops
+      <p class="usage">Removes impurities without stripping natural moisture.</p>
+      <a href="https://www.dotandkey.com/products/vitamin-c-e-gel-facewash">View Product</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <img src="img/toner2.webp" alt="Hydrating Toner" />
+    <div class="step-info">
+      <strong>Hydrating Toner</strong> – 3 drops
+      <p class="usage">Restores pH balance and preps skin for next steps.</p>
+      <a href="https://aqualogica.in/products/hydrate-refresh-toning-mist-100-ml">View Product</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <img src="img/serum2.webp" alt="Serum" />
+    <div class="step-info">
+      <strong>Serum</strong> – 2 drops
+      <p class="usage">Delivers deep hydration and boosts skin radiance.</p>
+      <a href="https://foxtale.in/products/c-for-yourself-vitamin-c-serum?_pos=1&_sid=806eb44f5&_ss=r">View Product</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <img src="img/moisturizer2.webp" alt="Rich Moisturizer" />
+    <div class="step-info">
+      <strong>Rich Moisturizer</strong> – 5 drops
+      <p class="usage">Locks in moisture and soothes dry patches.</p>
+      <a href="https://aqualogica.in/products/illuminate-hydra-gel-moisturizer-100g?utm_source=google-ads&utm_medium=cpc&utm_campaign=21028039409&utm_agid=159746396635&utm_term=&creative=691090347493&feeditem=&devicemodel=&network=g&device=c&placement=&gad_source=1&gbraid=0AAAAAoNKh4T0-wYAFbZzyW7oZsyiCI8vn&gclid=CjwKCAjwwe2_BhBEEiwAM1I7sfb6uNTV-Ab3KslhVHMXbxrtVyrk03OLrF-YmrOhkNG8GKuLiCYUyxoCWTkQAvD_BwE">View Product</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <img src="img/lip balm.jpg" alt="Lipbalm" />
+    <div class="step-info">
+      <strong>Lipbalm</strong> – Once
+      <p class="usage">Softens lips.</p>
+      <a href="https://www.nykaa.com/laneige-lip-glowy-balm/p/15227381?skuId=15227375">View Product</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <img src="img/sunscreen.webp" alt="Sunscreen" />
+    <div class="step-info">
+      <strong>Sunscreen</strong> – 1 tsp
+      <p class="usage">Shields skin from harmful UVA/UVB rays.</p>
+      <a href="https://www.dotandkey.com/products/barrier-repair-sunscreen">View Product</a>
+    </div>
+  </div>
+</div>
+      <!-- Night Routine – Dry Skin -->
+      <div class="routine-block">
+        <h3>🌸 Night Routine</h3>
+
+        <div class="step">
+          <img src="img/cleanseroily.webp" alt="Cleanser" />
+          <div class="step-info">
+            <strong>Cleanser</strong> – 2 drops
+            <p class="usage">Removes makeup, dirt, and oil after a long day.</p>
+            <a
+              href="https://www.dotandkey.com/products/vitamin-c-e-gel-facewash"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/toner2.webp" alt="Toner" />
+          <div class="step-info">
+            <strong>Toner</strong> – 3 drops
+            <p class="usage">Refreshes and hydrates tired skin.</p>
+            <a
+              href="https://aqualogica.in/products/hydrate-refresh-toning-mist-100-ml"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/cream.webp" alt="Cream" />
+          <div class="step-info">
+            <strong>Cream</strong> – 2 drops
+            <p class="usage">
+              Nourishes and strengthens the skin barrier overnight.
+            </p>
+            <a
+              href="https://foxtale.in/products/skin-repair-cream?variant=44201952116983&country=IN&currency=INR&utm_source=google&utm_medium=cpc&utm_campaign=VM_PMax_Asset_Catchall_02Feb23&gad_source=1&gbraid=0AAAAAoTiBN73f_0ChnBrOaODdMDTecf8J&gclid=CjwKCAjwwe2_BhBEEiwAM1I7sUhB72lUa1DKbOVrhkhJ4CfY8UmzOXZsoFMq3CGOhAopMG9jsCgMxxoCkCIQAvD_BwE"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/moisturizer2.webp" alt="Moisturizer" />
+          <div class="step-info">
+            <strong>Moisturizer</strong> – 5 drops
+            <p class="usage">Deeply hydrates and repairs while you sleep.</p>
+            <a
+              href="https://aqualogica.in/products/illuminate-hydra-gel-moisturizer-100g?utm_source=google-ads&utm_medium=cpc&utm_campaign=21028039409&utm_agid=159746396635&utm_term=&creative=691090347493&feeditem=&devicemodel=&network=g&device=c&placement=&gad_source=1&gbraid=0AAAAAoNKh4T0-wYAFbZzyW7oZsyiCI8vn&gclid=CjwKCAjwwe2_BhBEEiwAM1I7sfb6uNTV-Ab3KslhVHMXbxrtVyrk03OLrF-YmrOhkNG8GKuLiCYUyxoCWTkQAvD_BwE"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/lip mask.webp" alt="Lip Mask" />
+          <div class="step-info">
+            <strong>Lipbalm</strong> – Once
+            <p class="usage">Softens lips.</p>
+            <a
+              href="https://us.laneige.com/products/lip-sleeping-mask?srsltid=AfmBOopIWGJnSSfqFNqlwJ8MPTTJiBLG5dzfTb3hu2o47uQFuxmLeX9y"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/patches.webp" alt="Eye Patches" />
+          <div class="step-info">
+            <strong>Eye Patches</strong> – pea-sized
+            <p class="usage">
+              Targets fine lines and reduces puffiness around eyes.
+            </p>
+            <a
+              href="https://www.dotandkey.com/products/watermelon-cooling-hydrogel-eye-patches"
+              >View Product</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="routine-section">
+      <h2>Combination Skin Routine – Recommended Products</h2>
+
+      <!-- Morning Routine – Combo Skin -->
+      <div class="routine-block">
+        <h3>🌸 Morning Routine</h3>
+
+        <div class="step">
+          <img src="img/balancing.webp" alt="Balancing Cleanser" />
+          <div class="step-info">
+            <strong>Balancing Cleanser</strong> – 2 drops
+            <p class="usage">Cleanses without drying oily and dry areas.</p>
+            <a
+              href="https://orimiiskincare.com/products/ph-balance-gentle-face-wash?variant=44453670027450&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google&utm_medium=cpc&utm_campaign=VM_PMax_Asset_Feed_Facewash_04Apr25&gad_source=1&gbraid=0AAAAAos_ILbdwM2_nMyMQeiSvb1Fs7Zht&gclid=CjwKCAjwwe2_BhBEEiwAM1I7scQjldeLmJtYpZtl3nUktGGCHMOOjwllk5wEwVyC5H-Y5r7BOiE2lxoCSJMQAvD_BwE"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/toner3.webp" alt="Balancing Toner" />
+          <div class="step-info">
+            <strong>Balancing Toner</strong> – 3 drops
+            <p class="usage">
+              Maintains oil-moisture balance throughout the face.
+            </p>
+            <a
+              href="https://neudeskin.com/products/tone-it-up-toner?currency=INR&variant=50024251982111&utm_source=google&utm_medium=cpc&utm_campaign=Google%20Shopping&stkn=be55a09db807&utm_source=google&utm_medium=cpc&utm_campaign=GC_PMax_All_Product_01/06/24&gad_source=1&gbraid=0AAAAAqI81gEt3Ueu95ieWiCkVwc08biCf&gclid=CjwKCAjwwe2_BhBEEiwAM1I7sRbTy921z9VxYGwhLDMkcobq3PGNaEzLjif95eitxSclwvxqXnUh1BoCJ60QAvD_BwE"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/Niacinamide Serum.webp" alt="Niacinamide Serum" />
+          <div class="step-info">
+            <strong>Niacinamide Serum</strong> – 2 drops
+            <p class="usage">Brightens complexion and evens out tone.</p>
+            <a
+              href="https://foxtale.in/products/niacinamide-serum?srsltid=AfmBOooCJECdN1htUBkGZPcUNtu9l_JEsxzQ_vnGDBThLmexVarwpbQ9"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/light moisturizer.webp" alt="Light Moisturizer" />
+          <div class="step-info">
+            <strong>Light Moisturizer</strong> – 4 drops
+            <p class="usage">Hydrates dry zones without clogging oily areas.</p>
+            <a
+              href="https://plumgoodness.com/products/thinkderma-2-niacinamide-rice-water-clear-moisture-gel-cream-all-day-non-greasy-moisturizer-fades-blemishes-brightens-skin-3-matmarine-for-oil-control-lightweight-non-sticky-100-vegan?gad_source=1&gbraid=0AAAAADoQ5k3K7nBHNnQdzIS5S5x-pECHu&gclid=CjwKCAjwwe2_BhBEEiwAM1I7sekvD_9IOx64omJbIJwEjU-2mcaPGxdpm6YjkU_3uSU0ojzl7zSmQRoCOY4QAvD_BwE"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/sunscreen3.webp" alt="Matte Sunscreen" />
+          <div class="step-info">
+            <strong>Matte Sunscreen</strong> – 1 tsp
+            <p class="usage">Protects while controlling shine in T-zone.</p>
+            <a
+              href="https://aqualogica.in/products/illuminate-dewy-sunscreen-spf-50-pa-with-wild-berries-alpha-arbutin-30-g?utm_source=google-ads&utm_medium=cpc&utm_campaign=19787626540&utm_agid=&utm_term=&creative=&feeditem=&devicemodel=&network=x&device=c&placement=&gad_source=1&gbraid=0AAAAAoNKh4RtGPuxNmF6Y4pwIA6vQPtb6&gclid=CjwKCAjwwe2_BhBEEiwAM1I7sQ5l2ekBr-GTKrc_qX33NNx2o-opCoR21Gfd2JusrLqJYBnUPEdEWhoC2YkQAvD_BwE"
+              >View Product</a
+            >
+          </div>
+        </div>
+        <div class="step">
+          <img src="img/lip balm.jpg" alt="Lipbalm" />
+          <div class="step-info">
+            <strong>Lipbalm</strong> – Once
+            <p class="usage">Softens lips.</p>
+            <a
+              href="https://www.nykaa.com/laneige-lip-glowy-balm/p/15227381?skuId=15227375"
+              >View Product</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Night Routine – Combo Skin -->
+      <div class="routine-block">
+        <h3>🌸 Night Routine</h3>
+
+        <div class="step">
+          <img src="img/gel cleanser.webp" alt="Gel Cleanser" />
+          <div class="step-info">
+            <strong>Gel Cleanser</strong> – 2 drops
+            <p class="usage">
+              Removes makeup and balances both dry and oily areas.
+            </p>
+            <a
+              href="https://www.dotandkey.com/products/watermelon-vitamin-c-face-wash-gel-1?utm_source=google&utm_medium=paid&utm_campaign=18108354709&utm_content=&utm_term=&gadid=&gad_source=1&gbraid=0AAAAAC-nk23K6GKc2KhE1xbDajwbc5eTQ&gclid=CjwKCAjwwe2_BhBEEiwAM1I7sc7kMx454wlFasoHfgm-qHE0c9JmymBfzAO8Hp8TXl31fJBPthkIJRoC9IAQAvD_BwE"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/toner3.webp" alt="Balancing Toner" />
+          <div class="step-info">
+            <strong>Balancing Toner</strong> – 3 drops
+            <p class="usage">Refreshes skin without over-drying.</p>
+            <a
+              href="https://neudeskin.com/products/tone-it-up-toner?currency=INR&variant=50024251982111&utm_source=google&utm_medium=cpc&utm_campaign=Google%20Shopping&stkn=be55a09db807&utm_source=google&utm_medium=cpc&utm_campaign=GC_PMax_All_Product_01/06/24&gad_source=1&gbraid=0AAAAAqI81gEt3Ueu95ieWiCkVwc08biCf&gclid=CjwKCAjwwe2_BhBEEiwAM1I7sRbTy921z9VxYGwhLDMkcobq3PGNaEzLjif95eitxSclwvxqXnUh1BoCJ60QAvD_BwE"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/Niacinamide Serum.webp" alt="Niacinamide Serum" />
+          <div class="step-info">
+            <strong>Niacinamide Serum</strong> – 2 drops
+            <p class="usage">Reduces excess oil and improves texture.</p>
+            <a
+              href="https://foxtale.in/products/niacinamide-serum?srsltid=AfmBOooCJECdN1htUBkGZPcUNtu9l_JEsxzQ_vnGDBThLmexVarwpbQ9"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/gel cream.webp" alt="Gel Night Cream" />
+          <div class="step-info">
+            <strong>Gel Night Cream</strong> – 4 drops
+            <p class="usage">Light hydration that calms and repairs.</p>
+            <a
+              href="https://plumgoodness.com/products/green-tea-renewed-clarity-night-gel?variant=31677085286460&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gad_source=1&gbraid=0AAAAADoQ5k3B5pzchWi9tFd0IA_pKIwTX&gclid=CjwKCAjwwe2_BhBEEiwAM1I7sYJDoLew-1pgHVx1ru47sL5rW5YADDlICYhwyX143TioOyN3Tn5MgxoCPfEQAvD_BwE"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/lip mask.webp" alt="Lip Mask" />
+          <div class="step-info">
+            <strong>Lipbalm</strong> – Once
+            <p class="usage">Softens lips.</p>
+            <a
+              href="https://us.laneige.com/products/lip-sleeping-mask?srsltid=AfmBOopIWGJnSSfqFNqlwJ8MPTTJiBLG5dzfTb3hu2o47uQFuxmLeX9y"
+              >View Product</a
+            >
+          </div>
+        </div>
+
+        <div class="step">
+          <img src="img/cooling gel.webp" alt="Cooling Eye Gel" />
+          <div class="step-info">
+            <strong>Cooling Eye Gel</strong> – pea-sized
+            <p class="usage">De-puffs and cools the under-eye area.</p>
+            <a
+              href="https://orimiiskincare.com/products/aqua-surge-eye-refresh-gel?variant=41312327008442&utm_source=google&utm_medium=cpc&utm_campaign=VM_SShopping_top10products_05Aug24&gad_source=1&gbraid=0AAAAAos_ILZGy_MVaFxZY7kKJctTF6lMh&gclid=CjwKCAjwwe2_BhBEEiwAM1I7sXI2CXYC1cC4GlLRxL3RJyTZK9O0LnStwRztYSXa-ZtYgmS4MkYxwBoC2UoQAvD_BwE"
+              >View Product</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+  const routines = {
+    "Oily Skin": {
+      morning: [
+        "Cleanser - 2 drops",
+        "Toner - 3 drops",
+        "Serum - 2 drops",
+        "Moisturizer - 4 drops",
+        "Sunscreen - 1 tsp",
+        "Lipbalm - Once",
+      ],
+      night: [
+        "Cleanser - 2 drops",
+        "Toner - 3 drops",
+        "Cream - 1 drop",
+        "Moisturizer - 4 drops",
+        "Eye-patches pea-sized",
+        "Lip Mask - Once",
+      ],
+    },
+    "Dry Skin": {
+      morning: [
+        "Gentle Cleanser - 2 drops",
+        "Hydrating Toner - 3 drops",
+        "Serum - 2 drops",
+        "Rich Moisturizer - 5 drops",
+        "Sunscreen - 1 tsp",
+        "Lipbalm - Once",
+      ],
+      night: [
+        "Cleanser - 2 drops",
+        "Toner - 3 drops",
+        "Facial Oil - 2 drops",
+        "Night Cream - 5 drops",
+        "Eye Cream - pea-sized",
+        "Lip Mask - Once",
+      ],
+    },
+    "Combination Skin": {
+      morning: [
+        "Balancing Cleanser - 2 drops",
+        "Toner - 3 drops",
+        "Niacinamide Serum - 2 drops",
+        "Light Moisturizer - 4 drops",
+        "Sunscreen - 1 tsp",
+        "Lipbalm - Once",
+      ],
+      night: [
+        "Gel Cleanser - 2 drops",
+        "Balancing Toner - 3 drops",
+        "Niacinamide Serum - 1 drop",
+        "Gel Night Cream - 4 drops",
+        "Cooling Eye Gel - pea-sized",
+        "Lip Mask - Once",
+      ],
+    },
+  };
+
+  const morningListOily = document.getElementById("morning-routine");
+  const nightListOily = document.getElementById("night-routine");
+  const titleOily = document.getElementById("routine-title");
+  const sectionOily = document.getElementById("routine-section");
+
+  const morningListDry = document.getElementById("morning-routine-dry");
+  const nightListDry = document.getElementById("night-routine-dry");
+  const titleDry = document.getElementById("routine-title-dry");
+  const sectionDry = document.getElementById("routine-section-dry");
+
+  const morningListCombined = document.getElementById("morning-routine-combined");
+  const nightListCombined = document.getElementById("night-routine-combined");
+  const titleCombined = document.getElementById("routine-title-combined");
+  const sectionCombined = document.getElementById("routine-section-combined");
+
+  const productButtons = document.querySelectorAll(".see-products-btn");
+  const productsSection = document.getElementById("products-section");
+
+  // Handle skin type card click to show routine
+  document.querySelectorAll(".skin-type").forEach((card) => {
+    card.addEventListener("click", () => {
+      const type = card.getAttribute("data-type");  // Get the skin type from data-type
+      const routine = routines[type];
+
+      if (routine) {
+        // Hide all sections initially
+        sectionOily.classList.add("hidden");
+        sectionDry.classList.add("hidden");
+        sectionCombined.classList.add("hidden");
+
+        // Show the correct routine section
+        if (type === "Oily Skin") {
+          titleOily.innerText = type;
+          morningListOily.innerHTML = routine.morning.map((step) => `<li>${step}</li>`).join("");
+          nightListOily.innerHTML = routine.night.map((step) => `<li>${step}</li>`).join("");
+          sectionOily.classList.remove("hidden");
+          sectionOily.scrollIntoView({ behavior: "smooth" });
+        } else if (type === "Dry Skin") {
+          titleDry.innerText = type;
+          morningListDry.innerHTML = routine.morning.map((step) => `<li>${step}</li>`).join("");
+          nightListDry.innerHTML = routine.night.map((step) => `<li>${step}</li>`).join("");
+          sectionDry.classList.remove("hidden");
+          sectionDry.scrollIntoView({ behavior: "smooth" });
+        } else if (type === "Combination Skin") {
+          titleCombined.innerText = type;
+          morningListCombined.innerHTML = routine.morning.map((step) => `<li>${step}</li>`).join("");
+          nightListCombined.innerHTML = routine.night.map((step) => `<li>${step}</li>`).join("");
+          sectionCombined.classList.remove("hidden");
+          sectionCombined.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    });
+  });
+
+  // Handle "See Products" button click
+  productButtons.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const skinType = e.target.getAttribute("data-skin-type");
+      console.log(skinType); // Optional: Log the skin type to check if it's correct
+      // You can use the skinType variable to filter/show specific products
+      productsSection?.scrollIntoView({ behavior: "smooth" });
+    });
+  });
+});
+    </script>
+  </body>
+</html>
