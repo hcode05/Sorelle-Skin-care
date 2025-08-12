@@ -1,0 +1,137 @@
+/* Missing Header Container Styles */
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+  padding: 0 1rem;
+}
+
+/* Enhanced Navigation Styles for all pages */
+.main-nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+}
+
+.nav-list li {
+  margin: 0;
+}
+
+.nav-list li a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  font-family: "Cormorant Garamond", serif;
+}
+
+.nav-list li a:hover,
+.nav-list li a.active-link {
+  color: #d14b8f;
+  background-color: rgba(255, 255, 255, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(228, 120, 164, 0.2);
+}
+
+/* Enhanced Products Page Responsiveness */
+@media (max-width: 480px) {
+  .products-hero {
+    padding: 40px 15px;
+  }
+  
+  .products-heading {
+    font-size: 1.8rem;
+  }
+  
+  .products-description {
+    font-size: 0.95rem;
+  }
+  
+  .header-container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+  
+  .nav-list {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  
+  .nav-list li a {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+  }
+  
+  .category-filters {
+    padding: 10px;
+    gap: 8px;
+  }
+  
+  .filter-btn {
+    padding: 8px 15px;
+    font-size: 0.85rem;
+  }
+  
+  .product-item {
+    padding: 20px;
+    min-height: 400px;
+  }
+  
+  .product-item h4 {
+    font-size: 1.2rem;
+    min-height: 40px;
+  }
+  
+  .product-item p {
+    font-size: 0.9rem;
+    min-height: 50px;
+  }
+  
+  .price {
+    font-size: 1.2rem;
+  }
+  
+  .skin-type {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+  
+  .product-item a {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Additional utility classes */
+.text-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: block !important;
+}

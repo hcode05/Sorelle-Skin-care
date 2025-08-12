@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Skin Analysis - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="skin-analysis.html" class="active-link">Skin Analysis</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+          </ul>
+        </nav>    
+      </div>
+    </header>
+    
+    <section class="analysis-section">
+      <div class="analysis-container">
+        <div class="analysis-header">
+          <h1 class="analysis-heading">Advanced Skin Analysis</h1>
+          <p class="analysis-description">Upload your photo for AI-powered skin analysis and personalized recommendations</p>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-card">
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-content">
+              <div class="upload-icon">📸</div>
+              <h3>Upload Your Skin Photo</h3>
+              <p>Take a clear, well-lit photo of your face for the most accurate analysis</p>
+              <input type="file" id="photoInput" accept="image/*" style="display: none;">
+              <button class="upload-btn" onclick="document.getElementById('photoInput').click()">
+                Choose Photo
+              </button>
+              <button class="camera-btn" onclick="openCamera()">
+                Take Photo
+              </button>
+            </div>
+          </div>
+          
+          <div class="analysis-tips">
+            <h4>📋 For Best Results:</h4>
+            <ul>
+              <li>Use natural lighting or bright indoor light</li>
+              <li>Face the camera directly with a neutral expression</li>
+              <li>Remove makeup if possible</li>
+              <li>Ensure your face fills most of the frame</li>
+              <li>Avoid shadows on your face</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Analysis Results -->
+        <div class="results-section" id="resultsSection" style="display: none;">
+          <div class="analysis-results">
+            <div class="uploaded-image-container">
+              <img id="uploadedImage" alt="Uploaded skin photo" class="uploaded-image">
+              <div class="image-overlay">
+                <div class="analysis-points" id="analysisPoints"></div>
+              </div>
+            </div>
+            
+            <div class="results-content">
+              <!-- Skin Tone Analysis -->
+              <div class="result-card">
+                <h3>🎨 Skin Tone Analysis</h3>
+                <div class="tone-results">
+                  <div class="tone-display">
+                    <div class="tone-swatch" id="toneSwatch"></div>
+                    <div class="tone-info">
+                      <p><strong>Undertone:</strong> <span id="undertone"></span></p>
+                      <p><strong>Shade:</strong> <span id="shade"></span></p>
+                      <p><strong>Classification:</strong> <span id="classification"></span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Skin Condition Analysis -->
+              <div class="result-card">
+                <h3>🔍 Skin Condition Assessment</h3>
+                <div class="condition-grid">
+                  <div class="condition-item">
+                    <span class="condition-label">Hydration Level</span>
+                    <div class="condition-bar">
+                      <div class="condition-fill" id="hydrationFill"></div>
+                    </div>
+                    <span class="condition-score" id="hydrationScore"></span>
+                  </div>
+                  
+                  <div class="condition-item">
+                    <span class="condition-label">Oil Production</span>
+                    <div class="condition-bar">
+                      <div class="condition-fill" id="oilFill"></div>
+                    </div>
+                    <span class="condition-score" id="oilScore"></span>
+                  </div>
+                  
+                  <div class="condition-item">
+                    <span class="condition-label">Texture Smoothness</span>
+                    <div class="condition-bar">
+                      <div class="condition-fill" id="textureFill"></div>
+                    </div>
+                    <span class="condition-score" id="textureScore"></span>
+                  </div>
+                  
+                  <div class="condition-item">
+                    <span class="condition-label">Pore Visibility</span>
+                    <div class="condition-bar">
+                      <div class="condition-fill" id="poreFill"></div>
+                    </div>
+                    <span class="condition-score" id="poreScore"></span>
+                  </div>
+                  
+                  <div class="condition-item">
+                    <span class="condition-label">Pigmentation</span>
+                    <div class="condition-bar">
+                      <div class="condition-fill" id="pigmentFill"></div>
+                    </div>
+                    <span class="condition-score" id="pigmentScore"></span>
+                  </div>
+                  
+                  <div class="condition-item">
+                    <span class="condition-label">Overall Health</span>
+                    <div class="condition-bar">
+                      <div class="condition-fill" id="healthFill"></div>
+                    </div>
+                    <span class="condition-score" id="healthScore"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Detected Issues -->
+              <div class="result-card">
+                <h3>⚠️ Detected Concerns</h3>
+                <div class="concerns-detected" id="concernsDetected"></div>
+              </div>
+
+              <!-- AI Recommendations -->
+              <div class="result-card">
+                <h3>🤖 AI-Powered Recommendations</h3>
+                <div class="ai-recommendations" id="aiRecommendations"></div>
+              </div>
+
+              <!-- Progress Comparison -->
+              <div class="result-card" id="progressCard" style="display: none;">
+                <h3>📈 Progress Comparison</h3>
+                <div class="progress-comparison">
+                  <div class="comparison-images">
+                    <div class="comparison-item">
+                      <img id="previousImage" alt="Previous analysis">
+                      <p>Previous Analysis</p>
+                    </div>
+                    <div class="comparison-arrow">→</div>
+                    <div class="comparison-item">
+                      <img id="currentImage" alt="Current analysis">
+                      <p>Current Analysis</p>
+                    </div>
+                  </div>
+                  <div class="improvement-metrics" id="improvementMetrics"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="save-analysis-btn" onclick="saveAnalysis()">Save Analysis</button>
+            <button class="new-analysis-btn" onclick="resetAnalysis()">New Analysis</button>
+            <button class="share-btn" onclick="shareResults()">Share Results</button>
+          </div>
+        </div>
+
+        <!-- Camera Modal -->
+        <div id="cameraModal" class="modal">
+          <div class="modal-content camera-modal">
+            <span class="close" onclick="closeCamera()">&times;</span>
+            <h2>Take Your Skin Photo</h2>
+            <video id="cameraVideo" autoplay playsinline></video>
+            <canvas id="cameraCanvas" style="display: none;"></canvas>
+            <div class="camera-controls">
+              <button class="camera-capture-btn" onclick="capturePhoto()">📷 Capture</button>
+              <button class="camera-cancel-btn" onclick="closeCamera()">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading Animation -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+          <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>Analyzing Your Skin...</h3>
+            <p id="loadingText">Processing image data...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+    </footer>
+
+    <script>
+      let currentUser = JSON.parse(localStorage.getItem('sorelleCurrentUser'));
+      let currentAnalysis = null;
+      let stream = null;
+
+      // Check if user is logged in
+      if (!currentUser) {
+        window.location.href = 'login.html';
+      }
+
+      // Handle file upload
+      document.getElementById('photoInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          processImage(file);
+        }
+      });
+
+      function processImage(file) {
+        // Show loading
+        showLoading();
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById('uploadedImage');
+          img.src = e.target.result;
+          
+          // Simulate AI analysis delay
+          simulateAnalysis();
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function showLoading() {
+        document.getElementById('loadingOverlay').style.display = 'flex';
+        const loadingTexts = [
+          'Processing image data...',
+          'Detecting skin features...',
+          'Analyzing skin tone...',
+          'Measuring hydration levels...',
+          'Calculating skin health score...',
+          'Generating recommendations...'
+        ];
+        
+        let textIndex = 0;
+        const interval = setInterval(() => {
+          document.getElementById('loadingText').textContent = loadingTexts[textIndex];
+          textIndex = (textIndex + 1) % loadingTexts.length;
+        }, 800);
+        
+        setTimeout(() => {
+          clearInterval(interval);
+          document.getElementById('loadingOverlay').style.display = 'none';
+          showResults();
+        }, 5000);
+      }
+
+      function simulateAnalysis() {
+        // Generate realistic analysis data
+        const skinTones = [
+          { undertone: 'Cool', shade: 'Fair', classification: 'Fitzpatrick I-II', color: '#F7D7C4' },
+          { undertone: 'Warm', shade: 'Light', classification: 'Fitzpatrick III', color: '#E8B896' },
+          { undertone: 'Neutral', shade: 'Medium', classification: 'Fitzpatrick IV', color: '#D4A574' },
+          { undertone: 'Warm', shade: 'Olive', classification: 'Fitzpatrick V', color: '#C19A6B' },
+          { undertone: 'Cool', shade: 'Deep', classification: 'Fitzpatrick VI', color: '#8B5A3C' }
+        ];
+        
+        const randomTone = skinTones[Math.floor(Math.random() * skinTones.length)];
+        
+        currentAnalysis = {
+          timestamp: new Date().toISOString(),
+          skinTone: randomTone,
+          conditions: {
+            hydration: Math.floor(Math.random() * 40) + 60, // 60-100
+            oil: Math.floor(Math.random() * 60) + 20, // 20-80
+            texture: Math.floor(Math.random() * 30) + 70, // 70-100
+            pore: Math.floor(Math.random() * 50) + 30, // 30-80
+            pigmentation: Math.floor(Math.random() * 40) + 60, // 60-100
+            health: Math.floor(Math.random() * 25) + 75 // 75-100
+          },
+          concerns: generateConcerns(),
+          recommendations: generateRecommendations()
+        };
+      }
+
+      function generateConcerns() {
+        const allConcerns = [
+          { name: 'Dehydration', severity: 'mild', description: 'Skin appears slightly dehydrated in the T-zone' },
+          { name: 'Enlarged Pores', severity: 'moderate', description: 'Visible pores around nose area' },
+          { name: 'Uneven Texture', severity: 'mild', description: 'Minor texture irregularities detected' },
+          { name: 'Dark Circles', severity: 'mild', description: 'Slight discoloration under eyes' },
+          { name: 'Fine Lines', severity: 'early', description: 'Early signs of aging around eye area' }
+        ];
+        
+        return allConcerns.slice(0, Math.floor(Math.random() * 3) + 1);
+      }
+
+      function generateRecommendations() {
+        return [
+          {
+            type: 'routine',
+            title: 'Morning Hydration Boost',
+            description: 'Add a hyaluronic acid serum to your morning routine',
+            priority: 'high'
+          },
+          {
+            type: 'product',
+            title: 'Gentle Exfoliation',
+            description: 'Use a mild AHA/BHA exfoliant 2-3 times per week',
+            priority: 'medium'
+          },
+          {
+            type: 'lifestyle',
+            title: 'Sun Protection',
+            description: 'Ensure SPF 30+ daily to prevent further damage',
+            priority: 'high'
+          },
+          {
+            type: 'treatment',
+            title: 'Professional Treatment',
+            description: 'Consider a monthly professional facial',
+            priority: 'low'
+          }
+        ];
+      }
+
+      function showResults() {
+        document.getElementById('resultsSection').style.display = 'block';
+        
+        // Populate skin tone results
+        const tone = currentAnalysis.skinTone;
+        document.getElementById('toneSwatch').style.backgroundColor = tone.color;
+        document.getElementById('undertone').textContent = tone.undertone;
+        document.getElementById('shade').textContent = tone.shade;
+        document.getElementById('classification').textContent = tone.classification;
+        
+        // Populate condition bars
+        const conditions = currentAnalysis.conditions;
+        updateConditionBar('hydration', conditions.hydration);
+        updateConditionBar('oil', conditions.oil);
+        updateConditionBar('texture', conditions.texture);
+        updateConditionBar('pore', 100 - conditions.pore); // Reverse for pores (lower is better)
+        updateConditionBar('pigment', conditions.pigmentation);
+        updateConditionBar('health', conditions.health);
+        
+        // Show concerns
+        const concernsContainer = document.getElementById('concernsDetected');
+        concernsContainer.innerHTML = currentAnalysis.concerns.map(concern => `
+          <div class="concern-item ${concern.severity}">
+            <div class="concern-header">
+              <span class="concern-name">${concern.name}</span>
+              <span class="concern-severity">${concern.severity}</span>
+            </div>
+            <p class="concern-description">${concern.description}</p>
+          </div>
+        `).join('');
+        
+        // Show recommendations
+        const recsContainer = document.getElementById('aiRecommendations');
+        recsContainer.innerHTML = currentAnalysis.recommendations.map(rec => `
+          <div class="ai-rec-item ${rec.priority}">
+            <h4>${rec.title}</h4>
+            <p>${rec.description}</p>
+            <span class="rec-priority">${rec.priority} priority</span>
+          </div>
+        `).join('');
+        
+        // Add analysis points overlay
+        addAnalysisPoints();
+        
+        // Check for previous analyses
+        checkProgressComparison();
+        
+        // Scroll to results
+        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      function updateConditionBar(type, value) {
+        const fill = document.getElementById(type + 'Fill');
+        const score = document.getElementById(type + 'Score');
+        
+        fill.style.width = value + '%';
+        score.textContent = value + '%';
+        
+        // Color coding
+        if (value >= 80) {
+          fill.style.backgroundColor = '#28a745';
+        } else if (value >= 60) {
+          fill.style.backgroundColor = '#ffc107';
+        } else {
+          fill.style.backgroundColor = '#dc3545';
+        }
+      }
+
+      function addAnalysisPoints() {
+        const pointsContainer = document.getElementById('analysisPoints');
+        const points = [
+          { x: '30%', y: '25%', label: 'Forehead' },
+          { x: '50%', y: '40%', label: 'Nose' },
+          { x: '25%', y: '45%', label: 'Left Cheek' },
+          { x: '75%', y: '45%', label: 'Right Cheek' },
+          { x: '50%', y: '70%', label: 'Chin' }
+        ];
+        
+        pointsContainer.innerHTML = points.map(point => `
+          <div class="analysis-point" style="left: ${point.x}; top: ${point.y};" title="${point.label}">
+            <div class="point-pulse"></div>
+          </div>
+        `).join('');
+      }
+
+      function checkProgressComparison() {
+        const analyses = currentUser.skinAnalyses || [];
+        if (analyses.length > 0) {
+          const previousAnalysis = analyses[analyses.length - 1];
+          document.getElementById('progressCard').style.display = 'block';
+          
+          // Show improvement metrics
+          const improvements = calculateImprovements(previousAnalysis, currentAnalysis);
+          const metricsContainer = document.getElementById('improvementMetrics');
+          metricsContainer.innerHTML = Object.entries(improvements).map(([key, value]) => `
+            <div class="improvement-item">
+              <span class="metric-name">${formatMetricName(key)}</span>
+              <span class="metric-change ${value > 0 ? 'positive' : value < 0 ? 'negative' : 'neutral'}">
+                ${value > 0 ? '+' : ''}${value}%
+              </span>
+            </div>
+          `).join('');
+        }
+      }
+
+      function calculateImprovements(previous, current) {
+        const improvements = {};
+        Object.keys(current.conditions).forEach(key => {
+          improvements[key] = current.conditions[key] - previous.conditions[key];
+        });
+        return improvements;
+      }
+
+      function formatMetricName(key) {
+        const names = {
+          hydration: 'Hydration',
+          oil: 'Oil Control',
+          texture: 'Texture',
+          pore: 'Pore Appearance',
+          pigmentation: 'Pigmentation',
+          health: 'Overall Health'
+        };
+        return names[key] || key;
+      }
+
+      function openCamera() {
+        document.getElementById('cameraModal').style.display = 'block';
+        
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(function(mediaStream) {
+            stream = mediaStream;
+            document.getElementById('cameraVideo').srcObject = stream;
+          })
+          .catch(function(err) {
+            alert('Camera access denied. Please use the file upload option.');
+            closeCamera();
+          });
+      }
+
+      function closeCamera() {
+        if (stream) {
+          stream.getTracks().forEach(track => track.stop());
+          stream = null;
+        }
+        document.getElementById('cameraModal').style.display = 'none';
+      }
+
+      function capturePhoto() {
+        const video = document.getElementById('cameraVideo');
+        const canvas = document.getElementById('cameraCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0);
+        
+        canvas.toBlob(function(blob) {
+          processImage(blob);
+          closeCamera();
+        });
+      }
+
+      function saveAnalysis() {
+        if (!currentAnalysis) return;
+        
+        // Save to user data
+        if (!currentUser.skinAnalyses) {
+          currentUser.skinAnalyses = [];
+        }
+        
+        currentAnalysis.id = Date.now();
+        currentUser.skinAnalyses.push(currentAnalysis);
+        
+        // Update localStorage
+        const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+        const userIndex = users.findIndex(u => u.id === currentUser.id);
+        if (userIndex !== -1) {
+          users[userIndex] = currentUser;
+          localStorage.setItem('sorelleUsers', JSON.stringify(users));
+          localStorage.setItem('sorelleCurrentUser', JSON.stringify(currentUser));
+        }
+        
+        alert('Analysis saved successfully! 📊');
+      }
+
+      function resetAnalysis() {
+        document.getElementById('resultsSection').style.display = 'none';
+        document.getElementById('photoInput').value = '';
+        currentAnalysis = null;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function shareResults() {
+        if (!currentAnalysis) return;
+        
+        const shareText = `My Sorelle skin analysis results: Overall health ${currentAnalysis.conditions.health}% | Hydration ${currentAnalysis.conditions.hydration}% | Join me on my skincare journey!`;
+        
+        if (navigator.share) {
+          navigator.share({
+            title: 'My Sorelle Skin Analysis',
+            text: shareText,
+            url: window.location.href
+          });
+        } else {
+          // Fallback
+          navigator.clipboard.writeText(shareText);
+          alert('Results copied to clipboard! Share with your friends.');
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem('sorelleCurrentUser');
+        window.location.href = 'index.html';
+      }
+
+      // Drag and drop functionality
+      const uploadArea = document.getElementById('uploadArea');
+      
+      uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadArea.classList.add('drag-over');
+      });
+      
+      uploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        uploadArea.classList.remove('drag-over');
+      });
+      
+      uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadArea.classList.remove('drag-over');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0 && files[0].type.startsWith('image/')) {
+          processImage(files[0]);
+        }
+      });
+    </script>
+  </body>
+</html>

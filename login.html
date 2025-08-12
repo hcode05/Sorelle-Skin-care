@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Login - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header auth-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#skin-types">Skin Type</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="register.html">Register</a></li>
+          </ul>
+        </nav>    
+      </div>
+    </header>
+    
+    <section class="auth-section">
+      <div class="auth-container">
+        <div class="auth-box">
+          <h1 class="auth-heading">Welcome Back</h1>
+          <p class="auth-description">Sign in to your Sorelle account to continue your skincare journey</p>
+          
+          <form class="auth-form" id="loginForm">
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" id="email" name="email" class="form-input" required>
+              <span class="error-message" id="emailError"></span>
+            </div>
+            
+            <div class="form-group">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" id="password" name="password" class="form-input" required>
+              <span class="error-message" id="passwordError"></span>
+            </div>
+            
+            <div class="form-options">
+              <label class="checkbox-label">
+                <input type="checkbox" id="remember">
+                <span class="checkmark"></span>
+                Remember me
+              </label>
+              <a href="#" class="forgot-link" id="forgotPasswordLink">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="auth-btn">Sign In</button>
+            <span class="form-message" id="loginMessage"></span>
+          </form>
+          
+          <div class="auth-redirect">
+            <p>Don't have an account? <a href="register.html" class="auth-link">Create one here</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+    </footer>
+
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const messageEl = document.getElementById('loginMessage');
+        
+        // Clear previous messages
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
+        messageEl.textContent = '';
+        
+        // Basic validation
+        if (!email) {
+          document.getElementById('emailError').textContent = 'Email is required';
+          return;
+        }
+        
+        if (!password) {
+          document.getElementById('passwordError').textContent = 'Password is required';
+          return;
+        }
+        
+        // Simulate login (replace with actual authentication)
+        messageEl.textContent = 'Signing in...';
+        messageEl.style.color = '#e478a4';
+        
+        setTimeout(() => {
+          // Check if user exists in localStorage (from registration)
+          const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+          const user = users.find(u => u.email === email && u.password === password);
+          
+          if (user) {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            messageEl.textContent = 'Login successful! Redirecting...';
+            messageEl.style.color = '#28a745';
+            
+            setTimeout(() => {
+              window.location.href = 'dashboard.html';
+            }, 1500);
+          } else {
+            messageEl.textContent = 'Invalid email or password';
+            messageEl.style.color = '#dc3545';
+          }
+        }, 1000);
+      });
+      
+      // Forgot password functionality
+      document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const email = prompt('Please enter your email address:');
+        if (email) {
+          const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+          const user = users.find(u => u.email === email);
+          
+          if (user) {
+            alert(`Password reset link sent to ${email}!\n\nFor demo purposes, your password is: ${user.password}`);
+          } else {
+            alert('Email not found. Please check your email address or register for a new account.');
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

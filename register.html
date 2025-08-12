@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Register - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header auth-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#skin-types">Skin Type</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="login.html">Login</a></li>
+          </ul>
+        </nav>    
+      </div>
+    </header>
+    
+    <section class="auth-section">
+      <div class="auth-container">
+        <div class="auth-box">
+          <h1 class="auth-heading">Join Sorelle</h1>
+          <p class="auth-description">Create your account and start your personalized skincare journey</p>
+          
+          <form class="auth-form" id="registerForm">
+            <div class="form-group">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input type="text" id="fullName" name="fullName" class="form-input" required>
+              <span class="error-message" id="nameError"></span>
+            </div>
+            
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" id="email" name="email" class="form-input" required>
+              <span class="error-message" id="emailError"></span>
+            </div>
+            
+            <div class="form-group">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" id="password" name="password" class="form-input" required minlength="6">
+              <span class="error-message" id="passwordError"></span>
+            </div>
+            
+            <div class="form-group">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" required>
+              <span class="error-message" id="confirmError"></span>
+            </div>
+            
+            <div class="form-group">
+              <label for="age" class="form-label">Age</label>
+              <select id="age" name="age" class="form-input" required>
+                <option value="">Select your age range</option>
+                <option value="18-25">18-25</option>
+                <option value="26-35">26-35</option>
+                <option value="36-45">36-45</option>
+                <option value="46-55">46-55</option>
+                <option value="55+">55+</option>
+              </select>
+              <span class="error-message" id="ageError"></span>
+            </div>
+            
+            <div class="form-group full-width">
+              <div class="form-options">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="terms" required>
+                  <span class="checkmark"></span>
+                  I agree to the <a href="#" class="auth-link">Terms & Conditions</a>
+                </label>
+              </div>
+            </div>
+            
+            <button type="submit" class="auth-btn">Create Account</button>
+            <span class="form-message" id="registerMessage"></span>
+          </form>
+          
+          <div class="auth-redirect">
+            <p>Already have an account? <a href="login.html" class="auth-link">Sign in here</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+    </footer>
+
+    <script>
+      document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const age = document.getElementById('age').value;
+        const messageEl = document.getElementById('registerMessage');
+        
+        // Clear previous messages
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        messageEl.textContent = '';
+        
+        // Validation
+        let hasErrors = false;
+        
+        if (!fullName.trim()) {
+          document.getElementById('nameError').textContent = 'Full name is required';
+          hasErrors = true;
+        }
+        
+        if (!email) {
+          document.getElementById('emailError').textContent = 'Email is required';
+          hasErrors = true;
+        }
+        
+        if (password.length < 6) {
+          document.getElementById('passwordError').textContent = 'Password must be at least 6 characters';
+          hasErrors = true;
+        }
+        
+        if (password !== confirmPassword) {
+          document.getElementById('confirmError').textContent = 'Passwords do not match';
+          hasErrors = true;
+        }
+        
+        if (!age) {
+          document.getElementById('ageError').textContent = 'Please select your age range';
+          hasErrors = true;
+        }
+        
+        if (hasErrors) return;
+        
+        // Check if email already exists
+        const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+        if (users.some(u => u.email === email)) {
+          document.getElementById('emailError').textContent = 'Email already registered';
+          return;
+        }
+        
+        // Create user
+        messageEl.textContent = 'Creating your account...';
+        messageEl.style.color = '#e478a4';
+        
+        setTimeout(() => {
+          const newUser = {
+            id: Date.now(),
+            fullName: fullName.trim(),
+            email: email,
+            password: password,
+            age: age,
+            joinDate: new Date().toISOString(),
+            skinType: null,
+            preferences: {}
+          };
+          
+          users.push(newUser);
+          localStorage.setItem('sorelleUsers', JSON.stringify(users));
+          localStorage.setItem('currentUser', JSON.stringify(newUser));
+          
+          messageEl.textContent = 'Account created successfully! Redirecting...';
+          messageEl.style.color = '#28a745';
+          
+          setTimeout(() => {
+            window.location.href = 'questionnaire.html';
+          }, 1500);
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>

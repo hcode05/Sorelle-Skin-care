@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/ecommerce-styles.css" />
+    <title>Products - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#skin-types">Skin Type</a></li>
+            <li><a href="products.html" class="active-link">Products</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="cart.html">Cart <span class="cart-count" id="cartCount">0</span></a></li>
+            <!-- Authentication Menu - Dynamic -->
+            <li id="authMenu">
+              <!-- Will be populated by JavaScript -->
+            </li>
+          </ul>
+        </nav>    
+      </div>
+    </header>
+    
+    <section class="products-hero">
+      <div class="hero-content">
+        <h1 class="products-heading">Our Product Collection</h1>
+        <p class="products-description">Discover premium skincare products curated for every skin type and concern</p>
+      </div>
+    </section>
+
+    <!-- Product Categories -->
+    <section class="products-section">
+      <div class="products-container">
+        <div class="category-filters">
+          <button class="filter-btn active" onclick="filterProducts('all')">All Products</button>
+          <button class="filter-btn" onclick="filterProducts('cleansers')">Cleansers</button>
+          <button class="filter-btn" onclick="filterProducts('toners')">Toners</button>
+          <button class="filter-btn" onclick="filterProducts('serums')">Serums</button>
+          <button class="filter-btn" onclick="filterProducts('moisturizers')">Moisturizers</button>
+          <button class="filter-btn" onclick="filterProducts('sunscreens')">Sunscreens</button>
+          <button class="filter-btn" onclick="filterProducts('treatments')">Treatments</button>
+        </div>
+
+        <!-- Cleansers -->
+        <div class="products-category">
+          <h2 class="category-title">Cleansers</h2>
+          <div class="product-grid">
+            <div class="product-item" data-category="cleansers">
+              <img src="img/cleanser.webp" alt="Gentle Cleanser" />
+              <h4>Gentle Daily Cleanser</h4>
+              <p>Perfect for dry skin. Removes impurities without stripping natural moisture.</p>
+              <div class="product-details">
+                <span class="price">₹899</span>
+                <span class="skin-type">Dry Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('cleanser-1', 'Deep Cleansing Face Wash', 499, 'img/cleanser.webp', 'Oily Skin')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="cleansers">
+              <img src="img/cleanseroily.webp" alt="Oil Control Cleanser" />
+              <h4>Oil Control Gel Cleanser</h4>
+              <p>Specially formulated for oily skin. Controls excess oil and prevents breakouts.</p>
+              <div class="product-details">
+                <span class="price">₹799</span>
+                <span class="skin-type">Oily Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('cleanser-2', 'Vitamin C+E Gel Face Wash', 599, 'img/gel cleanser.webp', 'All Skin Types')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="cleansers">
+              <img src="img/balancing.webp" alt="Balancing Cleanser" />
+              <h4>pH Balancing Cleanser</h4>
+              <p>Ideal for combination skin. Balances oily and dry areas effectively.</p>
+              <div class="product-details">
+                <span class="price">₹1,099</span>
+                <span class="skin-type">Combination Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('cleanser-3', 'pH Balance Gentle Face Wash', 699, 'img/cleanseroily.webp', 'Dry & Sensitive Skin')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="cleansers">
+              <img src="img/gel cleanser.webp" alt="Gel Cleanser" />
+              <h4>Refreshing Gel Cleanser</h4>
+              <p>Lightweight gel formula that deeply cleanses without over-drying.</p>
+              <div class="product-details">
+                <span class="price">₹849</span>
+                <span class="skin-type">All Skin Types</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('cleanser-4', 'Watermelon Vitamin C Face Wash', 799, 'img/gel cleanser.webp', 'Combination Skin')">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toners -->
+        <div class="products-category">
+          <h2 class="category-title">Toners & Mists</h2>
+          <div class="product-grid">
+            <div class="product-item" data-category="toners">
+              <img src="img/toner.webp" alt="Hydrating Toner" />
+              <h4>Hydrating Rice Water Toner</h4>
+              <p>Deeply hydrating toner with niacinamide for dry and sensitive skin.</p>
+              <div class="product-details">
+                <span class="price">₹599</span>
+                <span class="skin-type">Dry Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('toner-1', 'Hydrating Rice Water Toner', 599, 'img/toner.webp', 'Dry Skin')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="toners">
+              <img src="img/toner2.webp" alt="Refreshing Toner" />
+              <h4>Hydrate & Refresh Toning Mist</h4>
+              <p>Instantly refreshes and hydrates skin throughout the day.</p>
+              <div class="product-details">
+                <span class="price">₹649</span>
+                <span class="skin-type">Oily Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('toner-2', 'Hydrate & Refresh Toning Mist', 649, 'img/toner2.webp', 'Oily Skin')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="toners">
+              <img src="img/toner3.webp" alt="Balancing Toner" />
+              <h4>Tone It Up Balancing Toner</h4>
+              <p>Balances oil production while maintaining hydration levels.</p>
+              <div class="product-details">
+                <span class="price">₹799</span>
+                <span class="skin-type">Combination Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('toner-3', 'Tone It Up Balancing Toner', 799, 'img/toner3.webp', 'Combination Skin')">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Serums -->
+        <div class="products-category">
+          <h2 class="category-title">Serums & Treatments</h2>
+          <div class="product-grid">
+            <div class="product-item" data-category="serums">
+              <img src="img/serum.webp" alt="Hyaluronic Acid Serum" />
+              <h4>Hyaluronic Acid Concentrate</h4>
+              <p>Intense hydration serum that plumps and smooths skin texture.</p>
+              <div class="product-details">
+                <span class="price">₹1,299</span>
+                <span class="skin-type">All Skin Types</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('serum-1', 'Hyaluronic Acid Concentrate', 1299, 'img/serum.webp', 'All Skin Types')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="serums">
+              <img src="img/serum2.webp" alt="Vitamin C Serum" />
+              <h4>C For Yourself Vitamin C Serum</h4>
+              <p>Brightening serum that evens skin tone and adds radiance.</p>
+              <div class="product-details">
+                <span class="price">₹999</span>
+                <span class="skin-type">All Skin Types</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('serum-2', 'C For Yourself Vitamin C Serum', 999, 'img/serum2.webp', 'All Skin Types')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="serums">
+              <img src="img/Niacinamide Serum.webp" alt="Niacinamide Serum" />
+              <h4>Niacinamide Pore Control Serum</h4>
+              <p>Minimizes pores and controls oil production for smoother skin.</p>
+              <div class="product-details">
+                <span class="price">₹899</span>
+                <span class="skin-type">Oily & Combination Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('serum-3', 'Niacinamide Pore Control Serum', 899, 'img/Niacinamide Serum.webp', 'Oily & Combination Skin')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="serums">
+              <img src="img/facial-oil.webp" alt="Facial Oil" />
+              <h4>Pomegranate Facial Oil</h4>
+              <p>Nourishing facial oil that strengthens skin barrier overnight.</p>
+              <div class="product-details">
+                <span class="price">₹1,499</span>
+                <span class="skin-type">Dry Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('serum-4', 'Pomegranate Facial Oil', 1499, 'img/facial-oil.webp', 'Dry Skin')">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Moisturizers -->
+        <div class="products-category">
+          <h2 class="category-title">Moisturizers & Creams</h2>
+          <div class="product-grid">
+            <div class="product-item" data-category="moisturizers">
+              <img src="img/moisturizer.webp" alt="Rich Moisturizer" />
+              <h4>Golden Hour Glow Moisturizer</h4>
+              <p>Rich, luxurious moisturizer for intense hydration and glow.</p>
+              <div class="product-details">
+                <span class="price">₹1,399</span>
+                <span class="skin-type">Dry Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('moisturizer-1', 'Golden Hour Glow Moisturizer', 1399, 'img/moisturizer.webp', 'Dry Skin')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="moisturizers">
+              <img src="img/moisturizer2.webp" alt="Gel Moisturizer" />
+              <h4>Illuminate Hydra Gel Moisturizer</h4>
+              <p>Lightweight gel moisturizer perfect for oily and combination skin.</p>
+              <div class="product-details">
+                <span class="price">₹799</span>
+                <span class="skin-type">Oily & Combination Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('moisturizer-2', 'Illuminate Hydra Gel Moisturizer', 899, 'img/light moisturizer.webp', 'Oily & Combination Skin')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="moisturizers">
+              <img src="img/light moisturizer.webp" alt="Light Moisturizer" />
+              <h4>Clear Moisture Gel Cream</h4>
+              <p>Non-greasy moisturizer that fades blemishes and brightens skin.</p>
+              <div class="product-details">
+                <span class="price">₹699</span>
+                <span class="skin-type">All Skin Types</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('moisturizer-3', 'Clear Moisture Gel Cream', 749, 'img/gel cream.webp', 'All Skin Types')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="moisturizers">
+              <img src="img/night cream.webp" alt="Night Cream" />
+              <h4>Retinol Night Cream</h4>
+              <p>Anti-aging night cream with retinol and ceramides for renewal.</p>
+              <div class="product-details">
+                <span class="price">₹1,799</span>
+                <span class="skin-type">Mature Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('moisturizer-4', 'Age Defense Night Cream', 1299, 'img/night cream.webp', 'Mature Skin')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="moisturizers">
+              <img src="img/gel cream.webp" alt="Gel Night Cream" />
+              <h4>Green Tea Night Gel</h4>
+              <p>Calming and repairing gel cream for nighttime recovery.</p>
+              <div class="product-details">
+                <span class="price">₹999</span>
+                <span class="skin-type">Sensitive Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('moisturizer-5', 'Green Tea Night Gel', 999, 'img/cooling gel.webp', 'Sensitive Skin')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="moisturizers">
+              <img src="img/cream.webp" alt="Repair Cream" />
+              <h4>Skin Repair Cream</h4>
+              <p>Advanced repair cream for damaged and troubled skin.</p>
+              <div class="product-details">
+                <span class="price">₹1,199</span>
+                <span class="skin-type">Problem Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('moisturizer-6', 'Skin Repair Cream', 1199, 'img/cream.webp', 'Damaged Skin')">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sunscreens -->
+        <div class="products-category">
+          <h2 class="category-title">Sun Protection</h2>
+          <div class="product-grid">
+            <div class="product-item" data-category="sunscreens">
+              <img src="img/sunscreen.webp" alt="Barrier Repair Sunscreen" />
+              <h4>Barrier Repair Sunscreen SPF 50</h4>
+              <p>Broad spectrum protection with barrier repair technology.</p>
+              <div class="product-details">
+                <span class="price">₹899</span>
+                <span class="skin-type">All Skin Types</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('sunscreen-1', 'Barrier Repair Sunscreen SPF 50', 799, 'img/sunscreen.webp', 'All Skin Types')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="sunscreens">
+              <img src="img/sunscreen2.webp" alt="Hydrating Sunscreen" />
+              <h4>Hydrating Sunscreen SPF 50</h4>
+              <p>Moisturizing sunscreen that hydrates while protecting.</p>
+              <div class="product-details">
+                <span class="price">₹799</span>
+                <span class="skin-type">Dry Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('sunscreen-2', 'Hydrating Sunscreen SPF 50', 799, 'img/sunscreen2.webp', 'Dry Skin')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="sunscreens">
+              <img src="img/sunscreen3.webp" alt="Matte Sunscreen" />
+              <h4>Illuminate Dewy Sunscreen</h4>
+              <p>Lightweight, non-greasy formula perfect for daily use.</p>
+              <div class="product-details">
+                <span class="price">₹649</span>
+                <span class="skin-type">Oily Skin</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('sunscreen-3', 'Illuminate Dewy Sunscreen', 649, 'img/sunscreen3.webp', 'Oily Skin')">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Special Treatments -->
+        <div class="products-category">
+          <h2 class="category-title">Special Treatments</h2>
+          <div class="product-grid">
+            <div class="product-item" data-category="treatments">
+              <img src="img/eye cream.webp" alt="Retinol Eye Cream" />
+              <h4>Retinol Eye Cream</h4>
+              <p>Targets fine lines and reduces puffiness around delicate eye area.</p>
+              <div class="product-details">
+                <span class="price">₹1,599</span>
+                <span class="skin-type">All Skin Types</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('treatment-1', 'Retinol Eye Cream', 1599, 'img/eye cream.webp', 'All Skin Types')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="treatments">
+              <img src="img/cooling gel.webp" alt="Eye Refresh Gel" />
+              <h4>Aqua Surge Eye Refresh Gel</h4>
+              <p>Cooling gel that de-puffs and refreshes tired eyes instantly.</p>
+              <div class="product-details">
+                <span class="price">₹899</span>
+                <span class="skin-type">All Skin Types</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('treatment-2', 'Aqua Surge Eye Refresh Gel', 899, 'img/cooling gel.webp', 'All Skin Types')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="treatments">
+              <img src="img/patches.webp" alt="Eye Patches" />
+              <h4>Watermelon Cooling Eye Patches</h4>
+              <p>Hydrogel patches that instantly hydrate and brighten under-eye area.</p>
+              <div class="product-details">
+                <span class="price">₹699</span>
+                <span class="skin-type">All Skin Types</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('treatment-3', 'Watermelon Cooling Eye Patches', 699, 'img/patches.webp', 'All Skin Types')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="treatments">
+              <img src="img/lip balm.jpg" alt="Lip Glowy Balm" />
+              <h4>Lip Glowy Balm</h4>
+              <p>Nourishing lip balm that provides long-lasting moisture and shine.</p>
+              <div class="product-details">
+                <span class="price">₹899</span>
+                <span class="skin-type">All Skin Types</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('treatment-4', 'Lip Glowy Balm', 1299, 'img/lip balm.jpg', 'All Skin Types')">Add to Cart</button>
+            </div>
+
+            <div class="product-item" data-category="treatments">
+              <img src="img/lip mask.webp" alt="Lip Sleeping Mask" />
+              <h4>Lip Sleeping Mask</h4>
+              <p>Intensive overnight treatment that repairs and softens lips.</p>
+              <div class="product-details">
+                <span class="price">₹1,199</span>
+                <span class="skin-type">All Skin Types</span>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('treatment-5', 'Lip Sleeping Mask', 1599, 'img/lip mask.webp', 'All Skin Types')">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer" id="contact">
+      <div class="contact-section">
+        <div class="contact-inline">
+          <div class="contact-info-inline">
+            <span class="contact-item-inline">
+              <strong>📧 Email:</strong> <a href="mailto:info@sorelle.com">info@sorelle.com</a>
+            </span>
+            <span class="contact-item-inline">
+              <strong>📱 Follow:</strong> @sorelle_skincare
+            </span>
+            <span class="contact-item-inline">
+              <strong>🏢 Visit:</strong> 123 Beauty Street, Mumbai
+            </span>
+          </div>
+          <div class="contact-form-inline">
+            <form id="contactForm" class="inline-form">
+              <input type="text" placeholder="Your Name" required>
+              <input type="email" placeholder="Your Email" required>
+              <input type="text" placeholder="Message" required>
+              <button type="submit">Send</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+        <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+      </div>
+    </footer>
+
+    <script>
+      function filterProducts(category) {
+        // Update active filter button
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Show/hide products
+        const products = document.querySelectorAll('.product-item');
+        const categories = document.querySelectorAll('.products-category');
+
+        if (category === 'all') {
+          categories.forEach(cat => cat.style.display = 'block');
+          products.forEach(product => product.style.display = 'block');
+        } else {
+          categories.forEach(cat => cat.style.display = 'none');
+          products.forEach(product => {
+            if (product.dataset.category === category) {
+              product.style.display = 'block';
+              product.parentElement.parentElement.style.display = 'block';
+            } else {
+              product.style.display = 'none';
+            }
+          });
+        }
+      }
+
+      // Contact form handling
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you for your message! We\'ll get back to you soon.');
+        this.reset();
+      });
+
+      // Cart functionality
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const cartCount = document.getElementById('cartCount');
+        if (cartCount) {
+          cartCount.textContent = totalItems;
+        }
+      }
+
+      function addToCart(id, name, price, image, skinType) {
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        
+        // Check if item already exists
+        const existingItem = cart.find(item => item.id === id);
+        
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id: id,
+            name: name,
+            price: price,
+            image: image,
+            skinType: skinType,
+            quantity: 1
+          });
+        }
+        
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        showCartNotification(name);
+        
+        // Visual feedback on button
+        const button = event.target;
+        const originalText = button.textContent;
+        button.classList.add('added');
+        button.textContent = 'Added!';
+        
+        setTimeout(() => {
+          button.classList.remove('added');
+          button.textContent = originalText;
+        }, 2000);
+      }
+
+      function showCartNotification(productName) {
+        // Remove existing notification
+        const existingNotification = document.querySelector('.cart-notification');
+        if (existingNotification) {
+          existingNotification.remove();
+        }
+        
+        // Create notification
+        const notification = document.createElement('div');
+        notification.className = 'cart-notification';
+        notification.innerHTML = `
+          <div>
+            <strong>${productName}</strong> added to cart!
+            <button class="close-notification" onclick="this.parentElement.parentElement.remove()">&times;</button>
+          </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Show notification
+        setTimeout(() => notification.classList.add('show'), 100);
+        
+        // Auto hide after 3 seconds
+        setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
+      }
+
+      // Initialize cart count on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        updateCartCount();
+        updateAuthMenu();
+        displayProducts();
+      });
+
+      // Authentication Menu Management
+      function updateAuthMenu() {
+        const authMenu = document.getElementById('authMenu');
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        
+        if (currentUser) {
+          // Handle different user data structures - check for fullName, firstName, username, etc.
+          const userName = currentUser.firstName || currentUser.fullName || currentUser.username || currentUser.name || 'User';
+          const initials = (currentUser.firstName && currentUser.lastName) 
+            ? (currentUser.firstName.charAt(0) + currentUser.lastName.charAt(0)).toUpperCase()
+            : (currentUser.fullName ? currentUser.fullName.split(' ').map(n => n.charAt(0)).join('').toUpperCase() : 'U');
+          
+          authMenu.innerHTML = `
+            <div class="user-menu">
+              <div class="user-greeting" onclick="toggleDropdown()">
+                <span class="user-name">${userName}</span>
+                <span class="dropdown-arrow">▼</span>
+              </div>
+              <div class="dropdown-menu" id="dropdownMenu">
+                <a href="dashboard.html" class="dropdown-item">
+                  <span class="dropdown-icon">📊</span>
+                  Dashboard
+                </a>
+                <a href="orders.html" class="dropdown-item">
+                  <span class="dropdown-icon">📦</span>
+                  My Orders
+                </a>
+                <a href="profile.html" class="dropdown-item">
+                  <span class="dropdown-icon">👤</span>
+                  Profile
+                </a>
+                <hr class="dropdown-divider">
+                <a href="#" class="dropdown-item" onclick="logout()">
+                  <span class="dropdown-icon">🚪</span>
+                  Logout
+                </a>
+              </div>
+            </div>
+          `;
+        } else {
+          authMenu.innerHTML = `
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="register-btn">Register</a>
+          `;
+        }
+      }
+
+      function toggleDropdown() {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        if (dropdownMenu) {
+          dropdownMenu.classList.toggle('show');
+        }
+      }
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+        const userMenu = event.target.closest('.user-menu');
+        if (!userMenu) {
+          const dropdownMenu = document.getElementById('dropdownMenu');
+          if (dropdownMenu) {
+            dropdownMenu.classList.remove('show');
+          }
+        }
+      });
+
+      function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('currentUser');
+          localStorage.setItem('guestCart', localStorage.getItem('cart') || '[]');
+          updateAuthMenu();
+          window.location.reload();
+        }
+      }
+    </script>
+  </body>
+</html>

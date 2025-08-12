@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/ecommerce-styles.css" />
+    <title>Shopping Cart - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="cart.html" class="active-link">Cart (<span id="cartCount">0</span>)</a></li>
+            <!-- Authentication Menu - Dynamic -->
+            <li id="authMenu">
+              <!-- Will be populated by JavaScript -->
+            </li>
+          </ul>
+        </nav>    
+      </div>
+    </header>
+    
+    <section class="cart-section">
+      <div class="cart-container">
+        <h1 class="cart-heading">Your Shopping Cart</h1>
+        
+        <!-- User-specific content -->
+        <div class="cart-header" id="cartHeader">
+          <!-- Will be populated by JavaScript -->
+        </div>
+        
+        <!-- Order History for logged-in users -->
+        <div class="order-history-section" id="orderHistorySection" style="display: none;">
+          <h3>Recent Orders</h3>
+          <div class="recent-orders" id="recentOrders">
+            <!-- Will be populated by JavaScript -->
+          </div>
+        </div>
+        
+        <div class="cart-content">
+          <!-- Cart Items -->
+          <div class="cart-items" id="cartItems">
+            <!-- Items will be populated by JavaScript -->
+          </div>
+          
+          <!-- Empty Cart Message -->
+          <div class="empty-cart" id="emptyCart" style="display: none;">
+            <div class="empty-cart-icon">🛒</div>
+            <h3>Your cart is empty</h3>
+            <p>Discover our amazing skincare products and add them to your cart!</p>
+            <a href="products.html" class="continue-shopping-btn">Continue Shopping</a>
+          </div>
+          
+          <!-- Cart Summary -->
+          <div class="cart-summary" id="cartSummary" style="display: none;">
+            <div class="summary-card">
+              <h3>Order Summary</h3>
+              <div class="summary-row">
+                <span>Subtotal:</span>
+                <span id="subtotal">₹0</span>
+              </div>
+              <div class="summary-row">
+                <span>Shipping:</span>
+                <span id="shipping">₹99</span>
+              </div>
+              <div class="summary-row">
+                <span>Tax (18% GST):</span>
+                <span id="tax">₹0</span>
+              </div>
+              <div class="summary-row total">
+                <span>Total:</span>
+                <span id="total">₹0</span>
+              </div>
+              <button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+              <button class="continue-shopping-link" onclick="window.location.href='products.html'">Continue Shopping</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+    </footer>
+
+    <script>
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      document.addEventListener('DOMContentLoaded', function() {
+        displayCartItems();
+        updateCartCount();
+        updateAuthMenu();
+        displayCartHeader();
+        displayRecentOrders();
+      });
+
+      // Authentication Menu Management
+      function updateAuthMenu() {
+        const authMenu = document.getElementById('authMenu');
+        const currentUser = JSON.parse(localStorage.getItem('sorelleCurrentUser') || 'null');
+        
+        if (currentUser) {
+          authMenu.innerHTML = `
+            <div class="user-menu">
+              <span class="user-greeting">Hi, ${currentUser.firstName}!</span>
+              <div class="dropdown">
+                <button class="dropdown-btn">Account ▼</button>
+                <div class="dropdown-content">
+                  <a href="dashboard.html">Dashboard</a>
+                  <a href="orders.html">My Orders</a>
+                  <a href="profile.html">Profile</a>
+                  <a href="#" onclick="logout()">Logout</a>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          authMenu.innerHTML = `
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+          `;
+        }
+      }
+
+      function displayCartHeader() {
+        const cartHeader = document.getElementById('cartHeader');
+        const currentUser = JSON.parse(localStorage.getItem('sorelleCurrentUser') || 'null');
+        
+        if (currentUser) {
+          cartHeader.innerHTML = `
+            <div class="user-cart-info">
+              <div class="user-avatar">${currentUser.firstName.charAt(0)}</div>
+              <div class="user-details">
+                <h3>Welcome back, ${currentUser.firstName}!</h3>
+                <p>Continue your skincare journey</p>
+              </div>
+            </div>
+          `;
+        } else {
+          cartHeader.innerHTML = `
+            <div class="guest-cart-info">
+              <p>Sign in to save your cart and view order history</p>
+              <a href="login.html" class="signin-btn">Sign In</a>
+            </div>
+          `;
+        }
+      }
+
+      function displayRecentOrders() {
+        const currentUser = JSON.parse(localStorage.getItem('sorelleCurrentUser') || 'null');
+        const orderHistorySection = document.getElementById('orderHistorySection');
+        const recentOrdersContainer = document.getElementById('recentOrders');
+        
+        if (!currentUser) {
+          orderHistorySection.style.display = 'none';
+          return;
+        }
+        
+        const allOrders = JSON.parse(localStorage.getItem('sorelleOrders') || '[]');
+        const userOrders = allOrders
+          .filter(order => order.userId === currentUser.email)
+          .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate))
+          .slice(0, 3); // Show last 3 orders
+        
+        if (userOrders.length > 0) {
+          orderHistorySection.style.display = 'block';
+          recentOrdersContainer.innerHTML = userOrders.map(order => `
+            <div class="recent-order">
+              <div class="order-info">
+                <span class="order-id">Order #${order.orderId}</span>
+                <span class="order-date">${new Date(order.orderDate).toLocaleDateString()}</span>
+              </div>
+              <div class="order-total">₹${order.total.toLocaleString()}</div>
+              <div class="order-status ${order.status.toLowerCase()}">${order.status}</div>
+            </div>
+          `).join('');
+        } else {
+          orderHistorySection.style.display = 'none';
+        }
+      }
+
+      function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('sorelleCurrentUser');
+          localStorage.setItem('guestCart', localStorage.getItem('cart') || '[]');
+          updateAuthMenu();
+          displayCartHeader();
+          displayRecentOrders();
+        }
+      }
+
+      function displayCartItems() {
+        const cartItemsContainer = document.getElementById('cartItems');
+        const emptyCart = document.getElementById('emptyCart');
+        const cartSummary = document.getElementById('cartSummary');
+
+        if (cart.length === 0) {
+          emptyCart.style.display = 'block';
+          cartSummary.style.display = 'none';
+          cartItemsContainer.innerHTML = '';
+          return;
+        }
+
+        emptyCart.style.display = 'none';
+        cartSummary.style.display = 'block';
+
+        cartItemsContainer.innerHTML = cart.map((item, index) => `
+          <div class="cart-item">
+            <div class="item-image">
+              <img src="${item.image}" alt="${item.name}">
+            </div>
+            <div class="item-details">
+              <h4>${item.name}</h4>
+              <p>${item.description}</p>
+              <div class="item-meta">
+                <span class="skin-type-tag">${item.skinType}</span>
+              </div>
+            </div>
+            <div class="item-quantity">
+              <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
+              <span class="quantity">${item.quantity}</span>
+              <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+            </div>
+            <div class="item-price">
+              <span class="price">₹${(item.price * item.quantity).toLocaleString()}</span>
+              <span class="unit-price">₹${item.price.toLocaleString()} each</span>
+            </div>
+            <div class="item-actions">
+              <button class="remove-btn" onclick="removeFromCart(${index})">🗑️</button>
+            </div>
+          </div>
+        `).join('');
+
+        updateCartSummary();
+      }
+
+      function updateQuantity(index, change) {
+        if (cart[index].quantity + change <= 0) {
+          removeFromCart(index);
+          return;
+        }
+        
+        cart[index].quantity += change;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCartItems();
+        updateCartCount();
+      }
+
+      function removeFromCart(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCartItems();
+        updateCartCount();
+      }
+
+      function updateCartSummary() {
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const shipping = subtotal > 1500 ? 0 : 99; // Free shipping over ₹1500
+        const tax = Math.round(subtotal * 0.18); // 18% GST
+        const total = subtotal + shipping + tax;
+
+        document.getElementById('subtotal').textContent = `₹${subtotal.toLocaleString()}`;
+        document.getElementById('shipping').textContent = shipping === 0 ? 'FREE' : `₹${shipping}`;
+        document.getElementById('tax').textContent = `₹${tax.toLocaleString()}`;
+        document.getElementById('total').textContent = `₹${total.toLocaleString()}`;
+      }
+
+      function updateCartCount() {
+        const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cartCount').textContent = count;
+        
+        // Update cart count in other pages if they exist
+        const cartCountElements = document.querySelectorAll('.cart-count');
+        cartCountElements.forEach(element => {
+          element.textContent = count;
+        });
+      }
+
+      function proceedToCheckout() {
+        console.log('Proceeding to checkout, cart contents:', cart);
+        
+        if (cart.length === 0) {
+          alert('Your cart is empty!');
+          return;
+        }
+        
+        // Save cart data to localStorage for checkout page
+        localStorage.setItem('checkoutCart', JSON.stringify(cart));
+        
+        // Calculate totals for checkout
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const shipping = subtotal > 1500 ? 0 : 99;
+        const tax = Math.round(subtotal * 0.18);
+        const total = subtotal + shipping + tax;
+        
+        const checkoutData = {
+          items: cart,
+          subtotal: subtotal,
+          shipping: shipping,
+          tax: tax,
+          total: total
+        };
+        
+        console.log('Checkout data:', checkoutData);
+        localStorage.setItem('checkoutData', JSON.stringify(checkoutData));
+        
+        try {
+          console.log('Navigating to checkout.html...');
+          window.location.href = 'checkout.html';
+        } catch (error) {
+          console.error('Error navigating to checkout:', error);
+          alert('Error proceeding to checkout. Please try again.');
+        }
+      }
+
+      // Clear cart function
+      function clearCart() {
+        if (confirm('Are you sure you want to clear your cart?')) {
+          cart = [];
+          localStorage.setItem('cart', JSON.stringify(cart));
+          displayCartItems();
+          updateCartCount();
+        }
+      }
+    </script>
+  </body>
+</html>

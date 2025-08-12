@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/ecommerce-styles.css" />
+    <title>My Profile - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="cart.html">Cart (<span id="cartCount">0</span>)</a></li>
+            <li id="authMenu">
+              <!-- Will be populated by JavaScript -->
+            </li>
+          </ul>
+        </nav>    
+      </div>
+    </header>
+    
+    <section class="profile-section">
+      <div class="profile-container">
+        <div class="profile-header">
+          <div class="profile-avatar" id="profileAvatar">
+            <!-- Will be populated by JavaScript -->
+          </div>
+          <div class="profile-info" id="profileInfo">
+            <!-- Will be populated by JavaScript -->
+          </div>
+        </div>
+        
+        <!-- Profile Navigation Tabs -->
+        <div class="profile-nav">
+          <button class="profile-tab active" onclick="showTab('personal')">Personal Info</button>
+          <button class="profile-tab" onclick="showTab('preferences')">Preferences</button>
+          <button class="profile-tab" onclick="showTab('addresses')">Addresses</button>
+          <button class="profile-tab" onclick="showTab('security')">Security</button>
+          <button class="profile-tab" onclick="showTab('data')">Data Insights</button>
+        </div>
+        
+        <!-- Personal Information Tab -->
+        <div class="profile-content" id="personal-tab">
+          <div class="profile-card">
+            <h3>Personal Information</h3>
+            <form id="personalInfoForm" class="profile-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="firstName">First Name</label>
+                  <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input type="text" id="lastName" name="lastName" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" name="email" required readonly>
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="tel" id="phone" name="phone">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="dateOfBirth">Date of Birth</label>
+                  <input type="date" id="dateOfBirth" name="dateOfBirth">
+                </div>
+                <div class="form-group">
+                  <label for="gender">Gender</label>
+                  <select id="gender" name="gender">
+                    <option value="">Select Gender</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="other">Other</option>
+                    <option value="prefer-not-to-say">Prefer not to say</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="save-btn">Save Changes</button>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Preferences Tab -->
+        <div class="profile-content hidden" id="preferences-tab">
+          <div class="profile-card">
+            <h3>Skin Care Preferences</h3>
+            <form id="preferencesForm" class="profile-form">
+              <div class="form-group">
+                <label for="skinType">Primary Skin Type</label>
+                <select id="skinType" name="skinType">
+                  <option value="">Select Skin Type</option>
+                  <option value="oily">Oily Skin</option>
+                  <option value="dry">Dry Skin</option>
+                  <option value="combination">Combination Skin</option>
+                  <option value="sensitive">Sensitive Skin</option>
+                  <option value="normal">Normal Skin</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Skin Concerns (Select all that apply)</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="concerns" value="acne">
+                    <span class="checkmark"></span>
+                    Acne & Breakouts
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="concerns" value="aging">
+                    <span class="checkmark"></span>
+                    Anti-Aging
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="concerns" value="dryness">
+                    <span class="checkmark"></span>
+                    Dryness
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="concerns" value="pigmentation">
+                    <span class="checkmark"></span>
+                    Pigmentation
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="concerns" value="sensitivity">
+                    <span class="checkmark"></span>
+                    Sensitivity
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="concerns" value="pores">
+                    <span class="checkmark"></span>
+                    Large Pores
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="budget">Monthly Budget</label>
+                <select id="budget" name="budget">
+                  <option value="">Select Budget Range</option>
+                  <option value="under-1000">Under ₹1,000</option>
+                  <option value="1000-3000">₹1,000 - ₹3,000</option>
+                  <option value="3000-5000">₹3,000 - ₹5,000</option>
+                  <option value="5000-10000">₹5,000 - ₹10,000</option>
+                  <option value="above-10000">Above ₹10,000</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Communication Preferences</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="notifications" value="email">
+                    <span class="checkmark"></span>
+                    Email Notifications
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="notifications" value="sms">
+                    <span class="checkmark"></span>
+                    SMS Notifications
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="notifications" value="offers">
+                    <span class="checkmark"></span>
+                    Special Offers & Promotions
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="notifications" value="routine">
+                    <span class="checkmark"></span>
+                    Routine Reminders
+                  </label>
+                </div>
+              </div>
+              <button type="submit" class="save-btn">Save Preferences</button>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Addresses Tab -->
+        <div class="profile-content hidden" id="addresses-tab">
+          <div class="profile-card">
+            <div class="addresses-header">
+              <h3>Saved Addresses</h3>
+              <button class="add-address-btn" onclick="addNewAddress()">+ Add Address</button>
+            </div>
+            <div class="addresses-list" id="addressesList">
+              <!-- Will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Security Tab -->
+        <div class="profile-content hidden" id="security-tab">
+          <div class="profile-card">
+            <h3>Security Settings</h3>
+            <form id="securityForm" class="profile-form">
+              <div class="form-group">
+                <label for="currentPassword">Current Password</label>
+                <input type="password" id="currentPassword" name="currentPassword" required>
+              </div>
+              <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" name="newPassword" required>
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirm New Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+              </div>
+              <button type="submit" class="save-btn">Change Password</button>
+            </form>
+            
+            <div class="security-options">
+              <h4>Account Security</h4>
+              <div class="security-item">
+                <span>Two-Factor Authentication</span>
+                <label class="switch">
+                  <input type="checkbox" id="twoFactor">
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="security-item">
+                <span>Email Verification for Orders</span>
+                <label class="switch">
+                  <input type="checkbox" id="emailVerification">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Data Insights Tab -->
+        <div class="profile-content hidden" id="data-tab">
+          <div class="profile-card">
+            <h3>Your Data Insights</h3>
+            <div class="data-insights">
+              <div class="insight-grid">
+                <div class="insight-card">
+                  <div class="insight-value" id="totalOrders">0</div>
+                  <div class="insight-label">Total Orders</div>
+                </div>
+                <div class="insight-card">
+                  <div class="insight-value" id="totalSpent">₹0</div>
+                  <div class="insight-label">Total Spent</div>
+                </div>
+                <div class="insight-card">
+                  <div class="insight-value" id="avgOrder">₹0</div>
+                  <div class="insight-label">Average Order</div>
+                </div>
+                <div class="insight-card">
+                  <div class="insight-value" id="loyaltyLevel">Bronze</div>
+                  <div class="insight-label">Loyalty Level</div>
+                </div>
+              </div>
+              
+              <div class="purchase-patterns">
+                <h4>Purchase Patterns</h4>
+                <div class="pattern-list" id="patternsList">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+              </div>
+              
+              <div class="recommendations">
+                <h4>Personalized Recommendations</h4>
+                <div class="recommendation-list" id="recommendationsList">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+    </footer>
+
+    <script>
+      let currentUser = null;
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        checkAuthentication();
+        updateAuthMenu();
+        updateCartCount();
+        loadUserProfile();
+        loadDataInsights();
+      });
+
+      function checkAuthentication() {
+        currentUser = JSON.parse(localStorage.getItem('sorelleCurrentUser') || 'null');
+        if (!currentUser) {
+          alert('Please log in to view your profile.');
+          window.location.href = 'login.html';
+          return;
+        }
+      }
+
+      function updateAuthMenu() {
+        const authMenu = document.getElementById('authMenu');
+        
+        if (currentUser) {
+          authMenu.innerHTML = `
+            <div class="user-menu">
+              <span class="user-greeting">Hi, ${currentUser.firstName}!</span>
+              <div class="dropdown">
+                <button class="dropdown-btn">Account ▼</button>
+                <div class="dropdown-content">
+                  <a href="dashboard.html">Dashboard</a>
+                  <a href="orders.html">My Orders</a>
+                  <a href="profile.html" class="active">Profile</a>
+                  <a href="#" onclick="logout()">Logout</a>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cartCount').textContent = totalItems;
+      }
+
+      function loadUserProfile() {
+        // Load profile header
+        const profileAvatar = document.getElementById('profileAvatar');
+        const profileInfo = document.getElementById('profileInfo');
+        
+        profileAvatar.innerHTML = `
+          <div class="avatar-circle">
+            ${currentUser.firstName.charAt(0)}${currentUser.lastName ? currentUser.lastName.charAt(0) : ''}
+          </div>
+        `;
+        
+        profileInfo.innerHTML = `
+          <h2>${currentUser.firstName} ${currentUser.lastName || ''}</h2>
+          <p>${currentUser.email}</p>
+          <p class="member-since">Member since ${new Date(currentUser.joinDate || Date.now()).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</p>
+        `;
+        
+        // Load personal info form
+        document.getElementById('firstName').value = currentUser.firstName || '';
+        document.getElementById('lastName').value = currentUser.lastName || '';
+        document.getElementById('email').value = currentUser.email || '';
+        document.getElementById('phone').value = currentUser.phone || '';
+        document.getElementById('dateOfBirth').value = currentUser.dateOfBirth || '';
+        document.getElementById('gender').value = currentUser.gender || '';
+        
+        // Load preferences
+        document.getElementById('skinType').value = currentUser.skinType || '';
+        document.getElementById('budget').value = currentUser.budget || '';
+        
+        // Load concerns checkboxes
+        const concerns = currentUser.concerns || [];
+        concerns.forEach(concern => {
+          const checkbox = document.querySelector(`input[name="concerns"][value="${concern}"]`);
+          if (checkbox) checkbox.checked = true;
+        });
+        
+        // Load notification preferences
+        const notifications = currentUser.notifications || [];
+        notifications.forEach(notification => {
+          const checkbox = document.querySelector(`input[name="notifications"][value="${notification}"]`);
+          if (checkbox) checkbox.checked = true;
+        });
+        
+        // Load addresses
+        loadAddresses();
+      }
+
+      function loadAddresses() {
+        const addresses = currentUser.addresses || [];
+        const addressesList = document.getElementById('addressesList');
+        
+        if (addresses.length === 0) {
+          addressesList.innerHTML = '<p class="no-addresses">No saved addresses. Add your first address!</p>';
+          return;
+        }
+        
+        addressesList.innerHTML = addresses.map((address, index) => `
+          <div class="address-card ${address.isDefault ? 'default' : ''}">
+            <div class="address-header">
+              <h4>${address.name} ${address.isDefault ? '<span class="default-tag">Default</span>' : ''}</h4>
+              <div class="address-actions">
+                <button onclick="editAddress(${index})">Edit</button>
+                <button onclick="deleteAddress(${index})">Delete</button>
+                ${!address.isDefault ? `<button onclick="setDefaultAddress(${index})">Set Default</button>` : ''}
+              </div>
+            </div>
+            <div class="address-content">
+              <p>${address.address}</p>
+              <p>${address.city}, ${address.state} ${address.pincode}</p>
+              <p>Phone: ${address.phone}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function loadDataInsights() {
+        const orders = JSON.parse(localStorage.getItem('sorelleOrders') || '[]')
+          .filter(order => order.userId === currentUser.email);
+        
+        const totalOrders = orders.length;
+        const totalSpent = orders.reduce((sum, order) => sum + (order.totals?.total || order.total || 0), 0);
+        const avgOrder = totalOrders > 0 ? totalSpent / totalOrders : 0;
+        
+        // Loyalty level calculation
+        let loyaltyLevel = 'Bronze';
+        if (totalSpent > 10000) loyaltyLevel = 'Platinum';
+        else if (totalSpent > 5000) loyaltyLevel = 'Gold';
+        else if (totalSpent > 2000) loyaltyLevel = 'Silver';
+        
+        document.getElementById('totalOrders').textContent = totalOrders;
+        document.getElementById('totalSpent').textContent = `₹${totalSpent.toLocaleString()}`;
+        document.getElementById('avgOrder').textContent = `₹${Math.round(avgOrder).toLocaleString()}`;
+        document.getElementById('loyaltyLevel').textContent = loyaltyLevel;
+        
+        // Purchase patterns
+        loadPurchasePatterns(orders);
+        loadRecommendations(orders);
+      }
+
+      function loadPurchasePatterns(orders) {
+        const patterns = [];
+        
+        if (orders.length > 0) {
+          // Most popular product category
+          const categoryCount = {};
+          orders.forEach(order => {
+            order.items.forEach(item => {
+              const category = item.skinType || 'General';
+              categoryCount[category] = (categoryCount[category] || 0) + item.quantity;
+            });
+          });
+          
+          const favoriteCategory = Object.keys(categoryCount).length > 0 ? 
+            Object.keys(categoryCount).reduce((a, b) => categoryCount[a] > categoryCount[b] ? a : b) : 'General';
+          
+          patterns.push(`Your favorite category: ${favoriteCategory}`);
+          
+          // Shopping frequency
+          const daysBetweenOrders = orders.length > 1 ? 
+            (new Date(orders[0].date || orders[0].orderDate) - new Date(orders[orders.length - 1].date || orders[orders.length - 1].orderDate)) / (1000 * 60 * 60 * 24) / (orders.length - 1) : 0;
+          
+          if (daysBetweenOrders > 0) {
+            patterns.push(`You shop approximately every ${Math.round(daysBetweenOrders)} days`);
+          }
+          
+          // Average items per order
+          const avgItems = orders.reduce((sum, order) => sum + order.items.length, 0) / orders.length;
+          patterns.push(`Average items per order: ${Math.round(avgItems)}`);
+        } else {
+          patterns.push('Start shopping to see your purchase patterns!');
+        }
+        
+        document.getElementById('patternsList').innerHTML = patterns.map(pattern => 
+          `<div class="pattern-item">📊 ${pattern}</div>`
+        ).join('');
+      }
+
+      function loadRecommendations(orders) {
+        const recommendations = [];
+        
+        if (currentUser.skinType) {
+          recommendations.push(`Based on your ${currentUser.skinType} skin type, try our specialized serums`);
+        }
+        
+        if (currentUser.concerns && currentUser.concerns.length > 0) {
+          recommendations.push(`Products for ${currentUser.concerns.join(', ')} are available in our targeted collection`);
+        }
+        
+        if (orders.length > 3) {
+          recommendations.push('You\'re a loyal customer! Check out our premium product line');
+        }
+        
+        if (recommendations.length === 0) {
+          recommendations.push('Complete your skin analysis to get personalized recommendations');
+        }
+        
+        document.getElementById('recommendationsList').innerHTML = recommendations.map(rec => 
+          `<div class="recommendation-item">✨ ${rec}</div>`
+        ).join('');
+      }
+
+      function showTab(tabName) {
+        // Hide all tabs
+        document.querySelectorAll('.profile-content').forEach(tab => {
+          tab.classList.add('hidden');
+        });
+        
+        // Remove active class from all nav buttons
+        document.querySelectorAll('.profile-tab').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        
+        // Show selected tab
+        document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+        
+        // Add active class to clicked button
+        event.target.classList.add('active');
+      }
+
+      // Form submissions
+      document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const updatedUser = {...currentUser};
+        
+        for (let [key, value] of formData.entries()) {
+          updatedUser[key] = value;
+        }
+        
+        // Update in users array
+        const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+        const userIndex = users.findIndex(u => u.email === currentUser.email);
+        if (userIndex !== -1) {
+          users[userIndex] = updatedUser;
+          localStorage.setItem('sorelleUsers', JSON.stringify(users));
+        }
+        
+        // Update current user
+        localStorage.setItem('sorelleCurrentUser', JSON.stringify(updatedUser));
+        currentUser = updatedUser;
+        
+        alert('Personal information updated successfully!');
+        loadUserProfile();
+      });
+
+      document.getElementById('preferencesForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const updatedUser = {...currentUser};
+        
+        // Handle regular form fields
+        updatedUser.skinType = formData.get('skinType');
+        updatedUser.budget = formData.get('budget');
+        
+        // Handle checkbox arrays
+        updatedUser.concerns = formData.getAll('concerns');
+        updatedUser.notifications = formData.getAll('notifications');
+        
+        // Update in users array
+        const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+        const userIndex = users.findIndex(u => u.email === currentUser.email);
+        if (userIndex !== -1) {
+          users[userIndex] = updatedUser;
+          localStorage.setItem('sorelleUsers', JSON.stringify(users));
+        }
+        
+        // Update current user
+        localStorage.setItem('sorelleCurrentUser', JSON.stringify(updatedUser));
+        currentUser = updatedUser;
+        
+        alert('Preferences updated successfully!');
+        loadDataInsights(); // Refresh recommendations
+      });
+
+      document.getElementById('securityForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (currentPassword !== currentUser.password) {
+          alert('Current password is incorrect!');
+          return;
+        }
+        
+        if (newPassword !== confirmPassword) {
+          alert('New passwords do not match!');
+          return;
+        }
+        
+        if (newPassword.length < 6) {
+          alert('New password must be at least 6 characters long!');
+          return;
+        }
+        
+        // Update password
+        const updatedUser = {...currentUser, password: newPassword};
+        
+        // Update in users array
+        const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+        const userIndex = users.findIndex(u => u.email === currentUser.email);
+        if (userIndex !== -1) {
+          users[userIndex] = updatedUser;
+          localStorage.setItem('sorelleUsers', JSON.stringify(users));
+        }
+        
+        // Update current user
+        localStorage.setItem('sorelleCurrentUser', JSON.stringify(updatedUser));
+        currentUser = updatedUser;
+        
+        alert('Password changed successfully!');
+        this.reset();
+      });
+
+      function addNewAddress() {
+        const address = {
+          name: prompt('Address Name (e.g., Home, Office):') || 'New Address',
+          address: prompt('Full Address:') || '',
+          city: prompt('City:') || '',
+          state: prompt('State:') || '',
+          pincode: prompt('PIN Code:') || '',
+          phone: prompt('Phone Number:') || '',
+          isDefault: false
+        };
+        
+        if (address.address && address.city && address.state && address.pincode) {
+          const updatedUser = {...currentUser};
+          updatedUser.addresses = updatedUser.addresses || [];
+          
+          // If this is the first address, make it default
+          if (updatedUser.addresses.length === 0) {
+            address.isDefault = true;
+          }
+          
+          updatedUser.addresses.push(address);
+          
+          // Update in users array
+          const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+          const userIndex = users.findIndex(u => u.email === currentUser.email);
+          if (userIndex !== -1) {
+            users[userIndex] = updatedUser;
+            localStorage.setItem('sorelleUsers', JSON.stringify(users));
+          }
+          
+          // Update current user
+          localStorage.setItem('sorelleCurrentUser', JSON.stringify(updatedUser));
+          currentUser = updatedUser;
+          
+          loadAddresses();
+        } else {
+          alert('Please fill all required fields!');
+        }
+      }
+
+      function deleteAddress(index) {
+        if (confirm('Are you sure you want to delete this address?')) {
+          const updatedUser = {...currentUser};
+          updatedUser.addresses.splice(index, 1);
+          
+          // If deleted address was default and there are other addresses, make the first one default
+          if (updatedUser.addresses.length > 0 && !updatedUser.addresses.some(addr => addr.isDefault)) {
+            updatedUser.addresses[0].isDefault = true;
+          }
+          
+          // Update in users array
+          const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+          const userIndex = users.findIndex(u => u.email === currentUser.email);
+          if (userIndex !== -1) {
+            users[userIndex] = updatedUser;
+            localStorage.setItem('sorelleUsers', JSON.stringify(users));
+          }
+          
+          // Update current user
+          localStorage.setItem('sorelleCurrentUser', JSON.stringify(updatedUser));
+          currentUser = updatedUser;
+          
+          loadAddresses();
+        }
+      }
+
+      function setDefaultAddress(index) {
+        const updatedUser = {...currentUser};
+        
+        // Remove default from all addresses
+        updatedUser.addresses.forEach(addr => addr.isDefault = false);
+        
+        // Set new default
+        updatedUser.addresses[index].isDefault = true;
+        
+        // Update in users array
+        const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+        const userIndex = users.findIndex(u => u.email === currentUser.email);
+        if (userIndex !== -1) {
+          users[userIndex] = updatedUser;
+          localStorage.setItem('sorelleUsers', JSON.stringify(users));
+        }
+        
+        // Update current user
+        localStorage.setItem('sorelleCurrentUser', JSON.stringify(updatedUser));
+        currentUser = updatedUser;
+        
+        loadAddresses();
+      }
+
+      function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('sorelleCurrentUser');
+          window.location.href = 'index.html';
+        }
+      }
+    </script>
+  </body>
+</html>

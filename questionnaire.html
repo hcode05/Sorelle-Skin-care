@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Skin Analysis - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+          </ul>
+        </nav>    
+      </div>
+    </header>
+    
+    <section class="questionnaire-section">
+      <div class="questionnaire-container">
+        <div class="questionnaire-header">
+          <h1 class="questionnaire-heading">Skin Analysis Questionnaire</h1>
+          <p class="questionnaire-description">Help us understand your skin better for personalized recommendations</p>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <span class="progress-text" id="progressText">Step 1 of 6</span>
+        </div>
+        
+        <form class="questionnaire-form" id="questionnaireForm">
+          <!-- Step 1: Basic Skin Type -->
+          <div class="question-step active" id="step1">
+            <h2 class="question-title">What's your primary skin type?</h2>
+            <div class="skin-type-options">
+              <label class="skin-option">
+                <input type="radio" name="skinType" value="oily" required>
+                <div class="option-card">
+                  <img src="img/skin-types/oily skin.jpeg" alt="Oily Skin">
+                  <h3>Oily Skin</h3>
+                  <p>Shiny, enlarged pores, prone to acne</p>
+                </div>
+              </label>
+              <label class="skin-option">
+                <input type="radio" name="skinType" value="dry" required>
+                <div class="option-card">
+                  <img src="img/skin-types/dry skin.jpeg" alt="Dry Skin">
+                  <h3>Dry Skin</h3>
+                  <p>Tight, flaky, sometimes rough texture</p>
+                </div>
+              </label>
+              <label class="skin-option">
+                <input type="radio" name="skinType" value="combination" required>
+                <div class="option-card">
+                  <img src="img/skin-types/combined skin.jpg" alt="Combination Skin">
+                  <h3>Combination Skin</h3>
+                  <p>Oily T-zone, dry cheeks</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Step 2: Skin Concerns -->
+          <div class="question-step" id="step2">
+            <h2 class="question-title">What are your main skin concerns? (Select all that apply)</h2>
+            <div class="checkbox-grid">
+              <label class="checkbox-option">
+                <input type="checkbox" name="concerns" value="acne">
+                <span class="checkmark-custom"></span>
+                Acne & Breakouts
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="concerns" value="aging">
+                <span class="checkmark-custom"></span>
+                Fine Lines & Aging
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="concerns" value="darkSpots">
+                <span class="checkmark-custom"></span>
+                Dark Spots & Pigmentation
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="concerns" value="sensitivity">
+                <span class="checkmark-custom"></span>
+                Sensitivity & Redness
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="concerns" value="dullness">
+                <span class="checkmark-custom"></span>
+                Dullness & Uneven Tone
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="concerns" value="pores">
+                <span class="checkmark-custom"></span>
+                Large Pores
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="concerns" value="dryness">
+                <span class="checkmark-custom"></span>
+                Excessive Dryness
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="concerns" value="oiliness">
+                <span class="checkmark-custom"></span>
+                Excessive Oiliness
+              </label>
+            </div>
+          </div>
+
+          <!-- Step 3: Lifestyle Factors -->
+          <div class="question-step" id="step3">
+            <h2 class="question-title">Tell us about your lifestyle</h2>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">How much time do you spend outdoors daily?</label>
+                <select name="outdoorTime" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="minimal">Less than 1 hour</option>
+                  <option value="moderate">1-3 hours</option>
+                  <option value="high">3-6 hours</option>
+                  <option value="extreme">More than 6 hours</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">What's your stress level?</label>
+                <select name="stressLevel" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="low">Low - I manage stress well</option>
+                  <option value="moderate">Moderate - Some stressful periods</option>
+                  <option value="high">High - Frequently stressed</option>
+                  <option value="chronic">Chronic - Constantly under stress</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">How many hours do you sleep per night?</label>
+                <select name="sleepHours" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="poor">Less than 5 hours</option>
+                  <option value="insufficient">5-6 hours</option>
+                  <option value="adequate">7-8 hours</option>
+                  <option value="excellent">8+ hours</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">What's your climate?</label>
+                <select name="climate" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="humid">Humid & Hot</option>
+                  <option value="dry">Dry & Hot</option>
+                  <option value="temperate">Temperate</option>
+                  <option value="cold">Cold & Dry</option>
+                  <option value="tropical">Tropical</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Current Routine -->
+          <div class="question-step" id="step4">
+            <h2 class="question-title">Current skincare routine</h2>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">How often do you cleanse your face?</label>
+                <select name="cleansingFreq" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="once">Once a day</option>
+                  <option value="twice">Twice a day</option>
+                  <option value="rarely">2-3 times per week</option>
+                  <option value="never">Rarely/Never</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Do you currently use sunscreen?</label>
+                <select name="sunscreenUse" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="daily">Daily</option>
+                  <option value="sometimes">Sometimes</option>
+                  <option value="rarely">Rarely</option>
+                  <option value="never">Never</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">What products do you currently use? (Select all that apply)</label>
+                <div class="checkbox-list">
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="currentProducts" value="cleanser">
+                    <span class="checkmark-custom"></span>
+                    Cleanser
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="currentProducts" value="toner">
+                    <span class="checkmark-custom"></span>
+                    Toner
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="currentProducts" value="serum">
+                    <span class="checkmark-custom"></span>
+                    Serums
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="currentProducts" value="moisturizer">
+                    <span class="checkmark-custom"></span>
+                    Moisturizer
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="currentProducts" value="sunscreen">
+                    <span class="checkmark-custom"></span>
+                    Sunscreen
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="currentProducts" value="exfoliant">
+                    <span class="checkmark-custom"></span>
+                    Exfoliants
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5: Budget & Preferences -->
+          <div class="question-step" id="step5">
+            <h2 class="question-title">Preferences & Budget</h2>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">What's your monthly skincare budget?</label>
+                <select name="budget" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="budget">Under ₹2,000</option>
+                  <option value="moderate">₹2,000 - ₹5,000</option>
+                  <option value="premium">₹5,000 - ₹10,000</option>
+                  <option value="luxury">Above ₹10,000</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">How much time can you dedicate to skincare daily?</label>
+                <select name="timeCommitment" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="minimal">5-10 minutes</option>
+                  <option value="moderate">10-20 minutes</option>
+                  <option value="extensive">20-30 minutes</option>
+                  <option value="enthusiast">30+ minutes</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Do you prefer natural/organic products?</label>
+                <select name="naturalPreference" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="strongly">Strongly prefer natural</option>
+                  <option value="somewhat">Somewhat prefer natural</option>
+                  <option value="neutral">No preference</option>
+                  <option value="effectiveness">Prefer effectiveness over natural</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 6: Goals -->
+          <div class="question-step" id="step6">
+            <h2 class="question-title">What are your skincare goals?</h2>
+            <div class="checkbox-grid">
+              <label class="checkbox-option">
+                <input type="checkbox" name="goals" value="healthySkin">
+                <span class="checkmark-custom"></span>
+                Maintain healthy skin
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="goals" value="antiAging">
+                <span class="checkmark-custom"></span>
+                Anti-aging & prevention
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="goals" value="acneTreatment">
+                <span class="checkmark-custom"></span>
+                Treat acne & breakouts
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="goals" value="brightening">
+                <span class="checkmark-custom"></span>
+                Brighten & even skin tone
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="goals" value="hydration">
+                <span class="checkmark-custom"></span>
+                Deep hydration
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="goals" value="sensitivity">
+                <span class="checkmark-custom"></span>
+                Reduce sensitivity
+              </label>
+            </div>
+          </div>
+
+          <!-- Step 7: Product Performance Analytics -->
+          <div class="question-step" id="step7">
+            <h2 class="question-title">Product Performance & Data Analytics</h2>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">How do you typically evaluate skincare product effectiveness?</label>
+                <select name="evaluationMethod" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="visual">Visual observation only</option>
+                  <option value="photos">Before/after photos comparison</option>
+                  <option value="tracking">Daily symptom tracking</option>
+                  <option value="metrics">Multiple measurable metrics</option>
+                  <option value="scientific">Clinical/dermatological assessment</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">What metrics would be most valuable for tracking skin improvement?</label>
+                <div class="checkbox-list">
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="trackingMetrics" value="hydration">
+                    <span class="checkmark-custom"></span>
+                    Hydration levels (%)
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="trackingMetrics" value="texture">
+                    <span class="checkmark-custom"></span>
+                    Texture smoothness score
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="trackingMetrics" value="pores">
+                    <span class="checkmark-custom"></span>
+                    Pore size measurement
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="trackingMetrics" value="pigmentation">
+                    <span class="checkmark-custom"></span>
+                    Pigmentation evenness
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="trackingMetrics" value="elasticity">
+                    <span class="checkmark-custom"></span>
+                    Skin elasticity index
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="trackingMetrics" value="breakouts">
+                    <span class="checkmark-custom"></span>
+                    Breakout frequency/severity
+                  </label>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">How often would you be willing to document skin condition for data analysis?</label>
+                <select name="documentationFreq" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="daily">Daily (optimal data collection)</option>
+                  <option value="weekly">Weekly (consistent tracking)</option>
+                  <option value="biweekly">Bi-weekly (moderate tracking)</option>
+                  <option value="monthly">Monthly (basic tracking)</option>
+                  <option value="asneeded">Only when problems occur</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 8: Quality Assurance & Testing Preferences -->
+          <div class="question-step" id="step8">
+            <h2 class="question-title">Quality Assurance & Product Testing</h2>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">How important is patch testing new products before full application?</label>
+                <select name="patchTestingImportance" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="critical">Critical - Always required</option>
+                  <option value="important">Important - Usually do it</option>
+                  <option value="sometimes">Sometimes - For certain products</option>
+                  <option value="rarely">Rarely - Only for sensitive ingredients</option>
+                  <option value="never">Never - Trust product claims</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">What quality indicators do you prioritize when choosing skincare products?</label>
+                <div class="checkbox-list">
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="qualityIndicators" value="clinicalTesting">
+                    <span class="checkmark-custom"></span>
+                    Clinical testing & studies
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="qualityIndicators" value="ingredients">
+                    <span class="checkmark-custom"></span>
+                    Ingredient transparency & purity
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="qualityIndicators" value="certifications">
+                    <span class="checkmark-custom"></span>
+                    Certifications (organic, cruelty-free, etc.)
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="qualityIndicators" value="reviews">
+                    <span class="checkmark-custom"></span>
+                    User reviews & ratings
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="qualityIndicators" value="packaging">
+                    <span class="checkmark-custom"></span>
+                    Packaging quality & preservation
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="qualityIndicators" value="consistency">
+                    <span class="checkmark-custom"></span>
+                    Product consistency & reliability
+                  </label>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">How do you typically test if a new routine is working effectively?</label>
+                <select name="routineTestingMethod" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="controlled">Controlled testing - One product at a time</option>
+                  <option value="systematic">Systematic approach with documentation</option>
+                  <option value="observational">General observation over time</option>
+                  <option value="feedback">Based on skin feedback/reactions</option>
+                  <option value="professional">Professional skin analysis tools</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 9: Data-Driven Decision Making -->
+          <div class="question-step" id="step9">
+            <h2 class="question-title">Data-Driven Skincare Decisions</h2>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">How comfortable are you with analyzing skincare data and trends?</label>
+                <select name="dataAnalysisComfort" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="expert">Expert - Love analyzing patterns & correlations</option>
+                  <option value="comfortable">Comfortable - Can interpret basic analytics</option>
+                  <option value="moderate">Moderate - Need guided interpretation</option>
+                  <option value="basic">Basic - Prefer simple summaries</option>
+                  <option value="minimal">Minimal - Just want recommendations</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">What type of personalized data insights would be most valuable to you?</label>
+                <div class="checkbox-list">
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="dataInsights" value="trends">
+                    <span class="checkmark-custom"></span>
+                    Skin condition trends over time
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="dataInsights" value="correlations">
+                    <span class="checkmark-custom"></span>
+                    Product-outcome correlations
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="dataInsights" value="predictions">
+                    <span class="checkmark-custom"></span>
+                    Predictive skin health modeling
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="dataInsights" value="comparisons">
+                    <span class="checkmark-custom"></span>
+                    Comparisons with similar skin profiles
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="dataInsights" value="optimization">
+                    <span class="checkmark-custom"></span>
+                    Routine optimization recommendations
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="dataInsights" value="environmental">
+                    <span class="checkmark-custom"></span>
+                    Environmental factor correlations
+                  </label>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">How would you prefer to receive analytical insights about your skincare journey?</label>
+                <select name="insightDelivery" class="form-input" required>
+                  <option value="">Select...</option>
+                  <option value="dashboard">Interactive dashboard with charts</option>
+                  <option value="reports">Detailed weekly/monthly reports</option>
+                  <option value="notifications">Smart notifications & alerts</option>
+                  <option value="visual">Visual infographics & summaries</option>
+                  <option value="ai">AI-powered conversational insights</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-navigation">
+            <button type="button" class="nav-btn prev-btn" id="prevBtn" onclick="changeStep(-1)">Previous</button>
+            <button type="button" class="nav-btn next-btn" id="nextBtn" onclick="changeStep(1)">Next</button>
+            <button type="submit" class="nav-btn submit-btn" id="submitBtn" style="display: none;">Complete Analysis</button>
+          </div>
+          
+          <div class="form-message" id="formMessage"></div>
+        </form>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+    </footer>
+
+    <script>
+      let currentStep = 1;
+      const totalSteps = 9;
+
+      // Check if user is logged in
+      const currentUser = JSON.parse(localStorage.getItem('sorelleCurrentUser'));
+      if (!currentUser) {
+        window.location.href = 'login.html';
+      }
+
+      function updateProgress() {
+        const progress = (currentStep / totalSteps) * 100;
+        document.getElementById('progressFill').style.width = progress + '%';
+        document.getElementById('progressText').textContent = `Step ${currentStep} of ${totalSteps}`;
+      }
+
+      function showStep(step) {
+        // Hide all steps
+        document.querySelectorAll('.question-step').forEach(el => {
+          el.classList.remove('active');
+        });
+        
+        // Show current step
+        document.getElementById(`step${step}`).classList.add('active');
+        
+        // Update navigation buttons
+        document.getElementById('prevBtn').style.display = step === 1 ? 'none' : 'inline-block';
+        document.getElementById('nextBtn').style.display = step === totalSteps ? 'none' : 'inline-block';
+        document.getElementById('submitBtn').style.display = step === totalSteps ? 'inline-block' : 'none';
+        
+        updateProgress();
+      }
+
+      function changeStep(direction) {
+        if (direction === 1 && currentStep < totalSteps) {
+          // Validate current step before proceeding
+          if (validateStep(currentStep)) {
+            currentStep++;
+            showStep(currentStep);
+          }
+        } else if (direction === -1 && currentStep > 1) {
+          currentStep--;
+          showStep(currentStep);
+        }
+      }
+
+      function validateStep(step) {
+        const stepElement = document.getElementById(`step${step}`);
+        const requiredInputs = stepElement.querySelectorAll('input[required], select[required]');
+        
+        for (let input of requiredInputs) {
+          if (input.type === 'radio') {
+            const radioGroup = stepElement.querySelectorAll(`input[name="${input.name}"]`);
+            const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+            if (!isChecked) {
+              alert('Please answer all required questions before proceeding.');
+              return false;
+            }
+          } else if (input.type === 'checkbox') {
+            // For checkbox groups, check if at least one in the group is checked
+            const checkboxGroup = stepElement.querySelectorAll(`input[name="${input.name}"]`);
+            const isAnyChecked = Array.from(checkboxGroup).some(checkbox => checkbox.checked);
+            if (!isAnyChecked && step === 2) { // Only required for concerns step
+              alert('Please select at least one skin concern.');
+              return false;
+            }
+          } else if (!input.value.trim()) {
+            alert('Please answer all required questions before proceeding.');
+            input.focus();
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function collectFormData() {
+        const formData = {};
+        
+        // Collect all form data
+        const form = document.getElementById('questionnaireForm');
+        const formDataObj = new FormData(form);
+        
+        // Handle regular inputs
+        for (let [key, value] of formDataObj.entries()) {
+          if (formData[key]) {
+            // If key already exists, make it an array
+            if (Array.isArray(formData[key])) {
+              formData[key].push(value);
+            } else {
+              formData[key] = [formData[key], value];
+            }
+          } else {
+            formData[key] = value;
+          }
+        }
+        
+        // Handle checkboxes that might not be in FormData
+        const checkboxGroups = ['concerns', 'currentProducts', 'goals'];
+        checkboxGroups.forEach(group => {
+          const checkboxes = document.querySelectorAll(`input[name="${group}"]:checked`);
+          formData[group] = Array.from(checkboxes).map(cb => cb.value);
+        });
+        
+        return formData;
+      }
+
+      document.getElementById('questionnaireForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!validateStep(currentStep)) {
+          return;
+        }
+        
+        const messageEl = document.getElementById('formMessage');
+        messageEl.textContent = 'Analyzing your responses...';
+        messageEl.style.color = '#e478a4';
+        
+        const formData = collectFormData();
+        
+        // Update user data with questionnaire responses
+        const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+        const userIndex = users.findIndex(u => u.id === currentUser.id);
+        
+        if (userIndex !== -1) {
+          users[userIndex].skinProfile = formData;
+          users[userIndex].profileCompleted = true;
+          users[userIndex].completedDate = new Date().toISOString();
+          
+          localStorage.setItem('sorelleUsers', JSON.stringify(users));
+          localStorage.setItem('sorelleCurrentUser', JSON.stringify(users[userIndex]));
+        }
+        
+        setTimeout(() => {
+          messageEl.textContent = 'Analysis complete! Generating your personalized routine...';
+          messageEl.style.color = '#28a745';
+          
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 2000);
+        }, 2000);
+      });
+
+      function logout() {
+        localStorage.removeItem('sorelleCurrentUser');
+        window.location.href = 'index.html';
+      }
+
+      // Initialize
+      showStep(1);
+    </script>
+  </body>
+</html>

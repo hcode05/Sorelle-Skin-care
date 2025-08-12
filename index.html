@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,14 +19,18 @@
         <nav class="main-nav">
           <ul class="nav-list">
             <li><a href="#skin-types">Skin Type</a></li>
-            <li><a href="#routine-section" id="routine-link">Routine</a></li>
-            <li><a href="#">Products</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="cart.html">Cart <span class="cart-count" id="cartCount">0</span></a></li>
+            <li><a href="#contact">Contact</a></li>
+            <!-- Authentication Menu - Dynamic -->
+            <li id="authMenu">
+              <!-- Will be populated by JavaScript -->
+            </li>
           </ul>
         </nav>    
       </div>
     </header>
-
+    
     <section class="section-hero">
       <div class="hero">
         <div class="hero-text-box">
@@ -40,7 +45,7 @@
             what your skin needs without the clutter of products or promotions.
           </p>
           <a href="#skin-types" class="btn btn-hero">Get Started</a>
-          <a href="#" class="btn btn-hero">Products</a>
+          <a href="products.html" class="btn btn-hero">Products</a>
         </div>
         <div class="hero-image-box">
           <img src="img/img1.jpeg" alt="skincare" class="hero-image" />
@@ -123,12 +128,12 @@
           <div class="routine-box">
             <h3>🌸 Morning Routine</h3>
             <ul id="morning-routine"></ul>
-            <button class="see-products-btn" data-skin-type="Oily Skin">See Products</button>
+            <button class="see-products-btn" data-skin-type="Oily Skin" data-routine="morning">See Products</button>
           </div>
           <div class="routine-box">
             <h3>🌸 Night Routine</h3>
             <ul id="night-routine"></ul>
-            <button class="see-products-btn" data-skin-type="Oily Skin">See Products</button>
+            <button class="see-products-btn" data-skin-type="Oily Skin" data-routine="night">See Products</button>
           </div>
         </div>
       </div>
@@ -140,12 +145,12 @@
           <div class="routine-box">
             <h3>🌸 Morning Routine</h3>
             <ul id="morning-routine-dry"></ul>
-            <button class="see-products-btn" data-skin-type="Dry Skin">See Products</button>
+            <button class="see-products-btn" data-skin-type="Dry Skin" data-routine="morning">See Products</button>
           </div>
           <div class="routine-box">
             <h3>🌸 Night Routine</h3>
             <ul id="night-routine-dry"></ul>
-            <button class="see-products-btn" data-skin-type="Dry Skin">See Products</button>
+            <button class="see-products-btn" data-skin-type="Dry Skin" data-routine="night">See Products</button>
           </div>
         </div>
       </div>
@@ -158,23 +163,22 @@
           <div class="routine-box">
             <h3>🌸 Morning Routine</h3>
             <ul id="morning-routine-combined"></ul>
-            <button class="see-products-btn" data-skin-type="Combination Skin">See Products</button>
+            <button class="see-products-btn" data-skin-type="Combination Skin" data-routine="morning">See Products</button>
           </div>
           <div class="routine-box">
             <h3>🌸 Night Routine</h3>
             <ul id="night-routine-combined"></ul>
-            <button class="see-products-btn" data-skin-type="Combination Skin">See Products</button>
+            <button class="see-products-btn" data-skin-type="Combination Skin" data-routine="night">See Products</button>
           </div>
         </div>
       </div>
     </section>    
     
     
-    <section id="products-section" class="routine-section">
-      <h2>Dry Skin Routine – Recommended Products</h2>
+    <section id="dry-skin-morning-products" class="product-section hidden">
       <div class="routine-block">
         <h3>🌸 Morning Routine</h3>
-
+        <div class="routine-steps-grid">
         <div class="step">
           <img src="img/cleanser.webp" alt="Gentle Cleanser" />
           <div class="step-info">
@@ -182,10 +186,12 @@
             <p class="usage">
               Removes impurities without stripping natural moisture.
             </p>
-            <a
-              href="https://earthrhythm.com/products/exfoliating-face-cleanser-with-ahas-bhas?variant=40113418895404&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&srsltid=AfmBOorWAzxhyo5lHcAaGuPBBTvmGM4ZaUYRJuZfkPXqm0jkBdVQA3PPsV0"
-              >View Product</a
-            >
+            <div class="step-product-info">
+              <span class="step-price">₹499</span>
+              <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('cleanser-1', 'Deep Cleansing Face Wash', 499, 'img/cleanser.webp', 'Oily Skin')">
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
         <div class="step">
@@ -193,7 +199,12 @@
           <div class="step-info">
             <strong>Lipbalm</strong> – Once
             <p class="usage">Softens lips.</p>
-            <a href="https://www.nykaa.com/laneige-lip-glowy-balm/p/15227381?skuId=15227375">View Product</a>
+            <div class="step-product-info">
+              <span class="step-price">₹1,299</span>
+              <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('treatment-4', 'Lip Glowy Balm', 1299, 'img/lip balm.jpg', 'All Skin Types')">
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
 
@@ -204,10 +215,12 @@
             <p class="usage">
               Restores pH balance and preps skin for next steps.
             </p>
-            <a
-              href="https://plumgoodness.com/products/plum-niacinamide-toner-with-rice-water?variant=39649332691004&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gad_source=1&gbraid=0AAAAADoQ5k3B5pzchWi9tFd0IA_pKIwTX&gclid=Cj0KCQjwnui_BhDlARIsAEo9GutwO8NXYDEfgNEIwU_9a8f-d1-ZyPMCkLvPOewAed5xtfdl8tGoNSMaAh5sEALw_wcB"
-              >View Product</a
-            >
+            <div class="step-product-info">
+              <span class="step-price">₹599</span>
+              <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('toner-1', 'Hydrating Rice Water Toner', 599, 'img/toner.webp', 'Dry Skin')">
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
 
@@ -218,10 +231,12 @@
             <p class="usage">
               Delivers deep hydration and boosts skin radiance.
             </p>
-            <a
-              href="https://www.amazon.in/Dot-Key-Hyaluronic-Concentrate-hyaluronic/dp/B07RZ4W5M9/ref=asc_df_B07RZ4W5M9?mcid=9153dac333f83fd6b7112ff361f8a91d&tag=googleshopdes-21&linkCode=df0&hvadid=710025356537&hvpos=&hvnetw=g&hvrand=11421506119745436617&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9208545&hvtargid=pla-836442441774&psc=1&gad_source=1"
-              >View Product</a
-            >
+            <div class="step-product-info">
+              <span class="step-price">₹1,299</span>
+              <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('serum-1', 'Hyaluronic Acid Concentrate', 1299, 'img/serum.webp', 'All Skin Types')">
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
 
@@ -230,10 +245,12 @@
           <div class="step-info">
             <strong>Rich Moisturizer</strong> – 5 drops
             <p class="usage">Locks in moisture and soothes dry patches.</p>
-            <a
-              href="https://letshyphen.com/products/golden-hour-glow%E2%84%A2-moisturizer?variant=50248192098620&country=IN&currency=INR&utm_source=google&utm_medium=cpc&utm_campaign=VM_PMax_Feed_Catch_All_22Sep%2723&gad_source=1&gbraid=0AAAAAp_dPLkbQGQ4aZeORX4hcQBggxaiw&gclid=Cj0KCQjwnui_BhDlARIsAEo9GusgX1pwFx0KO8Bejrs8UtkhCqJkbsH47WNK6zlFe4zngoT3eE9YlwQaAhJ6EALw_wcB"
-              >View Product</a
-            >
+            <div class="step-product-info">
+              <span class="step-price">₹1,399</span>
+              <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('moisturizer-1', 'Golden Hour Glow Moisturizer', 1399, 'img/moisturizer.webp', 'Dry Skin')">
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
 
@@ -242,26 +259,34 @@
           <div class="step-info">
             <strong>Sunscreen</strong> – 1 tsp
             <p class="usage">Shields skin from harmful UVA/UVB rays.</p>
-            <a
-              href="https://www.dotandkey.com/products/barrier-repair-sunscreen?utm_source=google&utm_medium=paid&utm_campaign=20530654023&utm_content=&utm_term=&gadid=&gad_source=1&gbraid=0AAAAAC-nk23DU4zFjKZpHCCgftYmifKa3&gclid=Cj0KCQjwnui_BhDlARIsAEo9GuuU9Mfyq1T6Zge9dBQCq_KFjF5H9uS8E20Is2kgN84ptTH-uMfoMKcaAgPMEALw_wcB"
-              >View Product</a
-            >
+            <div class="step-product-info">
+              <span class="step-price">₹799</span>
+              <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('sunscreen-1', 'Barrier Repair Sunscreen SPF 50', 799, 'img/sunscreen.webp', 'All Skin Types')">
+                Add to Cart
+              </button>
+            </div>
           </div>
+        </div>
+        </div>
       </div>
+    </section>
 
-      <!-- Night Routine -->
+    <!-- Night Routine -->
+    <section id="dry-skin-night-products" class="product-section hidden">
       <div class="routine-block">
         <h3>🌸 Night Routine</h3>
-
+        <div class="routine-steps-grid">
         <div class="step">
           <img src="img/cleanser.webp" alt="Cleanser" />
           <div class="step-info">
             <strong>Cleanser</strong> – 2 drops
             <p class="usage">Removes makeup, dirt, and oil after a long day.</p>
-            <a
-              href="https://earthrhythm.com/products/exfoliating-face-cleanser-with-ahas-bhas?variant=40113418895404&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&srsltid=AfmBOorWAzxhyo5lHcAaGuPBBTvmGM4ZaUYRJuZfkPXqm0jkBdVQA3PPsV0"
-              >View Product</a
-            >
+            <div class="step-product-info">
+              <span class="step-price">₹499</span>
+              <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('cleanser-1', 'Deep Cleansing Face Wash', 499, 'img/cleanser.webp', 'Oily Skin')">
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
 
@@ -270,10 +295,12 @@
           <div class="step-info">
             <strong>Lipbalm</strong> – Once
             <p class="usage">Softens lips.</p>
-            <a
-              href="https://us.laneige.com/products/lip-sleeping-mask?srsltid=AfmBOopIWGJnSSfqFNqlwJ8MPTTJiBLG5dzfTb3hu2o47uQFuxmLeX9y"
-              >View Product</a
-            >
+            <div class="step-product-info">
+              <span class="step-price">₹1,599</span>
+              <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('treatment-5', 'Lip Sleeping Mask', 1599, 'img/lip mask.webp', 'All Skin Types')">
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
 
@@ -282,10 +309,12 @@
           <div class="step-info">
             <strong>Toner</strong> – 3 drops
             <p class="usage">Refreshes and hydrates tired skin.</p>
-            <a
-              href="https://plumgoodness.com/products/plum-niacinamide-toner-with-rice-water?variant=39649332691004&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gad_source=1&gbraid=0AAAAADoQ5k3B5pzchWi9tFd0IA_pKIwTX&gclid=Cj0KCQjwnui_BhDlARIsAEo9GutwO8NXYDEfgNEIwU_9a8f-d1-ZyPMCkLvPOewAed5xtfdl8tGoNSMaAh5sEALw_wcB"
-              >View Product</a
-            >
+            <div class="step-product-info">
+              <span class="step-price">₹599</span>
+              <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('toner-1', 'Hydrating Rice Water Toner', 599, 'img/toner.webp', 'Dry Skin')">
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
 
@@ -296,10 +325,12 @@
             <p class="usage">
               Nourishes and strengthens the skin barrier overnight.
             </p>
-            <a
-              href="https://earthrhythm.com/products/pomegranate-facial-oil?variant=40342207168556&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&srsltid=AfmBOorvhBWhkEAMSfczE1Cq5GQwP7FiKS2eE_oGx_y6U-Rx7CDe8juS2-A"
-              >View Product</a
-            >
+            <div class="step-product-info">
+              <span class="step-price">₹1,499</span>
+              <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('serum-4', 'Pomegranate Facial Oil', 1499, 'img/facial-oil.webp', 'Dry Skin')">
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
 
@@ -308,9 +339,14 @@
           <div class="step-info">
             <strong>Night Cream</strong> – 5 drops
             <p class="usage">Deeply hydrates and repairs while you sleep.</p>
-            <a
-              href="https://www.dotandkey.com/products/retinol-ceramide-age-defense-night-cream"
-              >View Product</a
+            <div class="step-product-info">
+              <span class="step-price">₹1,299</span>
+              <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('moisturizer-4', 'Age Defense Night Cream', 1299, 'img/night cream.webp', 'Mature Skin')">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>a
             >
           </div>
         </div>
@@ -327,12 +363,12 @@
             >
           </div>
         </div>
+        </div>
       </div>
     </section>
+
     <section class="routine-section">
-      <h2>
-        Oily Skin Routine – Recommended Products
-        <style>
+        <!-- <style>
           .routine-section h2 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
@@ -342,9 +378,12 @@
             font-family: "Cormorant Garamond", serif;
           }
         </style>
-      </h2>
+      </h2> -->
 
-      <!-- Morning Routine – Oily Skin -->
+        </div>
+</section>
+
+<!-- Morning Routine – Oily Skin -->
 <style>
   .routine-block h3 {
     font-size: 1.5rem;
@@ -355,9 +394,10 @@
   }
 </style>
 
-<div class="routine-block">
-  <h3>🌸 Morning Routine</h3>
-
+<section id="oily-skin-morning-products" class="product-section hidden">
+  <div class="routine-block">
+    <h3>🌸 Morning Routine</h3>
+    <div class="routine-steps-grid">
   <div class="step">
     <img src="img/cleanseroily.webp" alt="Gentle Cleanser" />
     <div class="step-info">
@@ -411,11 +451,15 @@
       <a href="https://www.dotandkey.com/products/barrier-repair-sunscreen">View Product</a>
     </div>
   </div>
+  </div>
 </div>
-      <!-- Night Routine – Dry Skin -->
-      <div class="routine-block">
-        <h3>🌸 Night Routine</h3>
+</section>
 
+<!-- Night Routine – Oily Skin -->
+      <section id="oily-skin-night-products" class="product-section hidden">
+        <div class="routine-block">
+          <h3>🌸 Night Routine</h3>
+          <div class="routine-steps-grid">
         <div class="step">
           <img src="img/cleanseroily.webp" alt="Cleanser" />
           <div class="step-info">
@@ -491,16 +535,15 @@
             >
           </div>
         </div>
+        </div>
       </div>
     </section>
 
-    <section class="routine-section">
-      <h2>Combination Skin Routine – Recommended Products</h2>
-
-      <!-- Morning Routine – Combo Skin -->
-      <div class="routine-block">
-        <h3>🌸 Morning Routine</h3>
-
+    <!-- Morning Routine – Combo Skin -->
+      <section id="combination-skin-morning-products" class="product-section hidden">
+        <div class="routine-block">
+          <h3>🌸 Morning Routine</h3>
+          <div class="routine-steps-grid">
         <div class="step">
           <img src="img/balancing.webp" alt="Balancing Cleanser" />
           <div class="step-info">
@@ -573,12 +616,15 @@
             >
           </div>
         </div>
+        </div>
       </div>
+    </section>
 
-      <!-- Night Routine – Combo Skin -->
-      <div class="routine-block">
-        <h3>🌸 Night Routine</h3>
-
+    <!-- Night Routine – Combo Skin -->
+      <section id="combination-skin-night-products" class="product-section hidden">
+        <div class="routine-block">
+          <h3>🌸 Night Routine</h3>
+          <div class="routine-steps-grid">
         <div class="step">
           <img src="img/gel cleanser.webp" alt="Gel Cleanser" />
           <div class="step-info">
@@ -652,8 +698,10 @@
             >
           </div>
         </div>
+        </div>
       </div>
     </section>
+
     <script>
       document.addEventListener("DOMContentLoaded", () => {
   const routines = {
@@ -729,7 +777,62 @@
   const sectionCombined = document.getElementById("routine-section-combined");
 
   const productButtons = document.querySelectorAll(".see-products-btn");
-  const productsSection = document.getElementById("products-section");
+
+  // Simple, working "See Products" handler
+  const buttons = document.querySelectorAll(".see-products-btn");
+  console.log("Found buttons:", buttons.length);
+  
+  buttons.forEach(button => {
+    button.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const skinType = this.getAttribute("data-skin-type");
+      const routine = this.getAttribute("data-routine");
+      
+      console.log("Button clicked:", skinType, routine);
+      
+      // Hide all product sections
+      document.querySelectorAll(".product-section").forEach(section => {
+        section.style.display = "none";
+        section.classList.add("hidden");
+      });
+      
+      // Generate target ID
+      let targetId = "";
+      if (skinType === "Dry Skin" && routine === "morning") {
+        targetId = "dry-skin-morning-products";
+      } else if (skinType === "Dry Skin" && routine === "night") {
+        targetId = "dry-skin-night-products";
+      } else if (skinType === "Oily Skin" && routine === "morning") {
+        targetId = "oily-skin-morning-products";
+      } else if (skinType === "Oily Skin" && routine === "night") {
+        targetId = "oily-skin-night-products";
+      } else if (skinType === "Combination Skin" && routine === "morning") {
+        targetId = "combination-skin-morning-products";
+      } else if (skinType === "Combination Skin" && routine === "night") {
+        targetId = "combination-skin-night-products";
+      }
+      
+      console.log("Looking for target ID:", targetId);
+      
+      // Show target section
+      const target = document.getElementById(targetId);
+      if (target) {
+        console.log("Found target section");
+        target.style.display = "block";
+        target.classList.remove("hidden");
+        target.scrollIntoView({ behavior: "smooth" });
+      } else {
+        console.log("Target section NOT found");
+        // List all available IDs for debugging
+        const allSections = document.querySelectorAll(".product-section");
+        const allIds = Array.from(allSections).map(s => s.id);
+        console.log("Available product section IDs:", allIds);
+        alert("Section not found: " + targetId + "\nAvailable: " + allIds.join(", "));
+      }
+    });
+  });
 
   // Handle skin type card click to show routine
   document.querySelectorAll(".skin-type").forEach((card) => {
@@ -767,16 +870,168 @@
     });
   });
 
-  // Handle "See Products" button click
-  productButtons.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const skinType = e.target.getAttribute("data-skin-type");
-      console.log(skinType); // Optional: Log the skin type to check if it's correct
-      // You can use the skinType variable to filter/show specific products
-      productsSection?.scrollIntoView({ behavior: "smooth" });
+});
+
+// Cart functionality for routine products
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCount = document.getElementById('cartCount');
+  if (cartCount) {
+    cartCount.textContent = totalItems;
+  }
+}
+
+function addToCartFromRoutine(id, name, price, image, skinType) {
+  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  
+  // Check if item already exists
+  const existingItem = cart.find(item => item.id === id);
+  
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      id: id,
+      name: name,
+      price: price,
+      image: image,
+      skinType: skinType,
+      quantity: 1
     });
-  });
+  }
+  
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  showCartNotification(name);
+  
+  // Visual feedback on button
+  const button = event.target;
+  const originalText = button.textContent;
+  button.classList.add('added');
+  button.textContent = 'Added!';
+  
+  setTimeout(() => {
+    button.classList.remove('added');
+    button.textContent = originalText;
+  }, 2000);
+}
+
+function showCartNotification(productName) {
+  // Remove existing notification
+  const existingNotification = document.querySelector('.cart-notification');
+  if (existingNotification) {
+    existingNotification.remove();
+  }
+  
+  // Create notification
+  const notification = document.createElement('div');
+  notification.className = 'cart-notification';
+  notification.innerHTML = `
+    <div>
+      <strong>${productName}</strong> added to cart!
+      <button class="close-notification" onclick="this.parentElement.parentElement.remove()">&times;</button>
+    </div>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Show notification
+  setTimeout(() => notification.classList.add('show'), 100);
+  
+  // Auto hide after 3 seconds
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// Initialize cart count on page load
+document.addEventListener('DOMContentLoaded', function() {
+  updateCartCount();
+  updateAuthMenu();
+});
+
+// Authentication Menu Management
+function updateAuthMenu() {
+  const authMenu = document.getElementById('authMenu');
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  
+  if (currentUser) {
+    // User is logged in - handle different user data structures
+    const userName = currentUser.firstName || currentUser.fullName || currentUser.username || currentUser.name || 'User';
+    const initials = (currentUser.firstName && currentUser.lastName) 
+      ? (currentUser.firstName.charAt(0) + currentUser.lastName.charAt(0)).toUpperCase()
+      : (currentUser.fullName ? currentUser.fullName.split(' ').map(n => n.charAt(0)).join('').toUpperCase() : 'U');
+    
+    authMenu.innerHTML = `
+      <div class="user-menu">
+        <div class="user-greeting" onclick="toggleDropdown()">
+          <span class="user-name">${userName}</span>
+          <span class="dropdown-arrow">▼</span>
+        </div>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="dashboard.html" class="dropdown-item">
+            <span class="dropdown-icon">📊</span>
+            Dashboard
+          </a>
+          <a href="orders.html" class="dropdown-item">
+            <span class="dropdown-icon">📦</span>
+            My Orders
+          </a>
+          <a href="profile.html" class="dropdown-item">
+            <span class="dropdown-icon">👤</span>
+            Profile
+          </a>
+          <hr class="dropdown-divider">
+          <a href="#" class="dropdown-item" onclick="logout()">
+            <span class="dropdown-icon">🚪</span>
+            Logout
+          </a>
+        </div>
+      </div>
+    `;
+  } else {
+    // User is not logged in
+    authMenu.innerHTML = `
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    `;
+  }
+}
+
+function logout() {
+  if (confirm('Are you sure you want to logout?')) {
+    localStorage.removeItem('currentUser');
+    // Optional: Keep cart but associate with session
+    localStorage.setItem('guestCart', localStorage.getItem('cart') || '[]');
+    updateAuthMenu();
+    window.location.reload();
+  }
+}
+
+function toggleDropdown() {
+  const dropdownMenu = document.getElementById('dropdownMenu');
+  if (dropdownMenu) {
+    dropdownMenu.classList.toggle('show');
+  }
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+  const userMenu = event.target.closest('.user-menu');
+  if (!userMenu) {
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    if (dropdownMenu) {
+      dropdownMenu.classList.remove('show');
+    }
+  }
 });
     </script>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+    </footer>
   </body>
-</html>
+  </html>

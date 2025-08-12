@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/ecommerce-styles.css" />
+    <title>Checkout - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="checkout.html" class="active-link">Checkout</a></li>
+          </ul>
+        </nav>
+        
+        <!-- User Authentication Menu -->
+        <div class="auth-menu" id="authMenu">
+          <div class="login-register">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="register-btn">Register</a>
+          </div>
+          <div class="user-menu" id="userMenu" style="display: none;">
+            <div class="user-greeting">
+              <img src="https://via.placeholder.com/32/FF69B4/FFFFFF?text=U" alt="User" class="user-avatar" id="userAvatar">
+              <span class="user-name" id="userName">User</span>
+              <span class="dropdown-arrow">▼</span>
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+              <a href="profile.html" class="dropdown-item">
+                <span class="dropdown-icon">👤</span>
+                My Profile
+              </a>
+              <a href="orders.html" class="dropdown-item">
+                <span class="dropdown-icon">📦</span>
+                My Orders
+              </a>
+              <a href="cart.html" class="dropdown-item">
+                <span class="dropdown-icon">🛒</span>
+                My Cart
+              </a>
+              <hr class="dropdown-divider">
+              <a href="#" class="dropdown-item" onclick="logout()">
+                <span class="dropdown-icon">🚪</span>
+                Logout
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <section class="checkout-section">
+      <div class="checkout-container">
+        <h1 class="checkout-heading">Secure Checkout</h1>
+        
+        <div class="checkout-progress">
+          <div class="progress-step active">
+            <span class="step-number">1</span>
+            <span class="step-title">Shipping</span>
+          </div>
+          <div class="progress-step" id="paymentStep">
+            <span class="step-number">2</span>
+            <span class="step-title">Payment</span>
+          </div>
+          <div class="progress-step" id="confirmStep">
+            <span class="step-number">3</span>
+            <span class="step-title">Confirm</span>
+          </div>
+        </div>
+
+        <div class="checkout-content">
+          <!-- Shipping Information -->
+          <div class="checkout-form-section" id="shippingSection">
+            <h2>Shipping Information</h2>
+            <form id="shippingForm" class="checkout-form">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="firstName">First Name</label>
+                  <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input type="text" id="lastName" name="lastName" required>
+                </div>
+                <div class="form-group full-width">
+                  <label for="email">Email Address</label>
+                  <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group full-width">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group full-width">
+                  <label for="address">Street Address</label>
+                  <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                  <label for="city">City</label>
+                  <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                  <label for="state">State</label>
+                  <select id="state" name="state" required>
+                    <option value="">Select State</option>
+                    <option value="AP">Andhra Pradesh</option>
+                    <option value="AR">Arunachal Pradesh</option>
+                    <option value="AS">Assam</option>
+                    <option value="BR">Bihar</option>
+                    <option value="CT">Chhattisgarh</option>
+                    <option value="DL">Delhi</option>
+                    <option value="GA">Goa</option>
+                    <option value="GJ">Gujarat</option>
+                    <option value="HR">Haryana</option>
+                    <option value="HP">Himachal Pradesh</option>
+                    <option value="JK">Jammu and Kashmir</option>
+                    <option value="JH">Jharkhand</option>
+                    <option value="KA">Karnataka</option>
+                    <option value="KL">Kerala</option>
+                    <option value="MP">Madhya Pradesh</option>
+                    <option value="MH">Maharashtra</option>
+                    <option value="MN">Manipur</option>
+                    <option value="ML">Meghalaya</option>
+                    <option value="MZ">Mizoram</option>
+                    <option value="NL">Nagaland</option>
+                    <option value="OR">Odisha</option>
+                    <option value="PB">Punjab</option>
+                    <option value="RJ">Rajasthan</option>
+                    <option value="SK">Sikkim</option>
+                    <option value="TN">Tamil Nadu</option>
+                    <option value="TG">Telangana</option>
+                    <option value="TR">Tripura</option>
+                    <option value="UP">Uttar Pradesh</option>
+                    <option value="UT">Uttarakhand</option>
+                    <option value="WB">West Bengal</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="pincode">PIN Code</label>
+                  <input type="text" id="pincode" name="pincode" pattern="[0-9]{6}" required>
+                </div>
+              </div>
+              <button type="button" class="next-btn" onclick="goToPayment()">Continue to Payment</button>
+            </form>
+          </div>
+
+          <!-- Payment Information -->
+          <div class="checkout-form-section" id="paymentSection" style="display: none;">
+            <h2>Payment Method</h2>
+            <div class="payment-methods">
+              <div class="payment-option">
+                <input type="radio" id="card" name="paymentMethod" value="card" checked>
+                <label for="card">
+                  <span class="payment-icon">💳</span>
+                  Credit/Debit Card
+                </label>
+              </div>
+              <div class="payment-option">
+                <input type="radio" id="upi" name="paymentMethod" value="upi">
+                <label for="upi">
+                  <span class="payment-icon">📱</span>
+                  UPI Payment
+                </label>
+              </div>
+              <div class="payment-option">
+                <input type="radio" id="cod" name="paymentMethod" value="cod">
+                <label for="cod">
+                  <span class="payment-icon">💰</span>
+                  Cash on Delivery
+                </label>
+              </div>
+            </div>
+
+            <!-- Card Payment Form -->
+            <div id="cardPaymentForm" class="payment-form">
+              <div class="form-grid">
+                <div class="form-group full-width">
+                  <label for="cardNumber">Card Number</label>
+                  <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                </div>
+                <div class="form-group">
+                  <label for="expiryDate">Expiry Date</label>
+                  <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" maxlength="5">
+                </div>
+                <div class="form-group">
+                  <label for="cvv">CVV</label>
+                  <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="3">
+                </div>
+                <div class="form-group full-width">
+                  <label for="cardName">Name on Card</label>
+                  <input type="text" id="cardName" name="cardName">
+                </div>
+              </div>
+            </div>
+
+            <!-- UPI Payment Form -->
+            <div id="upiPaymentForm" class="payment-form" style="display: none;">
+              <div class="form-group">
+                <label for="upiId">UPI ID</label>
+                <input type="text" id="upiId" name="upiId" placeholder="yourname@paytm">
+              </div>
+            </div>
+
+            <!-- COD Message -->
+            <div id="codMessage" class="payment-form" style="display: none;">
+              <div class="cod-info">
+                <p>💰 Cash on Delivery available</p>
+                <p>Pay when your order is delivered to your doorstep. Additional ₹25 COD charges apply.</p>
+              </div>
+            </div>
+
+            <div class="checkout-actions">
+              <button type="button" class="back-btn" onclick="goToShipping()">Back to Shipping</button>
+              <button type="button" class="next-btn" onclick="goToConfirm()">Review Order</button>
+            </div>
+          </div>
+
+          <!-- Order Confirmation -->
+          <div class="checkout-form-section" id="confirmSection" style="display: none;">
+            <h2>Order Summary</h2>
+            <div class="order-review" id="orderReview">
+              <!-- Order details will be populated here -->
+            </div>
+            <div class="checkout-actions">
+              <button type="button" class="back-btn" onclick="goToPayment()">Back to Payment</button>
+              <button type="button" class="place-order-btn" onclick="placeOrder()">Place Order</button>
+            </div>
+          </div>
+
+          <!-- Order Summary Sidebar -->
+          <div class="order-summary-sidebar">
+            <h3>Your Order</h3>
+            <div class="order-items" id="checkoutOrderItems">
+              <!-- Items will be populated by JavaScript -->
+            </div>
+            <div class="order-totals">
+              <div class="total-row">
+                <span>Subtotal:</span>
+                <span id="checkoutSubtotal">₹0</span>
+              </div>
+              <div class="total-row">
+                <span>Shipping:</span>
+                <span id="checkoutShipping">₹99</span>
+              </div>
+              <div class="total-row">
+                <span>Tax (GST):</span>
+                <span id="checkoutTax">₹0</span>
+              </div>
+              <div class="total-row grand-total">
+                <span>Total:</span>
+                <span id="checkoutTotal">₹0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+    </footer>
+
+    <script>
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let currentStep = 1;
+      let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+
+      console.log('Checkout page loaded, cart data:', cart);
+      console.log('Current user:', currentUser);
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize authentication menu
+        updateAuthMenu();
+        
+        if (cart.length === 0) {
+          console.log('Cart is empty, redirecting to cart page');
+          alert('Your cart is empty!');
+          window.location.href = 'cart.html';
+          return;
+        }
+        
+        // Prefill user data if logged in
+        if (currentUser) {
+          prefillUserData();
+        }
+        
+        displayOrderSummary();
+        setupPaymentMethodHandlers();
+        formatCardInput();
+      });
+
+      // Authentication functions
+      function updateAuthMenu() {
+        const authMenu = document.getElementById('authMenu');
+        const loginRegister = authMenu.querySelector('.login-register');
+        const userMenu = document.getElementById('userMenu');
+        
+        if (currentUser) {
+          loginRegister.style.display = 'none';
+          userMenu.style.display = 'flex';
+          
+          // Update user info
+          document.getElementById('userName').textContent = currentUser.firstName || currentUser.username || 'User';
+          const userAvatar = document.getElementById('userAvatar');
+          const initials = (currentUser.firstName && currentUser.lastName) 
+            ? (currentUser.firstName.charAt(0) + currentUser.lastName.charAt(0)).toUpperCase()
+            : (currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U');
+          userAvatar.src = `https://via.placeholder.com/32/FF69B4/FFFFFF?text=${initials}`;
+          userAvatar.alt = currentUser.firstName || currentUser.username || 'User';
+          
+          // Add dropdown functionality
+          const userGreeting = userMenu.querySelector('.user-greeting');
+          const dropdownMenu = document.getElementById('dropdownMenu');
+          
+          userGreeting.addEventListener('click', function() {
+            dropdownMenu.classList.toggle('show');
+          });
+          
+          // Close dropdown when clicking outside
+          document.addEventListener('click', function(event) {
+            if (!userMenu.contains(event.target)) {
+              dropdownMenu.classList.remove('show');
+            }
+          });
+        } else {
+          loginRegister.style.display = 'flex';
+          userMenu.style.display = 'none';
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        alert('You have been logged out successfully!');
+        window.location.href = 'index.html';
+      }
+
+      // Prefill user data function
+      function prefillUserData() {
+        if (!currentUser) return;
+        
+        // Fill shipping form with user data
+        if (currentUser.firstName) {
+          document.getElementById('firstName').value = currentUser.firstName;
+        }
+        if (currentUser.lastName) {
+          document.getElementById('lastName').value = currentUser.lastName;
+        }
+        if (currentUser.email) {
+          document.getElementById('email').value = currentUser.email;
+        }
+        if (currentUser.phone) {
+          document.getElementById('phone').value = currentUser.phone;
+        }
+        
+        // Fill address data if available
+        const addresses = JSON.parse(localStorage.getItem('userAddresses')) || [];
+        const userAddresses = addresses.filter(addr => addr.userId === currentUser.id);
+        
+        if (userAddresses.length > 0) {
+          const primaryAddress = userAddresses.find(addr => addr.isPrimary) || userAddresses[0];
+          
+          if (primaryAddress) {
+            document.getElementById('address').value = primaryAddress.street;
+            document.getElementById('city').value = primaryAddress.city;
+            document.getElementById('state').value = primaryAddress.state;
+            document.getElementById('pincode').value = primaryAddress.pincode;
+          }
+        }
+        
+        console.log('User data prefilled for checkout');
+      }
+
+      function displayOrderSummary() {
+        const orderItemsContainer = document.getElementById('checkoutOrderItems');
+        
+        orderItemsContainer.innerHTML = cart.map(item => `
+          <div class="order-item">
+            <img src="${item.image}" alt="${item.name}">
+            <div class="item-info">
+              <h4>${item.name}</h4>
+              <p>Qty: ${item.quantity}</p>
+            </div>
+            <div class="item-total">₹${(item.price * item.quantity).toLocaleString()}</div>
+          </div>
+        `).join('');
+
+        updateCheckoutTotals();
+      }
+
+      function updateCheckoutTotals() {
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const shipping = subtotal > 1500 ? 0 : 99;
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
+        const codCharges = paymentMethod === 'cod' ? 25 : 0;
+        const tax = Math.round(subtotal * 0.18);
+        const total = subtotal + shipping + tax + codCharges;
+
+        document.getElementById('checkoutSubtotal').textContent = `₹${subtotal.toLocaleString()}`;
+        document.getElementById('checkoutShipping').textContent = shipping === 0 ? 'FREE' : `₹${shipping}`;
+        document.getElementById('checkoutTax').textContent = `₹${tax.toLocaleString()}`;
+        document.getElementById('checkoutTotal').textContent = `₹${total.toLocaleString()}`;
+      }
+
+      function setupPaymentMethodHandlers() {
+        const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
+        paymentMethods.forEach(method => {
+          method.addEventListener('change', function() {
+            showPaymentForm(this.value);
+            updateCheckoutTotals();
+          });
+        });
+      }
+
+      function showPaymentForm(method) {
+        // Hide all payment forms
+        document.getElementById('cardPaymentForm').style.display = 'none';
+        document.getElementById('upiPaymentForm').style.display = 'none';
+        document.getElementById('codMessage').style.display = 'none';
+
+        // Show selected payment form
+        if (method === 'card') {
+          document.getElementById('cardPaymentForm').style.display = 'block';
+        } else if (method === 'upi') {
+          document.getElementById('upiPaymentForm').style.display = 'block';
+        } else if (method === 'cod') {
+          document.getElementById('codMessage').style.display = 'block';
+        }
+      }
+
+      function formatCardInput() {
+        const cardNumber = document.getElementById('cardNumber');
+        const expiryDate = document.getElementById('expiryDate');
+
+        cardNumber.addEventListener('input', function() {
+          let value = this.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+          let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+          this.value = formattedValue;
+        });
+
+        expiryDate.addEventListener('input', function() {
+          let value = this.value.replace(/\D/g, '');
+          if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+          }
+          this.value = value;
+        });
+      }
+
+      function goToPayment() {
+        const form = document.getElementById('shippingForm');
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        currentStep = 2;
+        updateProgressSteps();
+        document.getElementById('shippingSection').style.display = 'none';
+        document.getElementById('paymentSection').style.display = 'block';
+        document.getElementById('confirmSection').style.display = 'none';
+      }
+
+      function goToShipping() {
+        currentStep = 1;
+        updateProgressSteps();
+        document.getElementById('shippingSection').style.display = 'block';
+        document.getElementById('paymentSection').style.display = 'none';
+        document.getElementById('confirmSection').style.display = 'none';
+      }
+
+      function goToConfirm() {
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        
+        // Validate payment method specific fields
+        if (paymentMethod === 'card') {
+          const cardNumber = document.getElementById('cardNumber').value;
+          const expiryDate = document.getElementById('expiryDate').value;
+          const cvv = document.getElementById('cvv').value;
+          
+          if (!cardNumber || !expiryDate || !cvv) {
+            alert('Please fill in all card details');
+            return;
+          }
+        } else if (paymentMethod === 'upi') {
+          const upiId = document.getElementById('upiId').value;
+          if (!upiId) {
+            alert('Please enter your UPI ID');
+            return;
+          }
+        }
+
+        currentStep = 3;
+        updateProgressSteps();
+        document.getElementById('shippingSection').style.display = 'none';
+        document.getElementById('paymentSection').style.display = 'none';
+        document.getElementById('confirmSection').style.display = 'block';
+        
+        displayOrderReview();
+      }
+
+      function updateProgressSteps() {
+        const steps = document.querySelectorAll('.progress-step');
+        steps.forEach((step, index) => {
+          if (index < currentStep) {
+            step.classList.add('active');
+          } else {
+            step.classList.remove('active');
+          }
+        });
+      }
+
+      function displayOrderReview() {
+        const shippingData = new FormData(document.getElementById('shippingForm'));
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        
+        const orderReviewHTML = `
+          <div class="review-section">
+            <h3>Shipping Address</h3>
+            <div class="address-display">
+              <p><strong>${shippingData.get('firstName')} ${shippingData.get('lastName')}</strong></p>
+              <p>${shippingData.get('address')}</p>
+              <p>${shippingData.get('city')}, ${shippingData.get('state')} ${shippingData.get('pincode')}</p>
+              <p>Phone: ${shippingData.get('phone')}</p>
+              <p>Email: ${shippingData.get('email')}</p>
+            </div>
+          </div>
+          
+          <div class="review-section">
+            <h3>Payment Method</h3>
+            <p>${getPaymentMethodDisplay(paymentMethod)}</p>
+          </div>
+          
+          <div class="review-section">
+            <h3>Order Items</h3>
+            <div class="review-items">
+              ${cart.map(item => `
+                <div class="review-item">
+                  <img src="${item.image}" alt="${item.name}">
+                  <div class="item-details">
+                    <h4>${item.name}</h4>
+                    <p>Quantity: ${item.quantity}</p>
+                    <p>Price: ₹${(item.price * item.quantity).toLocaleString()}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+        
+        document.getElementById('orderReview').innerHTML = orderReviewHTML;
+      }
+
+      function getPaymentMethodDisplay(method) {
+        switch(method) {
+          case 'card': return '💳 Credit/Debit Card';
+          case 'upi': return '📱 UPI Payment';
+          case 'cod': return '💰 Cash on Delivery';
+          default: return method;
+        }
+      }
+
+      function placeOrder() {
+        // Create order object
+        const shippingData = new FormData(document.getElementById('shippingForm'));
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        
+        const order = {
+          id: 'ORD' + Date.now(),
+          date: new Date().toISOString(),
+          userId: currentUser ? currentUser.id : null,
+          customerName: `${shippingData.get('firstName')} ${shippingData.get('lastName')}`,
+          items: [...cart],
+          shipping: {
+            firstName: shippingData.get('firstName'),
+            lastName: shippingData.get('lastName'),
+            email: shippingData.get('email'),
+            phone: shippingData.get('phone'),
+            address: shippingData.get('address'),
+            city: shippingData.get('city'),
+            state: shippingData.get('state'),
+            pincode: shippingData.get('pincode')
+          },
+          payment: {
+            method: paymentMethod
+          },
+          totals: {
+            subtotal: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+            shipping: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) > 1500 ? 0 : 99,
+            tax: Math.round(cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.18),
+            codCharges: paymentMethod === 'cod' ? 25 : 0
+          },
+          status: 'confirmed',
+          trackingNumber: 'TRK' + Date.now(),
+          estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+        };
+
+        order.totals.total = order.totals.subtotal + order.totals.shipping + order.totals.tax + order.totals.codCharges;
+
+        // Save order to localStorage
+        const orders = JSON.parse(localStorage.getItem('sorelleOrders')) || [];
+        orders.push(order);
+        localStorage.setItem('sorelleOrders', JSON.stringify(orders));
+
+        // Update user's order history if logged in
+        if (currentUser) {
+          const userOrders = JSON.parse(localStorage.getItem(`userOrders_${currentUser.id}`)) || [];
+          userOrders.push(order);
+          localStorage.setItem(`userOrders_${currentUser.id}`, JSON.stringify(userOrders));
+          
+          // Save shipping address if new
+          saveShippingAddress(shippingData);
+        }
+
+        // Clear cart
+        localStorage.removeItem('cart');
+
+        // Redirect to success page
+        localStorage.setItem('latestOrder', JSON.stringify(order));
+        window.location.href = 'order-success.html';
+      }
+
+      // Save shipping address to user's address book
+      function saveShippingAddress(shippingData) {
+        if (!currentUser) return;
+        
+        const addresses = JSON.parse(localStorage.getItem('userAddresses')) || [];
+        const userAddresses = addresses.filter(addr => addr.userId === currentUser.id);
+        
+        const newAddress = {
+          id: 'ADDR' + Date.now(),
+          userId: currentUser.id,
+          label: 'Shipping Address',
+          street: shippingData.get('address'),
+          city: shippingData.get('city'), 
+          state: shippingData.get('state'),
+          pincode: shippingData.get('pincode'),
+          isPrimary: userAddresses.length === 0,
+          dateAdded: new Date().toISOString()
+        };
+        
+        // Check if address already exists
+        const existingAddress = userAddresses.find(addr => 
+          addr.street === newAddress.street && 
+          addr.city === newAddress.city && 
+          addr.pincode === newAddress.pincode
+        );
+        
+        if (!existingAddress) {
+          addresses.push(newAddress);
+          localStorage.setItem('userAddresses', JSON.stringify(addresses));
+          console.log('Shipping address saved to user profile');
+        }
+      }
+    </script>
+  </body>
+</html>

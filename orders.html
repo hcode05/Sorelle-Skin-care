@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/ecommerce-styles.css" />
+    <title>My Orders - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="orders.html" class="active-link">My Orders</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="cart.html">Cart (<span id="cartCount">0</span>)</a></li>
+            <!-- Authentication Menu - Dynamic -->
+            <li id="authMenu">
+              <!-- Will be populated by JavaScript -->
+            </li>
+          </ul>
+        </nav>    
+      </div>
+    </header>
+    
+    <section class="orders-section">
+      <div class="orders-container">
+        <div class="orders-header">
+          <h1 class="orders-heading">My Orders</h1>
+          <div class="orders-stats" id="orderStats">
+            <!-- Will be populated by JavaScript -->
+          </div>
+        </div>
+        
+        <!-- Order Filters -->
+        <div class="order-filters">
+          <select id="orderFilter" onchange="filterOrders()">
+            <option value="all">All Orders</option>
+            <option value="delivered">Delivered</option>
+            <option value="processing">Processing</option>
+            <option value="shipped">Shipped</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <select id="timeFilter" onchange="filterOrders()">
+            <option value="all">All Time</option>
+            <option value="30">Last 30 Days</option>
+            <option value="90">Last 3 Months</option>
+            <option value="365">Last Year</option>
+          </select>
+        </div>
+        
+        <div class="orders-content" id="ordersContent">
+          <!-- Orders will be populated by JavaScript -->
+        </div>
+        
+        <div class="no-orders" id="noOrders" style="display: none;">
+          <div class="no-orders-icon">📦</div>
+          <h3>No orders yet</h3>
+          <p>Start shopping to see your orders here!</p>
+          <a href="products.html" class="shop-now-btn">Shop Now</a>
+        </div>
+        
+        <!-- Order Analytics -->
+        <div class="order-analytics" id="orderAnalytics">
+          <h3>Your Shopping Analytics</h3>
+          <div class="analytics-grid">
+            <div class="analytics-card">
+              <div class="analytics-value" id="totalSpent">₹0</div>
+              <div class="analytics-label">Total Spent</div>
+            </div>
+            <div class="analytics-card">
+              <div class="analytics-value" id="avgOrderValue">₹0</div>
+              <div class="analytics-label">Avg Order Value</div>
+            </div>
+            <div class="analytics-card">
+              <div class="analytics-value" id="favoriteCategory">-</div>
+              <div class="analytics-label">Favorite Category</div>
+            </div>
+            <div class="analytics-card">
+              <div class="analytics-value" id="loyaltyLevel">Bronze</div>
+              <div class="analytics-label">Loyalty Level</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+    </footer>
+
+    <script>
+      let allOrders = [];
+      let filteredOrders = [];
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        checkAuthentication();
+        updateAuthMenu();
+        updateCartCount();
+        loadOrders();
+        displayAnalytics();
+      });
+
+      function checkAuthentication() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        if (!currentUser) {
+          alert('Please log in to view your orders.');
+          window.location.href = 'login.html';
+          return;
+        }
+      }
+
+      function updateAuthMenu() {
+        const authMenu = document.getElementById('authMenu');
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        
+        if (currentUser) {
+          authMenu.innerHTML = `
+            <div class="user-menu">
+              <span class="user-greeting">Hi, ${currentUser.fullName || currentUser.firstName || 'User'}!</span>
+              <div class="dropdown">
+                <button class="dropdown-btn">Account ▼</button>
+                <div class="dropdown-content">
+                  <a href="dashboard.html">Dashboard</a>
+                  <a href="orders.html" class="active">My Orders</a>
+                  <a href="profile.html">Profile</a>
+                  <a href="#" onclick="logout()">Logout</a>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cartCount').textContent = totalItems;
+      }
+
+      function loadOrders() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        if (!currentUser) {
+          document.getElementById('noOrders').style.display = 'block';
+          document.getElementById('ordersContent').innerHTML = '';
+          return;
+        }
+        
+        const allOrdersData = JSON.parse(localStorage.getItem('sorelleOrders') || '[]');
+        
+        allOrders = allOrdersData
+          .filter(order => order.userId === currentUser.id)
+          .sort((a, b) => new Date(b.date || b.orderDate) - new Date(a.date || a.orderDate));
+        
+        filteredOrders = [...allOrders];
+        displayOrders();
+        updateOrderStats();
+      }
+
+      function displayOrders() {
+        const ordersContent = document.getElementById('ordersContent');
+        const noOrders = document.getElementById('noOrders');
+
+        if (filteredOrders.length === 0) {
+          noOrders.style.display = 'block';
+          ordersContent.innerHTML = '';
+          return;
+        }
+
+        noOrders.style.display = 'none';
+
+        ordersContent.innerHTML = filteredOrders.map(order => `
+          <div class="order-card">
+            <div class="order-header">
+              <div class="order-id">
+                <h3>Order #${order.id || order.orderId}</h3>
+                <span class="order-date">${new Date(order.date || order.orderDate).toLocaleDateString('en-IN')}</span>
+              </div>
+              <div class="order-status">
+                <span class="status-badge ${(order.status || 'processing').toLowerCase()}">${getStatusDisplay(order.status || 'processing')}</span>
+              </div>
+            </div>
+            
+            <div class="order-body">
+              <div class="order-items-preview">
+                ${order.items.slice(0, 3).map(item => `
+                  <div class="item-preview">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="item-info">
+                      <h4>${item.name}</h4>
+                      <p>Qty: ${item.quantity}</p>
+                    </div>
+                  </div>
+                `).join('')}
+                ${order.items.length > 3 ? `<div class="more-items">+${order.items.length - 3} more items</div>` : ''}
+              </div>
+              
+              <div class="order-summary">
+                <div class="summary-row">
+                  <span>Total Amount:</span>
+                  <span class="amount">₹${(order.totals?.total || order.total || 0).toLocaleString()}</span>
+                </div>
+                <div class="summary-row">
+                  <span>Payment:</span>
+                  <span>${getPaymentMethodDisplay(order.payment?.method || 'card')}</span>
+                </div>
+                <div class="summary-row">
+                  <span>Shipping:</span>
+                  <span>${order.shipping?.city || order.shippingAddress?.city || 'N/A'}, ${order.shipping?.state || order.shippingAddress?.state || 'N/A'}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="order-actions">
+              <button class="order-btn secondary" onclick="viewOrderDetails('${order.id || order.orderId}')">View Details</button>
+              <button class="order-btn primary" onclick="trackOrder('${order.id || order.orderId}')">Track Order</button>
+              ${(order.status || 'processing') === 'delivered' ? `<button class="order-btn" onclick="reorder('${order.id || order.orderId}')">Reorder</button>` : ''}
+              ${(order.status || 'processing') === 'processing' ? `<button class="order-btn cancel" onclick="cancelOrder('${order.id || order.orderId}')">Cancel</button>` : ''}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function updateOrderStats() {
+        const orderStats = document.getElementById('orderStats');
+        const totalOrders = allOrders.length;
+        const totalSpent = allOrders.reduce((sum, order) => sum + (order.totals?.total || order.total || 0), 0);
+        
+        orderStats.innerHTML = `
+          <div class="stat">
+            <span class="stat-value">${totalOrders}</span>
+            <span class="stat-label">Total Orders</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">₹${totalSpent.toLocaleString()}</span>
+            <span class="stat-label">Total Spent</span>
+          </div>
+        `;
+      }
+
+      function displayAnalytics() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        const userOrders = JSON.parse(localStorage.getItem('sorelleOrders') || '[]')
+          .filter(order => order.userId === currentUser.id);
+        
+        if (userOrders.length === 0) return;
+        
+        const totalSpent = userOrders.reduce((sum, order) => sum + (order.totals?.total || order.total || 0), 0);
+        const avgOrderValue = totalSpent / userOrders.length;
+        
+        // Calculate favorite category based on product types
+        const categoryCount = {};
+        userOrders.forEach(order => {
+          order.items.forEach(item => {
+            const category = item.skinType || 'General';
+            categoryCount[category] = (categoryCount[category] || 0) + item.quantity;
+          });
+        });
+        
+        const favoriteCategory = Object.keys(categoryCount).length > 0 ? 
+          Object.keys(categoryCount).reduce((a, b) => categoryCount[a] > categoryCount[b] ? a : b) : 'General';
+        
+        // Determine loyalty level
+        let loyaltyLevel = 'Bronze';
+        if (totalSpent > 10000) loyaltyLevel = 'Platinum';
+        else if (totalSpent > 5000) loyaltyLevel = 'Gold';
+        else if (totalSpent > 2000) loyaltyLevel = 'Silver';
+        
+        document.getElementById('totalSpent').textContent = `₹${totalSpent.toLocaleString()}`;
+        document.getElementById('avgOrderValue').textContent = `₹${Math.round(avgOrderValue).toLocaleString()}`;
+        document.getElementById('favoriteCategory').textContent = favoriteCategory;
+        document.getElementById('loyaltyLevel').textContent = loyaltyLevel;
+      }
+
+      function filterOrders() {
+        const statusFilter = document.getElementById('orderFilter').value;
+        const timeFilter = document.getElementById('timeFilter').value;
+        
+        filteredOrders = allOrders.filter(order => {
+          // Status filter
+          const orderStatus = (order.status || 'processing').toLowerCase();
+          if (statusFilter !== 'all' && orderStatus !== statusFilter) {
+            return false;
+          }
+          
+          // Time filter
+          if (timeFilter !== 'all') {
+            const orderDate = new Date(order.date || order.orderDate);
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - parseInt(timeFilter));
+            if (orderDate < cutoffDate) {
+              return false;
+            }
+          }
+          
+          return true;
+        });
+        
+        displayOrders();
+      }
+
+      function getStatusDisplay(status) {
+        switch((status || 'processing').toLowerCase()) {
+          case 'confirmed': return 'Order Confirmed';
+          case 'processing': return 'Processing';
+          case 'shipped': return 'Shipped';
+          case 'delivered': return 'Delivered';
+          case 'cancelled': return 'Cancelled';
+          default: return status || 'Processing';
+        }
+      }
+
+      function getPaymentMethodDisplay(method) {
+        switch(method) {
+          case 'card': return '💳 Card';
+          case 'upi': return '📱 UPI';
+          case 'cod': return '💰 COD';
+          default: return '💳 Card';
+        }
+      }
+
+      function viewOrderDetails(orderId) {
+        const order = allOrders.find(o => (o.id || o.orderId) === orderId);
+        
+        if (!order) return;
+
+        // Create modal for order details
+        const modal = document.createElement('div');
+        modal.className = 'order-modal';
+        modal.innerHTML = `
+          <div class="modal-content">
+            <span class="close" onclick="this.parentElement.parentElement.remove()">&times;</span>
+            <h2>Order Details - #${order.id || order.orderId}</h2>
+            
+            <div class="order-details-content">
+              <div class="details-section">
+                <h3>Order Information</h3>
+                <div class="info-grid">
+                  <div><strong>Order ID:</strong> ${order.id || order.orderId}</div>
+                  <div><strong>Date:</strong> ${new Date(order.date || order.orderDate).toLocaleDateString('en-IN')}</div>
+                  <div><strong>Status:</strong> <span class="status-badge ${(order.status || 'processing').toLowerCase()}">${getStatusDisplay(order.status)}</span></div>
+                  <div><strong>Payment:</strong> ${getPaymentMethodDisplay(order.payment?.method || 'card')}</div>
+                </div>
+              </div>
+              
+              <div class="details-section">
+                <h3>Shipping Address</h3>
+                <div class="address-details">
+                  <p>${(order.shipping?.firstName || order.shippingAddress?.name || '').split(' ')[0]} ${order.shipping?.lastName || ''}</p>
+                  <p>${order.shipping?.address || order.shippingAddress?.address || 'N/A'}</p>
+                  <p>${order.shipping?.city || order.shippingAddress?.city || 'N/A'}, ${order.shipping?.state || order.shippingAddress?.state || 'N/A'} ${order.shipping?.pincode || order.shippingAddress?.zipCode || ''}</p>
+                  <p>Phone: ${order.shipping?.phone || order.shippingAddress?.phone || 'N/A'}</p>
+                  <p>Email: ${order.shipping?.email || order.shippingAddress?.email || 'N/A'}</p>
+                </div>
+              </div>
+              
+              <div class="details-section">
+                <h3>Items Ordered</h3>
+                <div class="detailed-items">
+                  ${order.items.map(item => `
+                    <div class="detailed-item">
+                      <img src="${item.image}" alt="${item.name}">
+                      <div class="item-details">
+                        <h4>${item.name}</h4>
+                        <p>${item.description || ''}</p>
+                        <p><strong>Quantity:</strong> ${item.quantity}</p>
+                        <p><strong>Price:</strong> ₹${item.price.toLocaleString()} each</p>
+                        <p><strong>Total:</strong> ₹${(item.price * item.quantity).toLocaleString()}</p>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+              
+              <div class="details-section">
+                <h3>Order Summary</h3>
+                <div class="order-totals">
+                  <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span>₹${(order.totals?.subtotal || order.subtotal || 0).toLocaleString()}</span>
+                  </div>
+                  <div class="total-row">
+                    <span>Shipping:</span>
+                    <span>${(order.totals?.shipping || order.shipping || 0) === 0 ? 'FREE' : '₹' + (order.totals?.shipping || order.shipping || 0)}</span>
+                  </div>
+                  <div class="total-row">
+                    <span>Tax (GST):</span>
+                    <span>₹${(order.totals?.tax || order.tax || 0).toLocaleString()}</span>
+                  </div>
+                  ${(order.totals?.codCharges || 0) > 0 ? `
+                    <div class="total-row">
+                      <span>COD Charges:</span>
+                      <span>₹${order.totals.codCharges}</span>
+                    </div>
+                  ` : ''}
+                  <div class="total-row grand-total">
+                    <span><strong>Total:</strong></span>
+                    <span><strong>₹${(order.totals?.total || order.total || 0).toLocaleString()}</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        document.body.appendChild(modal);
+      }
+
+      function trackOrder(orderId) {
+        const order = allOrders.find(o => (o.id || o.orderId) === orderId);
+        const status = order?.status || 'processing';
+        
+        let trackingInfo = '📦 Order Confirmed ✓\n';
+        if (['processing', 'shipped', 'delivered'].includes(status.toLowerCase())) {
+          trackingInfo += '🏭 Processing ✓\n';
+        }
+        if (['shipped', 'delivered'].includes(status.toLowerCase())) {
+          trackingInfo += '📦 Packed ✓\n🚚 Shipped ✓\n';
+        }
+        if (status.toLowerCase() === 'delivered') {
+          trackingInfo += '📍 Out for Delivery ✓\n✅ Delivered ✓\n';
+        } else {
+          trackingInfo += '📍 Out for Delivery\n✅ Delivered\n';
+        }
+        
+        trackingInfo += '\nExpected delivery: 3-5 business days';
+        
+        alert(`Tracking information for Order #${orderId}:\n\n${trackingInfo}`);
+      }
+
+      function reorder(orderId) {
+        const order = allOrders.find(o => (o.id || o.orderId) === orderId);
+        
+        if (!order) return;
+
+        if (confirm('Add all items from this order to your cart?')) {
+          let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+          
+          order.items.forEach(orderItem => {
+            const existingItem = cart.find(cartItem => cartItem.id === orderItem.id);
+            if (existingItem) {
+              existingItem.quantity += orderItem.quantity;
+            } else {
+              cart.push({...orderItem});
+            }
+          });
+
+          localStorage.setItem('cart', JSON.stringify(cart));
+          updateCartCount();
+          
+          alert('Items added to cart! Redirecting to cart page...');
+          setTimeout(() => {
+            window.location.href = 'cart.html';
+          }, 1000);
+        }
+      }
+
+      function cancelOrder(orderId) {
+        if (confirm('Are you sure you want to cancel this order?')) {
+          const orderIndex = allOrders.findIndex(o => (o.id || o.orderId) === orderId);
+          if (orderIndex !== -1) {
+            allOrders[orderIndex].status = 'cancelled';
+            
+            // Update in localStorage
+            const allOrdersData = JSON.parse(localStorage.getItem('sorelleOrders') || '[]');
+            const globalOrderIndex = allOrdersData.findIndex(o => (o.id || o.orderId) === orderId);
+            if (globalOrderIndex !== -1) {
+              allOrdersData[globalOrderIndex].status = 'cancelled';
+              localStorage.setItem('sorelleOrders', JSON.stringify(allOrdersData));
+            }
+            
+            loadOrders();
+            alert('Order cancelled successfully.');
+          }
+        }
+      }
+
+      function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('currentUser');
+          window.location.href = 'index.html';
+        }
+      }
+    </script>
+  </body>
+</html>

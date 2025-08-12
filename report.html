@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Your Skincare Report - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="skin-analysis.html">Skin Analysis</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="report.html" class="active-link">Report</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+          </ul>
+        </nav>    
+      </div>
+    </header>
+    
+    <section class="report-section">
+      <div class="report-container">
+        <!-- Header -->
+        <div class="report-header">
+          <h1 class="report-heading">Your Personalized Skincare Report</h1>
+          <p class="report-description">Complete analysis of your skin type and customized routine</p>
+        </div>
+
+        <!-- Skin Profile Summary -->
+        <div class="report-card">
+          <h2 class="card-title">🔍 Your Skin Analysis</h2>
+          <div class="skin-profile-display">
+            <div class="skin-type-info">
+              <img id="reportSkinImage" src="" alt="Your skin type" class="report-skin-img">
+              <div class="skin-details">
+                <h3 id="reportSkinType"></h3>
+                <p id="reportSkinDescription"></p>
+                <div class="skin-characteristics">
+                  <h4>Key Characteristics:</h4>
+                  <ul id="skinCharacteristics"></ul>
+                </div>
+              </div>
+            </div>
+            <div class="concerns-analysis">
+              <h4>Primary Skin Concerns:</h4>
+              <div class="concerns-list" id="reportConcerns"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Morning Routine -->
+        <div class="routine-report-card">
+          <h2 class="card-title">🌅 Your Morning Routine</h2>
+          <div class="routine-grid" id="morningRoutineGrid"></div>
+        </div>
+
+        <!-- Night Routine -->
+        <div class="routine-report-card">
+          <h2 class="card-title">🌙 Your Night Routine</h2>
+          <div class="routine-grid" id="nightRoutineGrid"></div>
+        </div>
+
+        <!-- Recommended Products -->
+        <div class="products-report-card">
+          <h2 class="card-title">💄 Recommended Products for Your Skin Type</h2>
+          <div class="recommended-products-grid" id="recommendedProductsGrid"></div>
+        </div>
+
+        <!-- Tips and Guidelines -->
+        <div class="tips-card">
+          <h2 class="card-title">💡 Expert Tips for Your Skin Type</h2>
+          <div class="tips-grid" id="expertTips"></div>
+        </div>
+
+        <!-- Progress Tracking -->
+        <div class="progress-report-card">
+          <h2 class="card-title">📈 Your Progress Journey</h2>
+          <div class="progress-timeline" id="progressTimeline"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="contact-section">
+        <div class="contact-inline">
+          <div class="contact-info-inline">
+            <span class="contact-item-inline">
+              <strong>📧 Email:</strong> <a href="mailto:info@sorelle.com">info@sorelle.com</a>
+            </span>
+            <span class="contact-item-inline">
+              <strong>📱 Follow:</strong> @sorelle_skincare
+            </span>
+            <span class="contact-item-inline">
+              <strong>🏢 Visit:</strong> 123 Beauty Street, Mumbai
+            </span>
+          </div>
+          <div class="contact-form-inline">
+            <form id="contactForm" class="inline-form">
+              <input type="text" placeholder="Your Name" required>
+              <input type="email" placeholder="Your Email" required>
+              <input type="text" placeholder="Message" required>
+              <button type="submit">Send</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+        <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+      </div>
+    </footer>
+
+    <script>
+      let currentUser = JSON.parse(localStorage.getItem('sorelleCurrentUser'));
+      
+      // Check if user is logged in
+      if (!currentUser) {
+        window.location.href = 'login.html';
+      }
+
+      // Initialize report
+      document.addEventListener('DOMContentLoaded', function() {
+        loadSkinProfile();
+        loadRoutineWithImages();
+        loadRecommendedProducts();
+        loadExpertTips();
+        loadProgressTimeline();
+      });
+
+      function loadSkinProfile() {
+        if (!currentUser.skinProfile) return;
+
+        const skinType = currentUser.skinProfile.skinType;
+        const skinTypeData = {
+          'oily': {
+            image: 'img/skin-types/oily skin.jpeg',
+            name: 'Oily Skin',
+            description: 'Your skin produces excess sebum, particularly in the T-zone area. This can lead to enlarged pores, shine, and occasional breakouts.',
+            characteristics: [
+              'Produces excess oil throughout the day',
+              'Enlarged or visible pores',
+              'Prone to blackheads and breakouts',
+              'Shiny appearance, especially on forehead, nose, and chin',
+              'May experience occasional acne flare-ups'
+            ]
+          },
+          'dry': {
+            image: 'img/skin-types/dry skin.jpeg',
+            name: 'Dry Skin',
+            description: 'Your skin lacks sufficient moisture and natural oils, leading to tightness, flaking, and potential sensitivity.',
+            characteristics: [
+              'Feels tight and uncomfortable',
+              'May show flaking or rough patches',
+              'Fine lines may appear more prominent',
+              'Can be sensitive to harsh products',
+              'May experience irritation in cold weather'
+            ]
+          },
+          'combination': {
+            image: 'img/skin-types/combined skin.jpg',
+            name: 'Combination Skin',
+            description: 'Your skin displays characteristics of both oily and dry skin, typically with an oily T-zone and drier cheeks.',
+            characteristics: [
+              'Oily T-zone (forehead, nose, chin)',
+              'Normal to dry cheeks',
+              'May have enlarged pores in T-zone',
+              'Different areas require different care',
+              'Can experience both dryness and breakouts'
+            ]
+          }
+        };
+
+        const skinInfo = skinTypeData[skinType];
+        if (skinInfo) {
+          document.getElementById('reportSkinImage').src = skinInfo.image;
+          document.getElementById('reportSkinType').textContent = skinInfo.name;
+          document.getElementById('reportSkinDescription').textContent = skinInfo.description;
+          
+          const characteristicsList = document.getElementById('skinCharacteristics');
+          characteristicsList.innerHTML = skinInfo.characteristics
+            .map(char => `<li>${char}</li>`).join('');
+        }
+
+        // Display concerns
+        const concerns = currentUser.skinProfile.concerns || [];
+        const concernsContainer = document.getElementById('reportConcerns');
+        concernsContainer.innerHTML = concerns.map(concern => 
+          `<div class="concern-item-report">
+            <span class="concern-icon">${getConcernIcon(concern)}</span>
+            <span class="concern-name">${formatConcernName(concern)}</span>
+          </div>`
+        ).join('');
+      }
+
+      function getConcernIcon(concern) {
+        const icons = {
+          'acne': '🔴',
+          'aging': '⏰',
+          'darkSpots': '🟤',
+          'sensitivity': '🌸',
+          'dullness': '😴',
+          'pores': '🕳️',
+          'dryness': '💧',
+          'oiliness': '✨'
+        };
+        return icons[concern] || '•';
+      }
+
+      function formatConcernName(concern) {
+        const concernNames = {
+          'acne': 'Acne & Breakouts',
+          'aging': 'Anti-aging',
+          'darkSpots': 'Dark Spots',
+          'sensitivity': 'Sensitivity',
+          'dullness': 'Dullness',
+          'pores': 'Large Pores',
+          'dryness': 'Dryness',
+          'oiliness': 'Excess Oiliness'
+        };
+        return concernNames[concern] || concern;
+      }
+
+      function loadRoutineWithImages() {
+        if (!currentUser.skinProfile) return;
+
+        const skinType = currentUser.skinProfile.skinType;
+        const routines = {
+          'oily': {
+            morning: [
+              { step: 'Gentle Gel Cleanser', amount: '2 drops', image: 'img/gel cleanser.webp', description: 'Removes impurities without over-drying' },
+              { step: 'Niacinamide Toner', amount: '3 drops', image: 'img/toner2.webp', description: 'Controls oil and minimizes pores' },
+              { step: 'Vitamin C Serum', amount: '2 drops', image: 'img/serum2.webp', description: 'Brightens skin and provides antioxidant protection' },
+              { step: 'Light Moisturizer', amount: '3 drops', image: 'img/light moisturizer.webp', description: 'Hydrates without clogging pores' },
+              { step: 'Broad Spectrum Sunscreen', amount: '1 tsp', image: 'img/sunscreen3.webp', description: 'Essential daily protection' },
+              { step: 'Lip Care', amount: 'Once', image: 'img/lip balm.jpg', description: 'Keeps lips moisturized and protected' }
+            ],
+            night: [
+              { step: 'Oil Cleanser', amount: '3 drops', image: 'img/cleanseroily.webp', description: 'Removes makeup and deep cleans' },
+              { step: 'Gentle Gel Cleanser', amount: '2 drops', image: 'img/gel cleanser.webp', description: 'Second cleanse for thorough cleaning' },
+              { step: 'BHA Toner', amount: '3 drops', image: 'img/toner.webp', description: 'Exfoliates and unclogs pores' },
+              { step: 'Niacinamide Serum', amount: '2 drops', image: 'img/Niacinamide Serum.webp', description: 'Controls oil production overnight' },
+              { step: 'Night Moisturizer', amount: '3 drops', image: 'img/gel cream.webp', description: 'Repairs and hydrates while you sleep' },
+              { step: 'Lip Treatment', amount: 'Once', image: 'img/lip mask.webp', description: 'Intensive overnight lip care' }
+            ]
+          },
+          'dry': {
+            morning: [
+              { step: 'Cream Cleanser', amount: '2 drops', image: 'img/cleanser.webp', description: 'Gentle cleansing that maintains moisture' },
+              { step: 'Hydrating Toner', amount: '3 drops', image: 'img/toner.webp', description: 'Preps skin for better product absorption' },
+              { step: 'Hyaluronic Acid Serum', amount: '3 drops', image: 'img/serum.webp', description: 'Intense hydration boost' },
+              { step: 'Rich Moisturizer', amount: '5 drops', image: 'img/moisturizer.webp', description: 'Long-lasting moisture barrier' },
+              { step: 'Moisturizing Sunscreen', amount: '1 tsp', image: 'img/sunscreen2.webp', description: 'Protection with added hydration' },
+              { step: 'Lip Balm', amount: 'Once', image: 'img/lip balm.jpg', description: 'Prevents dry, chapped lips' }
+            ],
+            night: [
+              { step: 'Cream Cleanser', amount: '2 drops', image: 'img/cleanser.webp', description: 'Nourishing cleanse' },
+              { step: 'Hydrating Toner', amount: '3 drops', image: 'img/toner.webp', description: 'Adds moisture layer' },
+              { step: 'Facial Oil', amount: '3 drops', image: 'img/facial-oil.webp', description: 'Deep nourishment and barrier repair' },
+              { step: 'Night Cream', amount: '5 drops', image: 'img/night cream.webp', description: 'Intensive overnight repair' },
+              { step: 'Eye Cream', amount: 'pea-sized', image: 'img/eye cream.webp', description: 'Targets delicate eye area' },
+              { step: 'Lip Mask', amount: 'Once', image: 'img/lip mask.webp', description: 'Overnight lip restoration' }
+            ]
+          },
+          'combination': {
+            morning: [
+              { step: 'Balancing Cleanser', amount: '2 drops', image: 'img/balancing.webp', description: 'Addresses both oily and dry areas' },
+              { step: 'Balancing Toner', amount: '3 drops', image: 'img/toner3.webp', description: 'Normalizes skin pH and texture' },
+              { step: 'Niacinamide Serum', amount: '2 drops', image: 'img/Niacinamide Serum.webp', description: 'Balances oil production' },
+              { step: 'Lightweight Moisturizer', amount: '4 drops', image: 'img/moisturizer2.webp', description: 'Hydrates without heaviness' },
+              { step: 'Broad Spectrum Sunscreen', amount: '1 tsp', image: 'img/sunscreen.webp', description: 'Daily protection for all areas' },
+              { step: 'Lip Balm', amount: 'Once', image: 'img/lip balm.jpg', description: 'Balanced lip care' }
+            ],
+            night: [
+              { step: 'Balancing Cleanser', amount: '2 drops', image: 'img/balancing.webp', description: 'Gentle yet thorough cleansing' },
+              { step: 'Balancing Toner', amount: '3 drops', image: 'img/toner3.webp', description: 'Prepares skin for treatments' },
+              { step: 'Targeted Serum', amount: '2 drops', image: 'img/serum.webp', description: 'Addresses specific concern areas' },
+              { step: 'Night Moisturizer', amount: '4 drops', image: 'img/cream.webp', description: 'Overnight repair and balance' },
+              { step: 'Eye Treatment', amount: 'pea-sized', image: 'img/cooling gel.webp', description: 'Gentle care for eye area' },
+              { step: 'Lip Treatment', amount: 'Once', image: 'img/lip mask.webp', description: 'Overnight lip care' }
+            ]
+          }
+        };
+
+        const userRoutine = routines[skinType];
+        if (userRoutine) {
+          // Morning routine
+          document.getElementById('morningRoutineGrid').innerHTML = userRoutine.morning
+            .map((step, index) => `
+              <div class="routine-step-card">
+                <div class="step-number">${index + 1}</div>
+                <img src="${step.image}" alt="${step.step}" class="step-image">
+                <div class="step-details">
+                  <h4>${step.step}</h4>
+                  <p class="step-amount">${step.amount}</p>
+                  <p class="step-description">${step.description}</p>
+                </div>
+              </div>
+            `).join('');
+
+          // Night routine
+          document.getElementById('nightRoutineGrid').innerHTML = userRoutine.night
+            .map((step, index) => `
+              <div class="routine-step-card">
+                <div class="step-number">${index + 1}</div>
+                <img src="${step.image}" alt="${step.step}" class="step-image">
+                <div class="step-details">
+                  <h4>${step.step}</h4>
+                  <p class="step-amount">${step.amount}</p>
+                  <p class="step-description">${step.description}</p>
+                </div>
+              </div>
+            `).join('');
+        }
+      }
+
+      function loadRecommendedProducts() {
+        const skinType = currentUser.skinProfile?.skinType;
+        if (!skinType) return;
+
+        const productRecommendations = {
+          'oily': [
+            { name: 'Oil Control Gel Cleanser', image: 'img/cleanseroily.webp', price: '₹799', reason: 'Controls excess oil production' },
+            { name: 'Niacinamide Serum', image: 'img/Niacinamide Serum.webp', price: '₹899', reason: 'Minimizes pores and controls oil' },
+            { name: 'Light Moisturizer', image: 'img/light moisturizer.webp', price: '₹699', reason: 'Hydrates without clogging pores' }
+          ],
+          'dry': [
+            { name: 'Rich Moisturizer', image: 'img/moisturizer.webp', price: '₹1,399', reason: 'Provides deep, lasting hydration' },
+            { name: 'Hydrating Serum', image: 'img/serum.webp', price: '₹1,299', reason: 'Intense moisture boost' },
+            { name: 'Nourishing Night Cream', image: 'img/night cream.webp', price: '₹1,799', reason: 'Overnight skin repair and renewal' }
+          ],
+          'combination': [
+            { name: 'Balancing Cleanser', image: 'img/balancing.webp', price: '₹1,099', reason: 'Addresses mixed skin needs' },
+            { name: 'Gel Cream Moisturizer', image: 'img/moisturizer2.webp', price: '₹799', reason: 'Lightweight yet effective hydration' },
+            { name: 'Balancing Toner', image: 'img/toner3.webp', price: '₹799', reason: 'Normalizes different skin areas' }
+          ]
+        };
+
+        const products = productRecommendations[skinType] || [];
+        document.getElementById('recommendedProductsGrid').innerHTML = products
+          .map(product => `
+            <div class="recommended-product-card">
+              <img src="${product.image}" alt="${product.name}" class="product-image">
+              <div class="product-info">
+                <h4>${product.name}</h4>
+                <p class="product-price">${product.price}</p>
+                <p class="product-reason">${product.reason}</p>
+                <button class="add-to-routine-btn">Add to Routine</button>
+              </div>
+            </div>
+          `).join('');
+      }
+
+      function loadExpertTips() {
+        const skinType = currentUser.skinProfile?.skinType;
+        if (!skinType) return;
+
+        const expertTips = {
+          'oily': [
+            { icon: '💧', title: 'Don\'t Skip Moisturizer', tip: 'Even oily skin needs hydration. Skipping moisturizer can actually increase oil production.' },
+            { icon: '🧼', title: 'Double Cleanse at Night', tip: 'Remove makeup and sunscreen with an oil cleanser, then use your gel cleanser for deep cleaning.' },
+            { icon: '⏰', title: 'Be Patient with Retinols', tip: 'Start slowly with retinol products - once or twice a week initially to build tolerance.' },
+            { icon: '🌟', title: 'Use BHA Carefully', tip: 'Salicylic acid is great for oily skin, but start with 2-3 times per week to avoid irritation.' }
+          ],
+          'dry': [
+            { icon: '💧', title: 'Layer Your Hydration', tip: 'Apply products from thinnest to thickest consistency for maximum absorption.' },
+            { icon: '🌙', title: 'Night is Recovery Time', tip: 'Use your richest products at night when skin naturally repairs itself.' },
+            { icon: '🌡️', title: 'Avoid Hot Water', tip: 'Use lukewarm water for cleansing to prevent further moisture loss.' },
+            { icon: '🧴', title: 'Don\'t Forget Your Neck', tip: 'Extend your skincare routine to your neck and décolletage areas.' }
+          ],
+          'combination': [
+            { icon: '🎯', title: 'Zone Treatment', tip: 'Use different products on different areas - oil control on T-zone, hydration on cheeks.' },
+            { icon: '⚖️', title: 'Balance is Key', tip: 'Look for products labeled for combination skin that address multiple concerns.' },
+            { icon: '📅', title: 'Adjust Seasonally', tip: 'Your skin may become more oily in summer and drier in winter - adjust your routine accordingly.' },
+            { icon: '🔄', title: 'Consistent Routine', tip: 'Stick to your routine for at least 6-8 weeks to see real improvements.' }
+          ]
+        };
+
+        const tips = expertTips[skinType] || [];
+        document.getElementById('expertTips').innerHTML = tips
+          .map(tip => `
+            <div class="tip-card">
+              <div class="tip-icon">${tip.icon}</div>
+              <div class="tip-content">
+                <h4>${tip.title}</h4>
+                <p>${tip.tip}</p>
+              </div>
+            </div>
+          `).join('');
+      }
+
+      function loadProgressTimeline() {
+        const joinDate = new Date(currentUser.joinDate);
+        const today = new Date();
+        const daysSince = Math.floor((today - joinDate) / (1000 * 60 * 60 * 24));
+
+        const milestones = [
+          { day: 1, title: 'Welcome to Sorelle!', description: 'Started your personalized skincare journey', achieved: true },
+          { day: 7, title: 'First Week Complete', description: 'Consistency is building', achieved: daysSince >= 7 },
+          { day: 14, title: 'Two Weeks Strong', description: 'Skin is adapting to new routine', achieved: daysSince >= 14 },
+          { day: 30, title: 'One Month Milestone', description: 'Noticeable improvements begin', achieved: daysSince >= 30 },
+          { day: 60, title: 'Two Month Achievement', description: 'Significant skin transformation', achieved: daysSince >= 60 },
+          { day: 90, title: 'Three Month Success', description: 'Full routine benefits realized', achieved: daysSince >= 90 }
+        ];
+
+        document.getElementById('progressTimeline').innerHTML = milestones
+          .map(milestone => `
+            <div class="timeline-item ${milestone.achieved ? 'achieved' : 'upcoming'}">
+              <div class="timeline-marker">
+                ${milestone.achieved ? '✅' : '⏳'}
+              </div>
+              <div class="timeline-content">
+                <h4>Day ${milestone.day}: ${milestone.title}</h4>
+                <p>${milestone.description}</p>
+                ${milestone.achieved ? 
+                  `<span class="achievement-badge">Completed!</span>` : 
+                  `<span class="upcoming-badge">${milestone.day - daysSince} days to go</span>`
+                }
+              </div>
+            </div>
+          `).join('');
+      }
+
+      function logout() {
+        localStorage.removeItem('sorelleCurrentUser');
+        window.location.href = 'index.html';
+      }
+
+      // Contact form handling
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you for your message! We\'ll get back to you soon.');
+        this.reset();
+      });
+    </script>
+  </body>
+</html>

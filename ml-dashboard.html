@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Recommendations | Sorelle</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .ml-dashboard {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .ml-header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .ml-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .ml-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 1px solid #e1e8ed;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .ml-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f3f4;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-icon {
+            font-size: 24px;
+        }
+
+        .metric-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            transition: width 0.3s ease;
+        }
+
+        .recommendation-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+
+        .recommendation-details {
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .product-meta {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .confidence-score {
+            background: #007bff;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .user-profile-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .analytics-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .summary-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .control-panel {
+            background: #343a40;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            min-width: 120px;
+        }
+
+        .control-group select,
+        .control-group input,
+        .control-group button {
+            padding: 8px 12px;
+            border: 1px solid #6c757d;
+            border-radius: 4px;
+            background: white;
+            color: #333;
+        }
+
+        .control-group button {
+            background: #007bff;
+            color: white;
+            border: 1px solid #007bff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .control-group button:hover {
+            background: #0056b3;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+
+        .model-performance {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .performance-metric {
+            text-align: center;
+            padding: 15px;
+            background: #e8f4f8;
+            border-radius: 8px;
+        }
+
+        .performance-score {
+            font-size: 32px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+
+        .performance-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .interaction-simulator {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .simulation-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .simulation-controls select,
+        .simulation-controls button {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .activity-log {
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        .log-entry {
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .feature-importance {
+            margin: 20px 0;
+        }
+
+        .feature-bar {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .feature-name {
+            min-width: 120px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .feature-bar-fill {
+            height: 20px;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            border-radius: 10px;
+            margin: 0 10px;
+        }
+
+        .feature-score {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .export-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .export-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+
+        .export-button:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .ml-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .model-performance {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Sorelle</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="products.html" class="nav-link">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a href="skin-analysis.html" class="nav-link">Skin Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html" class="nav-link">Analytics</a>
+                </li>
+                <li class="nav-item">
+                    <a href="ml-dashboard.html" class="nav-link active">ML Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="authLink">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="ml-dashboard">
+        <div class="ml-header">
+            <h1>🤖 Machine Learning Recommendation Dashboard</h1>
+            <p>Advanced AI-powered product recommendations with collaborative and content-based filtering</p>
+            
+            <div class="analytics-summary">
+                <div class="summary-item">
+                    <div class="summary-value" id="totalUsersCount">0</div>
+                    <div class="summary-label">Active Users</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value" id="totalProductsCount">0</div>
+                    <div class="summary-label">Products</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value" id="totalInteractionsCount">0</div>
+                    <div class="summary-label">Interactions</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value" id="modelAccuracy">0%</div>
+                    <div class="summary-label">Model Accuracy</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <h3>🎛️ Recommendation Controls</h3>
+            <div class="control-group">
+                <label for="selectedUser">User Profile:</label>
+                <select id="selectedUser">
+                    <option value="">Select a user...</option>
+                </select>
+                <button onclick="generateRecommendations()">Generate Recommendations</button>
+                <button onclick="refreshAnalytics()">Refresh Analytics</button>
+            </div>
+            <div class="control-group">
+                <label for="numRecommendations">Number of Recommendations:</label>
+                <input type="range" id="numRecommendations" min="3" max="10" value="5">
+                <span id="recCount">5</span>
+                <label for="hybridWeight">Collaborative Weight:</label>
+                <input type="range" id="hybridWeight" min="0" max="100" value="60">
+                <span id="weightDisplay">60%</span>
+            </div>
+        </div>
+
+        <div class="ml-grid">
+            <!-- User Profile Card -->
+            <div class="ml-card user-profile-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">👤</span>
+                        User Profile Analysis
+                    </div>
+                </div>
+                <div id="userProfileContent">
+                    <p style="text-align: center; opacity: 0.8;">Select a user to view profile analysis</p>
+                </div>
+            </div>
+
+            <!-- Recommendations Card -->
+            <div class="ml-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">🎯</span>
+                        AI Recommendations
+                    </div>
+                    <span id="recommendationBadge" class="confidence-score">Ready</span>
+                </div>
+                <div id="recommendationsContent">
+                    <p style="text-align: center; color: #666;">Generate recommendations to view results</p>
+                </div>
+            </div>
+
+            <!-- Model Performance Card -->
+            <div class="ml-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">📊</span>
+                        Model Performance
+                    </div>
+                </div>
+                <div class="model-performance">
+                    <div class="performance-metric">
+                        <div class="performance-score" id="accuracyScore">--</div>
+                        <div class="performance-label">Accuracy</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="performance-score" id="coverageScore">--</div>
+                        <div class="performance-label">Coverage</div>
+                    </div>
+                </div>
+                <div class="feature-importance">
+                    <h4>Feature Importance</h4>
+                    <div class="feature-bar">
+                        <div class="feature-name">Skin Type Match</div>
+                        <div class="feature-bar-fill" style="width: 85%;"></div>
+                        <div class="feature-score">0.85</div>
+                    </div>
+                    <div class="feature-bar">
+                        <div class="feature-name">Ingredient Preference</div>
+                        <div class="feature-bar-fill" style="width: 72%;"></div>
+                        <div class="feature-score">0.72</div>
+                    </div>
+                    <div class="feature-bar">
+                        <div class="feature-name">Category Preference</div>
+                        <div class="feature-bar-fill" style="width: 68%;"></div>
+                        <div class="feature-score">0.68</div>
+                    </div>
+                    <div class="feature-bar">
+                        <div class="feature-name">Price Compatibility</div>
+                        <div class="feature-bar-fill" style="width: 45%;"></div>
+                        <div class="feature-score">0.45</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-time Analytics Card -->
+            <div class="ml-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">📈</span>
+                        Analytics Overview
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div id="topIngredients">
+                    <h4>Popular Ingredients</h4>
+                </div>
+            </div>
+
+            <!-- Interaction Simulator -->
+            <div class="ml-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">🎮</span>
+                        Interaction Simulator
+                    </div>
+                </div>
+                <div class="interaction-simulator">
+                    <div class="simulation-controls">
+                        <select id="simUser">
+                            <option value="">Select User</option>
+                        </select>
+                        <select id="simProduct">
+                            <option value="">Select Product</option>
+                        </select>
+                        <select id="simAction">
+                            <option value="view">View</option>
+                            <option value="cart">Add to Cart</option>
+                            <option value="purchase">Purchase</option>
+                            <option value="wishlist">Wishlist</option>
+                        </select>
+                        <button onclick="simulateInteraction()">Simulate</button>
+                    </div>
+                    <div class="activity-log" id="activityLog">
+                        <div class="log-entry">Ready to simulate user interactions...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Quality Card -->
+            <div class="ml-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">🔍</span>
+                        Data Quality Metrics
+                    </div>
+                </div>
+                <div class="metric-display">
+                    <div class="metric-label">Data Completeness</div>
+                    <div class="metric-value" id="dataCompleteness">98%</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 98%;"></div>
+                </div>
+                <div class="metric-display">
+                    <div class="metric-label">User Coverage</div>
+                    <div class="metric-value" id="userCoverage">94%</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 94%;"></div>
+                </div>
+                <div class="metric-display">
+                    <div class="metric-label">Recommendation Diversity</div>
+                    <div class="metric-value" id="recDiversity">87%</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 87%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="export-section">
+            <h3>📊 Export & Analysis</h3>
+            <p>Download comprehensive reports and analytics data</p>
+            <button class="export-button" onclick="exportRecommendationData()">
+                📄 Export Recommendation Data
+            </button>
+            <button class="export-button" onclick="exportUserAnalytics()">
+                👥 Export User Analytics
+            </button>
+            <button class="export-button" onclick="exportModelMetrics()">
+                🤖 Export Model Metrics
+            </button>
+            <button class="export-button" onclick="generateFullReport()">
+                📋 Generate Full Report
+            </button>
+        </div>
+    </div>
+
+    <script src="js/ml-recommendations.js"></script>
+    <script src="js/error-monitor.js"></script>
+    <script>
+        let categoryChart;
+        let currentUser = null;
+        let activityLogEntries = [];
+
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDashboard();
+            setupAuthSystem();
+            setupEventListeners();
+        });
+
+        function setupAuthSystem() {
+            // Check if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            const authLink = document.getElementById('authLink');
+            
+            if (currentUser) {
+                authLink.textContent = `Hi, ${currentUser.name}`;
+                authLink.href = '#';
+                authLink.onclick = logout;
+            } else {
+                authLink.textContent = 'Login';
+                authLink.href = 'login.html';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+
+        function initializeDashboard() {
+            // Wait for ML engine to be ready
+            const checkMLEngine = setInterval(() => {
+                if (window.mlEngine) {
+                    clearInterval(checkMLEngine);
+                    loadDashboardData();
+                }
+            }, 100);
+        }
+
+        function setupEventListeners() {
+            // Number of recommendations slider
+            document.getElementById('numRecommendations').addEventListener('input', function() {
+                document.getElementById('recCount').textContent = this.value;
+            });
+
+            // Hybrid weight slider
+            document.getElementById('hybridWeight').addEventListener('input', function() {
+                document.getElementById('weightDisplay').textContent = this.value + '%';
+                if (window.mlEngine) {
+                    window.mlEngine.hybridWeights = {
+                        collaborative: this.value / 100,
+                        content: (100 - this.value) / 100
+                    };
+                }
+            });
+
+            // User selection change
+            document.getElementById('selectedUser').addEventListener('change', function() {
+                if (this.value) {
+                    loadUserProfile(parseInt(this.value));
+                }
+            });
+        }
+
+        function loadDashboardData() {
+            if (!window.mlEngine) return;
+
+            // Load analytics
+            const analytics = window.mlEngine.getRecommendationAnalytics();
+            
+            // Update summary cards
+            document.getElementById('totalUsersCount').textContent = analytics.totalUsers;
+            document.getElementById('totalProductsCount').textContent = analytics.totalProducts;
+            document.getElementById('totalInteractionsCount').textContent = analytics.totalInteractions;
+            document.getElementById('modelAccuracy').textContent = Math.round(analytics.modelPerformance.accuracy * 100) + '%';
+
+            // Update model performance
+            document.getElementById('accuracyScore').textContent = Math.round(analytics.modelPerformance.accuracy * 100) + '%';
+            document.getElementById('coverageScore').textContent = Math.round((analytics.totalInteractions / (analytics.totalUsers * analytics.totalProducts)) * 100) + '%';
+
+            // Populate user dropdowns
+            populateUserDropdowns();
+
+            // Create category chart
+            createCategoryChart(analytics.topCategories);
+
+            // Display top ingredients
+            displayTopIngredients(analytics.topIngredients);
+
+            // Populate product dropdown for simulator
+            populateProductDropdown();
+
+            // Log initial activity
+            logActivity('Dashboard initialized', 'System ready for ML recommendations');
+        }
+
+        function populateUserDropdowns() {
+            const userSelect = document.getElementById('selectedUser');
+            const simUserSelect = document.getElementById('simUser');
+            
+            userSelect.innerHTML = '<option value="">Select a user...</option>';
+            simUserSelect.innerHTML = '<option value="">Select User</option>';
+
+            // Add current user if logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (currentUser) {
+                userSelect.innerHTML += `<option value="${currentUser.id}">Current User (${currentUser.name})</option>`;
+                simUserSelect.innerHTML += `<option value="${currentUser.id}">Current User (${currentUser.name})</option>`;
+            }
+
+            // Add sample users
+            window.mlEngine.userProfiles.forEach((profile, userId) => {
+                const skinType = profile.skinType;
+                const concerns = profile.concerns.slice(0, 2).join(', ');
+                const optionText = `User ${userId} (${skinType}, ${concerns})`;
+                userSelect.innerHTML += `<option value="${userId}">${optionText}</option>`;
+                simUserSelect.innerHTML += `<option value="${userId}">${optionText}</option>`;
+            });
+        }
+
+        function populateProductDropdown() {
+            const productSelect = document.getElementById('simProduct');
+            productSelect.innerHTML = '<option value="">Select Product</option>';
+
+            window.mlEngine.productData.forEach((product, productId) => {
+                productSelect.innerHTML += `<option value="${productId}">${product.name} ($${product.price})</option>`;
+            });
+        }
+
+        function loadUserProfile(userId) {
+            const user = window.mlEngine.userProfiles.get(userId);
+            if (!user) return;
+
+            const profileContent = document.getElementById('userProfileContent');
+            const preferences = user.preferences;
+
+            let profileHTML = `
+                <div style="margin-bottom: 15px;">
+                    <h4 style="margin: 0; color: white;">User ${userId}</h4>
+                    <p style="margin: 5px 0; opacity: 0.9;">
+                        <strong>Skin Type:</strong> ${user.skinType}<br>
+                        <strong>Concerns:</strong> ${user.concerns.join(', ')}<br>
+                        <strong>Age:</strong> ${user.age} | <strong>Budget:</strong> ${user.budget}
+                    </p>
+                </div>
+            `;
+
+            if (preferences) {
+                profileHTML += `
+                    <div style="margin-bottom: 15px;">
+                        <h5 style="margin: 0 0 10px 0; color: white;">Preferences</h5>
+                        <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">
+                            <p style="margin: 5px 0; font-size: 12px; opacity: 0.9;">
+                                <strong>Total Interactions:</strong> ${preferences.totalInteractions}<br>
+                                <strong>Average Rating:</strong> ${preferences.averageRating.toFixed(1)}/5
+                            </p>
+                        </div>
+                    </div>
+                `;
+
+                // Top categories
+                if (preferences.categories.size > 0) {
+                    const topCategories = Array.from(preferences.categories.entries())
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 3);
+                    
+                    profileHTML += `
+                        <div style="margin-bottom: 10px;">
+                            <h6 style="margin: 0 0 5px 0; color: white;">Top Categories</h6>
+                            ${topCategories.map(([cat, score]) => `
+                                <div style="display: flex; justify-content: space-between; margin: 3px 0; font-size: 12px; opacity: 0.9;">
+                                    <span>${cat}</span>
+                                    <span>${score.toFixed(1)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            }
+
+            profileContent.innerHTML = profileHTML;
+        }
+
+        function generateRecommendations() {
+            const userId = parseInt(document.getElementById('selectedUser').value);
+            const numRecs = parseInt(document.getElementById('numRecommendations').value);
+
+            if (!userId) {
+                alert('Please select a user first');
+                return;
+            }
+
+            const recommendations = window.mlEngine.generateRecommendations(userId, numRecs);
+            displayRecommendations(recommendations);
+            
+            document.getElementById('recommendationBadge').textContent = `${recommendations.length} Generated`;
+            logActivity('Recommendations Generated', `Generated ${recommendations.length} recommendations for User ${userId}`);
+        }
+
+        function displayRecommendations(recommendations) {
+            const content = document.getElementById('recommendationsContent');
+            
+            if (recommendations.length === 0) {
+                content.innerHTML = '<p style="text-align: center; color: #666;">No recommendations available</p>';
+                return;
+            }
+
+            content.innerHTML = recommendations.map((rec, index) => `
+                <div class="recommendation-item">
+                    <div class="confidence-score">#${index + 1}</div>
+                    <div class="recommendation-details">
+                        <div class="product-name">${rec.product.name}</div>
+                        <div class="product-meta">
+                            $${rec.product.price} | ⭐ ${rec.product.rating} | ${rec.product.category}
+                        </div>
+                        <div style="font-size: 11px; color: #007bff; margin-top: 4px;">
+                            ${rec.reasoning.map(reason => `• ${reason}`).join('<br>')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function createCategoryChart(topCategories) {
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            
+            if (categoryChart) {
+                categoryChart.destroy();
+            }
+
+            categoryChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: topCategories.map(([category, count]) => category),
+                    datasets: [{
+                        data: topCategories.map(([category, count]) => count),
+                        backgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56',
+                            '#4BC0C0',
+                            '#9966FF',
+                            '#FF9F40'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 10,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function displayTopIngredients(topIngredients) {
+            const container = document.getElementById('topIngredients');
+            const maxCount = topIngredients[0] ? topIngredients[0][1] : 1;
+
+            container.innerHTML = `
+                <h4>Popular Ingredients</h4>
+                ${topIngredients.slice(0, 5).map(([ingredient, count]) => `
+                    <div style="margin: 8px 0;">
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 2px;">
+                            <span>${ingredient}</span>
+                            <span>${count}</span>
+                        </div>
+                        <div class="progress-bar" style="height: 6px;">
+                            <div class="progress-fill" style="width: ${(count / maxCount) * 100}%;"></div>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function simulateInteraction() {
+            const userId = parseInt(document.getElementById('simUser').value);
+            const productId = parseInt(document.getElementById('simProduct').value);
+            const action = document.getElementById('simAction').value;
+
+            if (!userId || !productId || !action) {
+                alert('Please select user, product, and action');
+                return;
+            }
+
+            const rating = action === 'purchase' ? 5 : action === 'cart' ? 4 : 3;
+            window.mlEngine.updateUserInteraction(userId, productId, action, rating);
+
+            const product = window.mlEngine.productData.get(productId);
+            logActivity('Interaction Simulated', `User ${userId} performed ${action} on ${product.name}`);
+
+            // Refresh analytics
+            setTimeout(() => {
+                refreshAnalytics();
+            }, 500);
+        }
+
+        function logActivity(title, description) {
+            const timestamp = new Date().toLocaleTimeString();
+            activityLogEntries.unshift(`[${timestamp}] ${title}: ${description}`);
+            
+            // Keep only last 10 entries
+            if (activityLogEntries.length > 10) {
+                activityLogEntries = activityLogEntries.slice(0, 10);
+            }
+
+            const logContainer = document.getElementById('activityLog');
+            logContainer.innerHTML = activityLogEntries.map(entry => 
+                `<div class="log-entry">${entry}</div>`
+            ).join('');
+        }
+
+        function refreshAnalytics() {
+            logActivity('Analytics Refresh', 'Updating all dashboard metrics');
+            loadDashboardData();
+        }
+
+        // Export functions
+        function exportRecommendationData() {
+            const userId = parseInt(document.getElementById('selectedUser').value);
+            if (!userId) {
+                alert('Please select a user first');
+                return;
+            }
+
+            const recommendations = window.mlEngine.generateRecommendations(userId, 10);
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                userId: userId,
+                userProfile: window.mlEngine.userProfiles.get(userId),
+                recommendations: recommendations,
+                modelWeights: window.mlEngine.hybridWeights
+            };
+
+            downloadJSON(exportData, `recommendations-user-${userId}.json`);
+            logActivity('Data Export', 'Recommendation data exported');
+        }
+
+        function exportUserAnalytics() {
+            const analytics = window.mlEngine.getRecommendationAnalytics();
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                analytics: analytics,
+                userProfiles: Array.from(window.mlEngine.userProfiles.entries()),
+                interactions: Array.from(window.mlEngine.interactionMatrix.values())
+            };
+
+            downloadJSON(exportData, 'user-analytics.json');
+            logActivity('Data Export', 'User analytics exported');
+        }
+
+        function exportModelMetrics() {
+            const analytics = window.mlEngine.getRecommendationAnalytics();
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                modelPerformance: analytics.modelPerformance,
+                hybridWeights: window.mlEngine.hybridWeights,
+                featureImportance: {
+                    skinTypeMatch: 0.85,
+                    ingredientPreference: 0.72,
+                    categoryPreference: 0.68,
+                    priceCompatibility: 0.45
+                },
+                dataQuality: {
+                    completeness: 0.98,
+                    userCoverage: 0.94,
+                    recommendationDiversity: 0.87
+                }
+            };
+
+            downloadJSON(exportData, 'model-metrics.json');
+            logActivity('Data Export', 'Model metrics exported');
+        }
+
+        function generateFullReport() {
+            const analytics = window.mlEngine.getRecommendationAnalytics();
+            const report = {
+                timestamp: new Date().toISOString(),
+                summary: {
+                    totalUsers: analytics.totalUsers,
+                    totalProducts: analytics.totalProducts,
+                    totalInteractions: analytics.totalInteractions,
+                    modelAccuracy: analytics.modelPerformance.accuracy
+                },
+                analytics: analytics,
+                userProfiles: Array.from(window.mlEngine.userProfiles.entries()).slice(0, 20),
+                sampleRecommendations: window.mlEngine.generateRecommendations(1, 5),
+                activityLog: activityLogEntries,
+                systemInfo: {
+                    userAgent: navigator.userAgent,
+                    timestamp: new Date().toISOString(),
+                    pageUrl: window.location.href
+                }
+            };
+
+            downloadJSON(report, 'ml-dashboard-full-report.json');
+            logActivity('Full Report', 'Complete dashboard report generated');
+        }
+
+        function downloadJSON(data, filename) {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Auto-refresh analytics every 30 seconds
+        setInterval(() => {
+            if (window.mlEngine) {
+                const analytics = window.mlEngine.getRecommendationAnalytics();
+                document.getElementById('totalInteractionsCount').textContent = analytics.totalInteractions;
+                document.getElementById('modelAccuracy').textContent = Math.round(analytics.modelPerformance.accuracy * 100) + '%';
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

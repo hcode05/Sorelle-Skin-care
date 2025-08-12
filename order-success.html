@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/ecommerce-styles.css" />
+    <title>Order Confirmed - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="orders.html">My Orders</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+          </ul>
+        </nav>
+        
+        <!-- User Authentication Menu -->
+        <div class="auth-menu" id="authMenu">
+          <div class="login-register">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="register-btn">Register</a>
+          </div>
+          <div class="user-menu" id="userMenu" style="display: none;">
+            <div class="user-greeting">
+              <img src="https://via.placeholder.com/32/FF69B4/FFFFFF?text=U" alt="User" class="user-avatar" id="userAvatar">
+              <span class="user-name" id="userName">User</span>
+              <span class="dropdown-arrow">▼</span>
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+              <a href="profile.html" class="dropdown-item">
+                <span class="dropdown-icon">👤</span>
+                My Profile
+              </a>
+              <a href="orders.html" class="dropdown-item">
+                <span class="dropdown-icon">📦</span>
+                My Orders
+              </a>
+              <a href="cart.html" class="dropdown-item">
+                <span class="dropdown-icon">🛒</span>
+                My Cart
+              </a>
+              <hr class="dropdown-divider">
+              <a href="#" class="dropdown-item" onclick="logout()">
+                <span class="dropdown-icon">🚪</span>
+                Logout
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <section class="success-section">
+      <div class="success-container">
+        <div class="success-card">
+          <div class="success-icon">✅</div>
+          <h1 class="success-heading">Order Confirmed!</h1>
+          <p class="success-message">Thank you for your purchase. Your order has been successfully placed.</p>
+          
+          <div class="order-details" id="orderDetails">
+            <!-- Order details will be populated by JavaScript -->
+          </div>
+          
+          <div class="success-actions">
+            <button class="primary-btn" onclick="window.location.href='orders.html'">View My Orders</button>
+            <button class="secondary-btn" onclick="window.location.href='products.html'">Continue Shopping</button>
+          </div>
+          
+          <div class="next-steps">
+            <h3>What happens next?</h3>
+            <div class="steps-grid">
+              <div class="step">
+                <div class="step-icon">📦</div>
+                <h4>Order Processing</h4>
+                <p>We'll prepare your order within 1-2 business days</p>
+              </div>
+              <div class="step">
+                <div class="step-icon">🚚</div>
+                <h4>Shipping</h4>
+                <p>Your order will be shipped and you'll receive tracking info</p>
+              </div>
+              <div class="step">
+                <div class="step-icon">📧</div>
+                <h4>Updates</h4>
+                <p>We'll keep you updated via email and SMS</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+    </footer>
+
+    <script>
+      let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+
+      document.addEventListener('DOMContentLoaded', function() {
+        updateAuthMenu();
+        displayOrderDetails();
+      });
+
+      // Authentication functions
+      function updateAuthMenu() {
+        const authMenu = document.getElementById('authMenu');
+        const loginRegister = authMenu.querySelector('.login-register');
+        const userMenu = document.getElementById('userMenu');
+        
+        if (currentUser) {
+          loginRegister.style.display = 'none';
+          userMenu.style.display = 'flex';
+          
+          // Update user info
+          document.getElementById('userName').textContent = currentUser.firstName || currentUser.username || 'User';
+          const userAvatar = document.getElementById('userAvatar');
+          const initials = (currentUser.firstName && currentUser.lastName) 
+            ? (currentUser.firstName.charAt(0) + currentUser.lastName.charAt(0)).toUpperCase()
+            : (currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U');
+          userAvatar.src = `https://via.placeholder.com/32/FF69B4/FFFFFF?text=${initials}`;
+          userAvatar.alt = currentUser.firstName || currentUser.username || 'User';
+          
+          // Add dropdown functionality
+          const userGreeting = userMenu.querySelector('.user-greeting');
+          const dropdownMenu = document.getElementById('dropdownMenu');
+          
+          userGreeting.addEventListener('click', function() {
+            dropdownMenu.classList.toggle('show');
+          });
+          
+          // Close dropdown when clicking outside
+          document.addEventListener('click', function(event) {
+            if (!userMenu.contains(event.target)) {
+              dropdownMenu.classList.remove('show');
+            }
+          });
+        } else {
+          loginRegister.style.display = 'flex';
+          userMenu.style.display = 'none';
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        alert('You have been logged out successfully!');
+        window.location.href = 'index.html';
+      }
+
+      function displayOrderDetails() {
+        const order = JSON.parse(localStorage.getItem('latestOrder'));
+        
+        if (!order) {
+          window.location.href = 'products.html';
+          return;
+        }
+
+        const orderDetailsHTML = `
+          <div class="order-summary-card">
+            <h3>Order Summary</h3>
+            <div class="order-info">
+              <div class="info-row">
+                <span>Order ID:</span>
+                <span class="order-id">${order.id}</span>
+              </div>
+              <div class="info-row">
+                <span>Order Date:</span>
+                <span>${new Date(order.date).toLocaleDateString('en-IN')}</span>
+              </div>
+              <div class="info-row">
+                <span>Total Amount:</span>
+                <span class="total-amount">₹${order.totals.total.toLocaleString()}</span>
+              </div>
+              <div class="info-row">
+                <span>Payment Method:</span>
+                <span>${getPaymentMethodDisplay(order.payment.method)}</span>
+              </div>
+            </div>
+            
+            <div class="shipping-info">
+              <h4>Shipping Address</h4>
+              <div class="address">
+                <p>${order.shipping.firstName} ${order.shipping.lastName}</p>
+                <p>${order.shipping.address}</p>
+                <p>${order.shipping.city}, ${order.shipping.state} ${order.shipping.pincode}</p>
+                <p>Phone: ${order.shipping.phone}</p>
+              </div>
+            </div>
+            
+            <div class="order-items">
+              <h4>Items Ordered</h4>
+              ${order.items.map(item => `
+                <div class="order-item">
+                  <img src="${item.image}" alt="${item.name}">
+                  <div class="item-info">
+                    <h5>${item.name}</h5>
+                    <p>Quantity: ${item.quantity}</p>
+                    <p>Price: ₹${(item.price * item.quantity).toLocaleString()}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+
+        document.getElementById('orderDetails').innerHTML = orderDetailsHTML;
+
+        // Clear the latest order from localStorage after displaying
+        localStorage.removeItem('latestOrder');
+      }
+
+      function getPaymentMethodDisplay(method) {
+        switch(method) {
+          case 'card': return '💳 Credit/Debit Card';
+          case 'upi': return '📱 UPI Payment';
+          case 'cod': return '💰 Cash on Delivery';
+          default: return method;
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Analytics Dashboard - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="orders.html">Orders</a></li>
+            <li><a href="analytics.html" class="active-link">Analytics</a></li>
+          </ul>
+        </nav>
+        
+        <!-- User Authentication Menu -->
+        <div class="auth-menu" id="authMenu">
+          <div class="login-register">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="register-btn">Register</a>
+          </div>
+          <div class="user-menu" id="userMenu" style="display: none;">
+            <div class="user-greeting">
+              <span class="user-name" id="userName">User</span>
+              <span class="dropdown-arrow">▼</span>
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+              <a href="profile.html" class="dropdown-item">
+                <span class="dropdown-icon">👤</span>
+                My Profile
+              </a>
+              <a href="orders.html" class="dropdown-item">
+                <span class="dropdown-icon">📦</span>
+                My Orders
+              </a>
+              <a href="analytics.html" class="dropdown-item">
+                <span class="dropdown-icon">📊</span>
+                Analytics
+              </a>
+              <hr class="dropdown-divider">
+              <a href="#" class="dropdown-item" onclick="logout()">
+                <span class="dropdown-icon">🚪</span>
+                Logout
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <section class="analytics-section">
+      <div class="container">
+        <div class="analytics-header">
+          <h1>Advanced Analytics Dashboard</h1>
+          <p>Real-time insights and data-driven intelligence</p>
+          <div class="analytics-controls">
+            <select id="timeRange" onchange="updateAnalytics()">
+              <option value="7">Last 7 Days</option>
+              <option value="30" selected>Last 30 Days</option>
+              <option value="90">Last 90 Days</option>
+              <option value="365">Last Year</option>
+            </select>
+            <button class="refresh-btn" onclick="refreshAnalytics()">🔄 Refresh</button>
+            <button class="export-btn" onclick="exportData()">📥 Export</button>
+          </div>
+        </div>
+
+        <!-- Key Performance Indicators -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon">👥</div>
+            <div class="kpi-content">
+              <h3 id="totalUsers">0</h3>
+              <p>Total Users</p>
+              <span class="kpi-change positive" id="userGrowth">+0%</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">💰</div>
+            <div class="kpi-content">
+              <h3 id="totalRevenue">₹0</h3>
+              <p>Total Revenue</p>
+              <span class="kpi-change positive" id="revenueGrowth">+0%</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">📦</div>
+            <div class="kpi-content">
+              <h3 id="totalOrders">0</h3>
+              <p>Total Orders</p>
+              <span class="kpi-change positive" id="orderGrowth">+0%</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">⭐</div>
+            <div class="kpi-content">
+              <h3 id="conversionRate">0%</h3>
+              <p>Conversion Rate</p>
+              <span class="kpi-change positive" id="conversionGrowth">+0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid">
+          <!-- Sales Trend Chart -->
+          <div class="chart-container">
+            <h3>Sales Trend Analysis</h3>
+            <canvas id="salesChart"></canvas>
+          </div>
+          
+          <!-- Product Performance -->
+          <div class="chart-container">
+            <h3>Product Performance</h3>
+            <canvas id="productChart"></canvas>
+          </div>
+          
+          <!-- User Behavior Heatmap -->
+          <div class="chart-container">
+            <h3>User Behavior Heatmap</h3>
+            <div id="heatmapChart"></div>
+          </div>
+          
+          <!-- Customer Segmentation -->
+          <div class="chart-container">
+            <h3>Customer Segmentation</h3>
+            <canvas id="segmentationChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Advanced Analytics Section -->
+        <div class="advanced-analytics">
+          <div class="analytics-tabs">
+            <button class="tab-btn active" onclick="showTab('funnel')">Funnel Analysis</button>
+            <button class="tab-btn" onclick="showTab('cohort')">Cohort Analysis</button>
+            <button class="tab-btn" onclick="showTab('predictive')">Predictive Analytics</button>
+            <button class="tab-btn" onclick="showTab('abtesting')">A/B Testing</button>
+          </div>
+          
+          <div id="funnelTab" class="tab-content active">
+            <h3>Customer Journey Funnel</h3>
+            <div class="funnel-visualization" id="funnelChart"></div>
+            <div class="funnel-metrics">
+              <div class="metric">
+                <span class="metric-label">Homepage Visits:</span>
+                <span class="metric-value" id="funnelVisits">0</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Product Views:</span>
+                <span class="metric-value" id="funnelViews">0</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Cart Additions:</span>
+                <span class="metric-value" id="funnelCarts">0</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Purchases:</span>
+                <span class="metric-value" id="funnelPurchases">0</span>
+              </div>
+            </div>
+          </div>
+          
+          <div id="cohortTab" class="tab-content">
+            <h3>User Retention Cohort Analysis</h3>
+            <div class="cohort-table" id="cohortTable"></div>
+          </div>
+          
+          <div id="predictiveTab" class="tab-content">
+            <h3>Predictive Analytics & ML Insights</h3>
+            <div class="prediction-grid">
+              <div class="prediction-card">
+                <h4>Sales Forecast</h4>
+                <canvas id="forecastChart"></canvas>
+              </div>
+              <div class="prediction-card">
+                <h4>Churn Prediction</h4>
+                <div id="churnAnalysis"></div>
+              </div>
+              <div class="prediction-card">
+                <h4>Recommendation Engine Performance</h4>
+                <div id="recommendationMetrics"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div id="abtestingTab" class="tab-content">
+            <h3>A/B Testing Results</h3>
+            <div class="ab-tests" id="abTestResults"></div>
+          </div>
+        </div>
+
+        <!-- Real-time Monitoring -->
+        <div class="realtime-section">
+          <h3>Real-time Monitoring</h3>
+          <div class="realtime-grid">
+            <div class="realtime-card">
+              <h4>Active Users</h4>
+              <div class="realtime-value" id="activeUsers">0</div>
+              <div class="realtime-indicator online"></div>
+            </div>
+            <div class="realtime-card">
+              <h4>Page Views/min</h4>
+              <div class="realtime-value" id="pageViews">0</div>
+              <canvas id="realtimeChart" width="200" height="100"></canvas>
+            </div>
+            <div class="realtime-card">
+              <h4>Error Rate</h4>
+              <div class="realtime-value" id="errorRate">0%</div>
+              <div class="error-log" id="errorLog"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Advanced Analytics by AI-Powered Insights</p>
+    </footer>
+
+    <script src="js/analytics.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

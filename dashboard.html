@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dashboard - Sorelle</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="container header-container">
+        <h2 class="logo">Sorelle</h2>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html" class="active-link">Dashboard</a></li>
+            <li><a href="skin-analysis.html">Skin Analysis</a></li>
+            <li><a href="report.html">Your Report</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="cart.html">Cart <span class="cart-count" id="cartCount">0</span></a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+          </ul>
+        </nav>    
+      </div>
+    </header>
+    
+    <section class="dashboard-section">
+      <div class="dashboard-container">
+        <!-- Welcome Section -->
+        <div class="welcome-card">
+          <div class="welcome-content">
+            <h1 class="welcome-heading">Welcome back, <span id="userName"></span>!</h1>
+            <p class="welcome-text">Your personalized skincare journey continues</p>
+          </div>
+          <div class="quick-stats">
+            <div class="stat-item">
+              <span class="stat-number" id="daysSinceJoin">0</span>
+              <span class="stat-label">Days with Sorelle</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="routineStreak">0</span>
+              <span class="stat-label">Day Streak</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="completionRate">0%</span>
+              <span class="stat-label">Routine Completion</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skin Profile Summary -->
+        <div class="profile-summary-card">
+          <h2 class="card-title">Your Skin Profile</h2>
+          <div class="profile-content">
+            <div class="skin-type-display">
+              <img id="skinTypeImage" src="" alt="Your skin type" class="profile-skin-img">
+              <div class="skin-info">
+                <h3 id="skinTypeName"></h3>
+                <p id="skinTypeDescription"></p>
+              </div>
+            </div>
+            <div class="concerns-display">
+              <h4>Primary Concerns:</h4>
+              <div class="concerns-tags" id="concernsTags"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Personalized Routine -->
+        <div class="routine-card">
+          <h2 class="card-title">Your Personalized Routine</h2>
+          <div class="routine-tabs">
+            <button class="tab-btn active" onclick="showRoutine('morning')">🌅 Morning</button>
+            <button class="tab-btn" onclick="showRoutine('night')">🌙 Night</button>
+          </div>
+          <div class="routine-content">
+            <div id="morningRoutine" class="routine-list active"></div>
+            <div id="nightRoutine" class="routine-list"></div>
+          </div>
+          <button class="track-routine-btn" onclick="markRoutineComplete()">Mark Today's Routine Complete</button>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="analytics-grid">
+          <!-- Skin Improvement Chart -->
+          <div class="analytics-card">
+            <h3 class="analytics-title">Skin Improvement Progress</h3>
+            <canvas id="improvementChart" width="400" height="200"></canvas>
+          </div>
+
+          <!-- Routine Adherence -->
+          <div class="analytics-card">
+            <h3 class="analytics-title">Weekly Routine Adherence</h3>
+            <canvas id="adherenceChart" width="400" height="200"></canvas>
+          </div>
+
+          <!-- Concern Analysis -->
+          <div class="analytics-card">
+            <h3 class="analytics-title">Concern Priority Analysis</h3>
+            <canvas id="concernChart" width="400" height="200"></canvas>
+          </div>
+
+          <!-- Product Effectiveness -->
+          <div class="analytics-card">
+            <h3 class="analytics-title">Product Category Effectiveness</h3>
+            <div class="effectiveness-bars" id="effectivenessBars"></div>
+          </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="recommendations-card">
+          <h2 class="card-title">Personalized Recommendations</h2>
+          <div class="recommendations-grid" id="recommendationsGrid"></div>
+        </div>
+
+        <!-- Progress Tracking -->
+        <div class="progress-card">
+          <h2 class="card-title">Track Your Progress</h2>
+          <div class="progress-options">
+            <button class="progress-btn" onclick="openSkinPhoto()">📸 Take Skin Photo</button>
+            <button class="progress-btn" onclick="openQuickAssessment()">📝 Quick Skin Assessment</button>
+            <button class="progress-btn" onclick="openProductReview()">⭐ Rate Products</button>
+          </div>
+        </div>
+
+        <!-- Daily Quick Assessment -->
+        <div class="quick-assessment-section">
+          <h2>Quick Skin Assessment</h2>
+          <div class="assessment-form-container">
+            <form class="quick-form" id="dailyAssessmentForm">
+              <div class="form-row">
+                <label for="skinFeeling">How is your skin feeling today?</label>
+                <select name="skinFeeling" id="skinFeeling" required>
+                  <option value="">Select...</option>
+                  <option value="excellent">Excellent - Smooth & glowing</option>
+                  <option value="good">Good - Clear with minor issues</option>
+                  <option value="fair">Fair - Some concerns visible</option>
+                  <option value="poor">Poor - Multiple issues present</option>
+                </select>
+              </div>
+              
+              <div class="form-row">
+                <label>Rate your skin concerns today (1-10):</label>
+                <div class="concern-ratings-inline" id="concernRatingsInline">
+                  <!-- This will be populated by JavaScript -->
+                </div>
+              </div>
+              
+              <button type="submit" class="assessment-save-btn">Save Assessment</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Assessment Modal -->
+    <div id="assessmentModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('assessmentModal')">&times;</span>
+        <h2>Quick Skin Assessment</h2>
+        <form id="quickAssessmentForm">
+          <div class="assessment-question">
+            <label>How is your skin feeling today?</label>
+            <select name="skinFeeling" required>
+              <option value="">Select...</option>
+              <option value="excellent">Excellent - Smooth & glowing</option>
+              <option value="good">Good - Clear with minor issues</option>
+              <option value="fair">Fair - Some concerns visible</option>
+              <option value="poor">Poor - Multiple issues present</option>
+            </select>
+          </div>
+          <div class="assessment-question">
+            <label>Rate your skin concerns today (1-10):</label>
+            <div class="concern-ratings" id="concernRatings"></div>
+          </div>
+          <button type="submit" class="submit-assessment-btn">Save Assessment</button>
+        </form>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p class="footer-text">&copy; 2025 Sorelle Skincare. All rights reserved.</p>
+      <p class="footer-text">Contact us at <a href="mailto:info@sorelle.com">info@sorelle.com</a></p>
+    </footer>
+
+    <script>
+      // Check if user is logged in and load current user
+      let currentUser = JSON.parse(localStorage.getItem('sorelleCurrentUser'));
+      
+      if (!currentUser) {
+        window.location.href = 'login.html';
+        // Fallback demo user for development
+        currentUser = {
+          id: 'demo123',
+          fullName: 'Demo User',
+          email: 'demo@sorelle.com',
+          skinProfile: {
+            skinType: 'combination',
+            concerns: ['acne', 'dryness'],
+            goals: ['hydration', 'anti-aging']
+          },
+          joinDate: new Date().toISOString()
+        };
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        loadUserProfile();
+        loadPersonalizedRoutine();
+        initializeAnalytics();
+        generateRecommendations();
+        updateQuickStats();
+        populateInlineAssessment();
+      });
+
+      function loadUserProfile() {
+        document.getElementById('userName').textContent = currentUser.fullName;
+        
+        if (currentUser.skinProfile) {
+          const skinType = currentUser.skinProfile.skinType;
+          const skinTypeData = {
+            'oily': {
+              image: 'img/skin-types/oily skin.jpeg',
+              name: 'Oily Skin',
+              description: 'Your skin produces excess oil, especially in the T-zone. We focus on oil control and pore refinement.'
+            },
+            'dry': {
+              image: 'img/skin-types/dry skin.jpeg',
+              name: 'Dry Skin', 
+              description: 'Your skin needs extra hydration and barrier protection. We prioritize moisture retention and gentle care.'
+            },
+            'combination': {
+              image: 'img/skin-types/combined skin.jpg',
+              name: 'Combination Skin',
+              description: 'Your skin has both oily and dry areas. We balance these different needs with targeted treatments.'
+            }
+          };
+
+          const skinInfo = skinTypeData[skinType];
+          if (skinInfo) {
+            document.getElementById('skinTypeImage').src = skinInfo.image;
+            document.getElementById('skinTypeName').textContent = skinInfo.name;
+            document.getElementById('skinTypeDescription').textContent = skinInfo.description;
+          }
+
+          // Display concerns
+          const concerns = currentUser.skinProfile.concerns || [];
+          const concernsContainer = document.getElementById('concernsTags');
+          concernsContainer.innerHTML = concerns.map(concern => 
+            `<span class="concern-tag">${formatConcernName(concern)}</span>`
+          ).join('');
+        }
+      }
+
+      function formatConcernName(concern) {
+        const concernNames = {
+          'acne': 'Acne & Breakouts',
+          'aging': 'Anti-aging',
+          'darkSpots': 'Dark Spots',
+          'sensitivity': 'Sensitivity',
+          'dullness': 'Dullness',
+          'pores': 'Large Pores',
+          'dryness': 'Dryness',
+          'oiliness': 'Oiliness'
+        };
+        return concernNames[concern] || concern;
+      }
+
+      function loadPersonalizedRoutine() {
+        if (!currentUser.skinProfile) return;
+
+        const skinType = currentUser.skinProfile.skinType;
+        
+        // Product database with mapping to actual products
+        const productDatabase = {
+          'Gentle Gel Cleanser': { id: 'cleanser-2', name: 'Vitamin C+E Gel Face Wash', price: 599, image: 'img/gel cleanser.webp', skinType: 'All Skin Types' },
+          'Niacinamide Toner': { id: 'toner-1', name: 'Hydrating Rice Water Toner', price: 599, image: 'img/toner.webp', skinType: 'Dry Skin' },
+          'Vitamin C Serum': { id: 'serum-2', name: 'C For Yourself Vitamin C Serum', price: 999, image: 'img/serum2.webp', skinType: 'All Skin Types' },
+          'Light Moisturizer': { id: 'moisturizer-2', name: 'Illuminate Hydra Gel Moisturizer', price: 899, image: 'img/light moisturizer.webp', skinType: 'Oily & Combination Skin' },
+          'Broad Spectrum Sunscreen': { id: 'sunscreen-1', name: 'Barrier Repair Sunscreen SPF 50', price: 799, image: 'img/sunscreen.webp', skinType: 'All Skin Types' },
+          'Lip Balm': { id: 'treatment-4', name: 'Lip Glowy Balm', price: 1299, image: 'img/lip balm.jpg', skinType: 'All Skin Types' },
+          'Deep Cleansing Oil': { id: 'cleanser-1', name: 'Deep Cleansing Face Wash', price: 499, image: 'img/cleanser.webp', skinType: 'Oily Skin' },
+          'BHA Toner': { id: 'toner-2', name: 'Hydrate & Refresh Toning Mist', price: 649, image: 'img/toner2.webp', skinType: 'Oily Skin' },
+          'Retinol Serum': { id: 'serum-3', name: 'Niacinamide Pore Control Serum', price: 899, image: 'img/Niacinamide Serum.webp', skinType: 'Oily & Combination Skin' },
+          'Night Moisturizer': { id: 'moisturizer-4', name: 'Age Defense Night Cream', price: 1299, image: 'img/night cream.webp', skinType: 'Mature Skin' },
+          'Lip Treatment': { id: 'treatment-5', name: 'Lip Sleeping Mask', price: 1599, image: 'img/lip mask.webp', skinType: 'All Skin Types' },
+          'Cream Cleanser': { id: 'cleanser-3', name: 'pH Balance Gentle Face Wash', price: 699, image: 'img/cleanseroily.webp', skinType: 'Dry & Sensitive Skin' },
+          'Hydrating Toner': { id: 'toner-1', name: 'Hydrating Rice Water Toner', price: 599, image: 'img/toner.webp', skinType: 'Dry Skin' },
+          'Hyaluronic Acid Serum': { id: 'serum-1', name: 'Hyaluronic Acid Concentrate', price: 1299, image: 'img/serum.webp', skinType: 'All Skin Types' },
+          'Rich Moisturizer': { id: 'moisturizer-1', name: 'Golden Hour Glow Moisturizer', price: 1399, image: 'img/moisturizer.webp', skinType: 'Dry Skin' },
+          'Moisturizing Sunscreen': { id: 'sunscreen-2', name: 'Hydrating Sunscreen SPF 50', price: 799, image: 'img/sunscreen2.webp', skinType: 'Dry Skin' },
+          'Facial Oil': { id: 'serum-4', name: 'Pomegranate Facial Oil', price: 1499, image: 'img/facial-oil.webp', skinType: 'Dry Skin' },
+          'Night Cream': { id: 'moisturizer-4', name: 'Age Defense Night Cream', price: 1299, image: 'img/night cream.webp', skinType: 'Mature Skin' },
+          'Eye Cream': { id: 'treatment-1', name: 'Retinol Eye Cream', price: 1599, image: 'img/eye cream.webp', skinType: 'All Skin Types' },
+          'Lip Mask': { id: 'treatment-5', name: 'Lip Sleeping Mask', price: 1599, image: 'img/lip mask.webp', skinType: 'All Skin Types' },
+          'Balancing Cleanser': { id: 'cleanser-4', name: 'Watermelon Vitamin C Face Wash', price: 799, image: 'img/gel cleanser.webp', skinType: 'Combination Skin' },
+          'Balancing Toner': { id: 'toner-3', name: 'Tone It Up Balancing Toner', price: 799, image: 'img/toner3.webp', skinType: 'Combination Skin' },
+          'Niacinamide Serum': { id: 'serum-3', name: 'Niacinamide Pore Control Serum', price: 899, image: 'img/Niacinamide Serum.webp', skinType: 'Oily & Combination Skin' },
+          'Lightweight Moisturizer': { id: 'moisturizer-2', name: 'Illuminate Hydra Gel Moisturizer', price: 899, image: 'img/light moisturizer.webp', skinType: 'Oily & Combination Skin' },
+          'Matte Sunscreen': { id: 'sunscreen-3', name: 'Illuminate Dewy Sunscreen', price: 649, image: 'img/sunscreen3.webp', skinType: 'Oily Skin' },
+          'Targeted Serum': { id: 'serum-1', name: 'Hyaluronic Acid Concentrate', price: 1299, image: 'img/serum.webp', skinType: 'All Skin Types' },
+          'Eye Gel': { id: 'treatment-2', name: 'Aqua Surge Eye Refresh Gel', price: 899, image: 'img/cooling gel.webp', skinType: 'All Skin Types' }
+        };
+
+        const routines = {
+          'oily': {
+            morning: [
+              { product: 'Gentle Gel Cleanser', usage: '2 drops' },
+              { product: 'Niacinamide Toner', usage: '3 drops' },
+              { product: 'Vitamin C Serum', usage: '2 drops' },
+              { product: 'Light Moisturizer', usage: '3 drops' },
+              { product: 'Broad Spectrum Sunscreen', usage: '1 tsp' },
+              { product: 'Lip Balm', usage: 'Once' }
+            ],
+            night: [
+              { product: 'Deep Cleansing Oil', usage: '3 drops' },
+              { product: 'Gentle Gel Cleanser', usage: '2 drops' },
+              { product: 'BHA Toner', usage: '3 drops' },
+              { product: 'Retinol Serum', usage: '1-2 drops' },
+              { product: 'Night Moisturizer', usage: '3 drops' },
+              { product: 'Lip Treatment', usage: 'Once' }
+            ]
+          },
+          'dry': {
+            morning: [
+              { product: 'Cream Cleanser', usage: '2 drops' },
+              { product: 'Hydrating Toner', usage: '3 drops' },
+              { product: 'Hyaluronic Acid Serum', usage: '3 drops' },
+              { product: 'Rich Moisturizer', usage: '5 drops' },
+              { product: 'Moisturizing Sunscreen', usage: '1 tsp' },
+              { product: 'Lip Balm', usage: 'Once' }
+            ],
+            night: [
+              { product: 'Cream Cleanser', usage: '2 drops' },
+              { product: 'Hydrating Toner', usage: '3 drops' },
+              { product: 'Facial Oil', usage: '3 drops' },
+              { product: 'Night Cream', usage: '5 drops' },
+              { product: 'Eye Cream', usage: 'pea-sized' },
+              { product: 'Lip Mask', usage: 'Once' }
+            ]
+          },
+          'combination': {
+            morning: [
+              { product: 'Balancing Cleanser', usage: '2 drops' },
+              { product: 'Balancing Toner', usage: '3 drops' },
+              { product: 'Niacinamide Serum', usage: '2 drops' },
+              { product: 'Lightweight Moisturizer', usage: '4 drops' },
+              { product: 'Matte Sunscreen', usage: '1 tsp' },
+              { product: 'Lip Balm', usage: 'Once' }
+            ],
+            night: [
+              { product: 'Balancing Cleanser', usage: '2 drops' },
+              { product: 'Balancing Toner', usage: '3 drops' },
+              { product: 'Targeted Serum', usage: '1-2 drops' },
+              { product: 'Night Moisturizer', usage: '4 drops' },
+              { product: 'Eye Gel', usage: 'pea-sized' },
+              { product: 'Lip Treatment', usage: 'Once' }
+            ]
+          }
+        };
+
+        const userRoutine = routines[skinType];
+        if (userRoutine) {
+          document.getElementById('morningRoutine').innerHTML = userRoutine.morning
+            .map(step => {
+              const productInfo = productDatabase[step.product];
+              if (productInfo) {
+                return `
+                  <div class="routine-step-enhanced">
+                    <div class="step-info">
+                      <div class="step-title">${step.product}</div>
+                      <div class="step-usage">${step.usage}</div>
+                      <div class="step-product-name">${productInfo.name}</div>
+                    </div>
+                    <div class="step-actions">
+                      <div class="step-price">₹${productInfo.price}</div>
+                      <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('${productInfo.id}', '${productInfo.name}', ${productInfo.price}, '${productInfo.image}', '${productInfo.skinType}')">
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }
+              return `<div class="routine-step">${step.product} - ${step.usage}</div>`;
+            }).join('');
+            
+          document.getElementById('nightRoutine').innerHTML = userRoutine.night
+            .map(step => {
+              const productInfo = productDatabase[step.product];
+              if (productInfo) {
+                return `
+                  <div class="routine-step-enhanced">
+                    <div class="step-info">
+                      <div class="step-title">${step.product}</div>
+                      <div class="step-usage">${step.usage}</div>
+                      <div class="step-product-name">${productInfo.name}</div>
+                    </div>
+                    <div class="step-actions">
+                      <div class="step-price">₹${productInfo.price}</div>
+                      <button class="add-to-cart-btn-small" onclick="addToCartFromRoutine('${productInfo.id}', '${productInfo.name}', ${productInfo.price}, '${productInfo.image}', '${productInfo.skinType}')">
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }
+              return `<div class="routine-step">${step.product} - ${step.usage}</div>`;
+            }).join('');
+        }
+      }
+
+      function showRoutine(type) {
+        // Update tab buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // Update routine content
+        document.querySelectorAll('.routine-list').forEach(list => list.classList.remove('active'));
+        document.getElementById(type + 'Routine').classList.add('active');
+      }
+
+      function markRoutineComplete() {
+        // Update routine tracking data
+        const today = new Date().toDateString();
+        if (!currentUser.routineTracking) {
+          currentUser.routineTracking = {};
+        }
+        
+        currentUser.routineTracking[today] = {
+          completed: true,
+          timestamp: new Date().toISOString()
+        };
+        
+        // Update user data
+        const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+        const userIndex = users.findIndex(u => u.id === currentUser.id);
+        if (userIndex !== -1) {
+          users[userIndex] = currentUser;
+          localStorage.setItem('sorelleUsers', JSON.stringify(users));
+          localStorage.setItem('sorelleCurrentUser', JSON.stringify(currentUser));
+        }
+        
+        alert('Great job! Today\'s routine marked as complete. 🌟');
+        updateQuickStats();
+        updateAdherenceChart();
+      }
+
+      function updateQuickStats() {
+        // Days since join
+        const joinDate = new Date(currentUser.joinDate);
+        const today = new Date();
+        const daysSince = Math.floor((today - joinDate) / (1000 * 60 * 60 * 24));
+        document.getElementById('daysSinceJoin').textContent = daysSince;
+
+        // Calculate streak and completion rate
+        const tracking = currentUser.routineTracking || {};
+        let streak = 0;
+        let completedDays = 0;
+        
+        // Calculate current streak
+        for (let i = 0; i < 30; i++) {
+          const checkDate = new Date();
+          checkDate.setDate(checkDate.getDate() - i);
+          const dateStr = checkDate.toDateString();
+          
+          if (tracking[dateStr] && tracking[dateStr].completed) {
+            if (i === 0 || streak === i) streak++;
+            completedDays++;
+          } else if (i === 0) {
+            break;
+          }
+        }
+
+        document.getElementById('routineStreak').textContent = streak;
+        
+        const completionRate = daysSince > 0 ? Math.round((completedDays / Math.min(daysSince, 30)) * 100) : 0;
+        document.getElementById('completionRate').textContent = completionRate + '%';
+      }
+
+      function initializeAnalytics() {
+        createImprovementChart();
+        createAdherenceChart();
+        createConcernChart();
+        createEffectivenessDisplay();
+      }
+
+      function createImprovementChart() {
+        const ctx = document.getElementById('improvementChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+            datasets: [{
+              label: 'Skin Health Score',
+              data: [6.2, 6.5, 7.1, 7.4, 7.8, 8.2],
+              borderColor: '#e478a4',
+              backgroundColor: 'rgba(228, 120, 164, 0.1)',
+              tension: 0.4,
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 10
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        });
+      }
+
+      function createAdherenceChart() {
+        updateAdherenceChart();
+      }
+
+      function updateAdherenceChart() {
+        const ctx = document.getElementById('adherenceChart').getContext('2d');
+        
+        // Generate last 7 days data
+        const days = [];
+        const adherenceData = [];
+        const tracking = currentUser.routineTracking || {};
+        
+        for (let i = 6; i >= 0; i--) {
+          const date = new Date();
+          date.setDate(date.getDate() - i);
+          days.push(date.toLocaleDateString('en', { weekday: 'short' }));
+          
+          const dateStr = date.toDateString();
+          adherenceData.push(tracking[dateStr] && tracking[dateStr].completed ? 100 : 0);
+        }
+
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: days,
+            datasets: [{
+              label: 'Routine Completion %',
+              data: adherenceData,
+              backgroundColor: adherenceData.map(val => val === 100 ? '#e478a4' : '#f0d9de'),
+              borderColor: '#e478a4',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        });
+      }
+
+      function createConcernChart() {
+        const ctx = document.getElementById('concernChart').getContext('2d');
+        const concerns = currentUser.skinProfile?.concerns || [];
+        
+        const concernLabels = concerns.map(formatConcernName);
+        const concernValues = concerns.map(() => Math.floor(Math.random() * 30) + 20);
+
+        new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: concernLabels,
+            datasets: [{
+              data: concernValues,
+              backgroundColor: [
+                '#e478a4',
+                '#f0a0c4',
+                '#c8628c',
+                '#f4c2d7',
+                '#d16096',
+                '#f7d9e4'
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        });
+      }
+
+      function createEffectivenessDisplay() {
+        const container = document.getElementById('effectivenessBars');
+        const categories = ['Cleansers', 'Toners', 'Serums', 'Moisturizers', 'Sunscreens'];
+        const effectiveness = [85, 92, 78, 88, 95];
+
+        container.innerHTML = categories.map((category, index) => `
+          <div class="effectiveness-item">
+            <span class="category-name">${category}</span>
+            <div class="effectiveness-bar">
+              <div class="effectiveness-fill" style="width: ${effectiveness[index]}%"></div>
+            </div>
+            <span class="effectiveness-score">${effectiveness[index]}%</span>
+          </div>
+        `).join('');
+      }
+
+      function generateRecommendations() {
+        const recommendations = [
+          {
+            title: 'Vitamin C Serum',
+            description: 'Brightens complexion and evens skin tone',
+            image: 'img/serum2.webp',
+            price: '₹899',
+            url: 'https://foxtale.in/products/c-for-yourself-vitamin-c-serum',
+            type: 'product',
+            priority: 'high'
+          },
+          {
+            title: 'Hydrating Toner',
+            description: 'Restores pH balance and preps skin perfectly',
+            image: 'img/toner.webp',
+            price: '₹649',
+            url: 'https://plumgoodness.com/products/plum-niacinamide-toner-with-rice-water',
+            type: 'product',
+            priority: 'high'
+          },
+          {
+            title: 'Night Moisturizer',
+            description: 'Deep hydration and repair while you sleep',
+            image: 'img/night cream.webp',
+            price: '₹1299',
+            url: 'https://www.dotandkey.com/products/retinol-ceramide-age-defense-night-cream',
+            type: 'product',
+            priority: 'medium'
+          },
+          {
+            title: 'Gentle Cleanser',
+            description: 'Removes impurities without stripping moisture',
+            image: 'img/cleanser.webp',
+            price: '₹549',
+            url: 'https://earthrhythm.com/products/exfoliating-face-cleanser-with-ahas-bhas',
+            type: 'product',
+            priority: 'medium'
+          },
+          {
+            title: 'Sunscreen SPF 50',
+            description: 'Ultimate protection from harmful UV rays',
+            image: 'img/sunscreen.webp',
+            price: '₹799',
+            url: 'https://www.dotandkey.com/products/barrier-repair-sunscreen',
+            type: 'product',
+            priority: 'high'
+          },
+          {
+            title: 'Eye Cream',
+            description: 'Targets fine lines and reduces puffiness',
+            image: 'img/eye cream.webp',
+            price: '₹999',
+            url: 'https://www.dotandkey.com/products/retinol-eye-cream',
+            type: 'product',
+            priority: 'medium'
+          }
+        ];
+
+        const grid = document.getElementById('recommendationsGrid');
+        grid.innerHTML = recommendations.map(rec => `
+          <div class="recommendation-card ${rec.priority}">
+            <img src="${rec.image}" alt="${rec.title}" class="product-image">
+            <div class="product-info">
+              <h4>${rec.title}</h4>
+              <p>${rec.description}</p>
+              <div class="product-price">${rec.price}</div>
+              <a href="${rec.url}" target="_blank" class="buy-product-btn">Buy Product</a>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function openQuickAssessment() {
+        document.getElementById('assessmentModal').style.display = 'block';
+        
+        // Populate concern ratings
+        const concerns = currentUser.skinProfile?.concerns || [];
+        const ratingsContainer = document.getElementById('concernRatings');
+        ratingsContainer.innerHTML = concerns.map(concern => `
+          <div class="concern-rating">
+            <label>${formatConcernName(concern)}:</label>
+            <input type="range" name="${concern}" min="1" max="10" value="5" class="rating-slider">
+            <span class="rating-value">5</span>
+          </div>
+        `).join('');
+
+        // Add event listeners for sliders
+        document.querySelectorAll('.rating-slider').forEach(slider => {
+          slider.addEventListener('input', function() {
+            this.nextElementSibling.textContent = this.value;
+          });
+        });
+      }
+
+      function openSkinPhoto() {
+        alert('Skin photo feature would open camera/gallery here. This demonstrates the UI flow for progress tracking.');
+      }
+
+      function openProductReview() {
+        alert('Product review feature would show a rating interface here. This demonstrates product feedback collection.');
+      }
+
+      function populateInlineAssessment() {
+        const concerns = currentUser.skinProfile?.concerns || [];
+        const ratingsContainer = document.getElementById('concernRatingsInline');
+        
+        if (concerns.length > 0) {
+          ratingsContainer.innerHTML = concerns.map(concern => `
+            <div class="concern-rating">
+              <label>${formatConcernName(concern)}:</label>
+              <input type="range" name="concern_${concern}" min="1" max="10" value="5" class="rating-slider">
+              <span class="rating-value">5</span>
+            </div>
+          `).join('');
+
+          // Add event listeners for sliders
+          document.querySelectorAll('#concernRatingsInline .rating-slider').forEach(slider => {
+            slider.addEventListener('input', function() {
+              this.nextElementSibling.textContent = this.value;
+            });
+          });
+        } else {
+          ratingsContainer.innerHTML = '<p style="color: #666; text-align: center;">Complete your skin profile to see concern ratings.</p>';
+        }
+      }
+
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+      }
+
+      function logout() {
+        localStorage.removeItem('sorelleCurrentUser');
+        window.location.href = 'index.html';
+      }
+
+      // Handle quick assessment form
+      document.getElementById('quickAssessmentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Save assessment data
+        const today = new Date().toDateString();
+        if (!currentUser.assessments) {
+          currentUser.assessments = {};
+        }
+        
+        const formData = new FormData(this);
+        const assessment = {};
+        for (let [key, value] of formData.entries()) {
+          assessment[key] = value;
+        }
+        
+        currentUser.assessments[today] = assessment;
+        
+        // Update user data
+        const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+        const userIndex = users.findIndex(u => u.id === currentUser.id);
+        if (userIndex !== -1) {
+          users[userIndex] = currentUser;
+          localStorage.setItem('sorelleUsers', JSON.stringify(users));
+          localStorage.setItem('sorelleCurrentUser', JSON.stringify(currentUser));
+        }
+        
+        alert('Assessment saved! This data helps improve your recommendations.');
+        closeModal('assessmentModal');
+      });
+
+      // Handle daily assessment form
+      document.getElementById('dailyAssessmentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Save daily assessment data
+        const today = new Date().toDateString();
+        if (!currentUser.dailyAssessments) {
+          currentUser.dailyAssessments = {};
+        }
+        
+        const formData = new FormData(this);
+        const assessment = {};
+        for (let [key, value] of formData.entries()) {
+          assessment[key] = value;
+        }
+        
+        currentUser.dailyAssessments[today] = assessment;
+        
+        // Update user data
+        const users = JSON.parse(localStorage.getItem('sorelleUsers') || '[]');
+        const userIndex = users.findIndex(u => u.id === currentUser.id);
+        if (userIndex !== -1) {
+          users[userIndex] = currentUser;
+          localStorage.setItem('sorelleUsers', JSON.stringify(users));
+          localStorage.setItem('sorelleCurrentUser', JSON.stringify(currentUser));
+        }
+        
+        // Show success message
+        const button = this.querySelector('.assessment-save-btn');
+        const originalText = button.textContent;
+        button.textContent = '✓ Assessment Saved!';
+        button.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.background = '';
+        }, 2000);
+        
+        // Reset form
+        this.reset();
+        // Reset slider values
+        document.querySelectorAll('#concernRatingsInline .rating-slider').forEach(slider => {
+          slider.value = 5;
+          slider.nextElementSibling.textContent = 5;
+        });
+      });
+
+      // Close modal when clicking outside
+      window.addEventListener('click', function(event) {
+        const modal = document.getElementById('assessmentModal');
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+
+      // Cart functionality for routine products
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const cartCount = document.getElementById('cartCount');
+        if (cartCount) {
+          cartCount.textContent = totalItems;
+        }
+      }
+
+      function addToCartFromRoutine(id, name, price, image, skinType) {
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        
+        // Check if item already exists
+        const existingItem = cart.find(item => item.id === id);
+        
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id: id,
+            name: name,
+            price: price,
+            image: image,
+            skinType: skinType,
+            quantity: 1
+          });
+        }
+        
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        showCartNotification(name);
+        
+        // Visual feedback on button
+        const button = event.target;
+        const originalText = button.textContent;
+        button.classList.add('added');
+        button.textContent = 'Added!';
+        
+        setTimeout(() => {
+          button.classList.remove('added');
+          button.textContent = originalText;
+        }, 2000);
+      }
+
+      function showCartNotification(productName) {
+        // Remove existing notification
+        const existingNotification = document.querySelector('.cart-notification');
+        if (existingNotification) {
+          existingNotification.remove();
+        }
+        
+        // Create notification
+        const notification = document.createElement('div');
+        notification.className = 'cart-notification';
+        notification.innerHTML = `
+          <div>
+            <strong>${productName}</strong> added to cart!
+            <button class="close-notification" onclick="this.parentElement.parentElement.remove()">&times;</button>
+          </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Show notification
+        setTimeout(() => notification.classList.add('show'), 100);
+        
+        // Auto hide after 3 seconds
+        setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
+      }
+
+      // Initialize cart count on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        updateCartCount();
+        // ... existing DOMContentLoaded code
+      });
+    </script>
+  </body>
+</html>
